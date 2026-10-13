@@ -1,6 +1,7 @@
 backend:
-  name: git-gateway
-  branch: main # Or master, depending on your main GitHub branch name
+  name: github
+  repo: mordiifeanyi-git/tawoetawosan-respo
+  branch: main
 
 # Directory where uploaded images & videos will be stored
 media_folder: "uploads"
