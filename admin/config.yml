@@ -1,0 +1,33 @@
+backend:
+  name: github
+  repo: mordiifeanyi-git/tawoetawosan-respo
+  branch: main
+
+media_folder: "uploads"
+public_folder: "/uploads"
+
+collections:
+  - name: "events"
+    label: "Firm Meetings & Media Bulletins"
+    folder: "content/events"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Event Title", name: "title", widget: "string" }
+      - { label: "Location & Date", name: "meta", widget: "string" }
+      - { label: "Event Video Recording (.mp4)", name: "video", widget: "file", required: false }
+      - { label: "Photo Gallery", name: "images", widget: "list", field: { label: "Photo", name: "image", widget: "image" }, required: false }
+      - { label: "Full Proceedings Summary", name: "body", widget: "markdown" }
+
+  - name: "articles"
+    label: "Insights & Legal Articles"
+    folder: "content/articles"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Article Title", name: "title", widget: "string" }
+      - { label: "Publication Date", name: "date", widget: "datetime" }
+      - { label: "Category", name: "category", widget: "string" }
+      - { label: "Author Name", name: "author", widget: "string" }
+      - { label: "Short Excerpt", name: "excerpt", widget: "text" }
+      - { label: "Full Article Content", name: "body", widget: "markdown" }
