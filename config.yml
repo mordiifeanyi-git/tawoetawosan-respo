@@ -1,0 +1,48 @@
+backend:
+  name: git-gateway
+  branch: main # Or master, depending on your main GitHub branch name
+
+# Directory where uploaded images & videos will be stored
+media_folder: "uploads"
+public_folder: "/uploads"
+
+# Admin Dashboard Collections
+collections:
+  # Collection 1: Firm Meetings, Conferences & Media Bulletins (3 Video + Multi-Photo Events)
+  - name: "events"
+    label: "Firm Meetings & Media Bulletins"
+    folder: "content/events"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Event Title", name: "title", widget: "string" }
+      - { label: "Location & Date (e.g., Abuja HQ • October 2026)", name: "meta", widget: "string" }
+      - { 
+          label: "Event Video Recording (.mp4)", 
+          name: "video", 
+          widget: "file", 
+          required: false,
+          hint: "Upload MP4 video recording or select an existing video file."
+        }
+      - { 
+          label: "Photo Gallery", 
+          name: "images", 
+          widget: "list", 
+          field: { label: "Photo", name: "image", widget: "image" },
+          hint: "Upload one or more photos from the meeting/conference."
+        }
+      - { label: "Full Proceedings Summary & Write-up", name: "body", widget: "markdown" }
+
+  # Collection 2: Written Legal Articles & Insights
+  - name: "articles"
+    label: "Insights & Legal Articles"
+    folder: "content/articles"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Article Title", name: "title", widget: "string" }
+      - { label: "Publication Date", name: "date", widget: "datetime" }
+      - { label: "Category (e.g., Consumer Protection, Commercial Litigation)", name: "category", widget: "string" }
+      - { label: "Author Name (e.g., Emmanuel Atu Esq.)", name: "author", widget: "string" }
+      - { label: "Short Excerpt", name: "excerpt", widget: "text" }
+      - { label: "Full Article Content", name: "body", widget: "markdown" }
