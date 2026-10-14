@@ -1,27 +1,496 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chambers Content Manager | TAWO E. TAWO, SAN & CO.</title>
-    
-    <!-- Netlify Identity Widget for User Authentication -->
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-</head>
-<body>
-    <!-- Decap CMS Dashboard Script -->
-    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
-    
+    <title>TAWO E. TAWO, SAN & CO. | Legal Practitioners & Arbitrators</title>
+
+    <!-- Primary SEO Meta Tags -->
+    <meta name="title" content="Tawo E. Tawo, SAN & Co. | Legal Practitioners & Arbitrators">
+    <meta name="description" content="Premier Nigerian law firm incorporating legal practitioners, consultants, Notary Public and Arbitrators with offices in Abuja, Calabar, Lagos, Port Harcourt, Yenagoa and London.">
+    <meta name="keywords" content="Tawo E. Tawo SAN, Nigerian Law Firm, Senior Advocate of Nigeria, Corporate Lawyers Abuja, Arbitration Practitioners Lagos, Notary Public Nigeria">
+    <meta name="author" content="Tawo E. Tawo, SAN & Co.">
+    <meta name="robots" content="index, follow">
+
+    <!-- Geo-Targeting Tags -->
+    <meta name="geo.region" content="NG-FC">
+    <meta name="geo.placename" content="Abuja">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root { 
+            --primary-royal: #172554; 
+            --primary-royal-dark: #0F172A; 
+            --primary-royal-bright: #2563EB;
+            --bg-offwhite: #F8FAFC; 
+            --text-slate: #334155; 
+        }
+        
+        /* Typography font stack: Roboto, Raleway, Arial, Helvetica, sans-serif */
+        body { font-family: 'Roboto', 'Raleway', Arial, Helvetica, sans-serif; background-color: var(--bg-offwhite); color: var(--text-slate); line-height: 1.7; overflow-x: hidden; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Raleway', 'Roboto', Arial, Helvetica, sans-serif; color: #0F172A; }
+
+        /* Carousel Slide Management */
+        .carousel-slide { display: none; opacity: 0; transition: opacity 0.6s ease-in-out; }
+        .carousel-slide.active { display: block; opacity: 1; }
+
+        /* Background Image Transitions */
+        .hero-bg-img { display: none; opacity: 0; transition: opacity 1s ease-in-out; }
+        .hero-bg-img.active { display: block; opacity: 1; }
+    </style>
     <script>
-        // Redirect to admin dashboard automatically upon Netlify Identity login
-        if (window.netlifyIdentity) {
-            window.netlifyIdentity.on("init", user => {
-                if (!user) {
-                    window.netlifyIdentity.on("login", () => {
-                        document.location.href = "/admin/";
-                    });
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { 
+                        royal: { 
+                            DEFAULT: '#172554', 
+                            dark: '#0F172A', 
+                            light: '#3B82F6', 
+                            bright: '#2563EB' 
+                        } 
+                    }
                 }
+            }
+        }
+    </script>
+    <!-- Google Fonts for Roboto & Raleway -->
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="antialiased selection:bg-blue-500 selection:text-white">
+
+    <!-- Navigation Bar (Starts transparent, switches to white on scroll via JS) -->
+    <header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-transparent py-3 px-6 md:px-12">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <a href="index.html" class="flex items-center space-x-3 group">
+                <div class="w-9 h-9 rounded-full overflow-hidden border-2 border-white/80 shadow-md bg-white flex items-center justify-center p-0.5">
+                    <img src="/WhatsApp Image 2026-10-08 at 13.10.32.jpeg" alt="Logo" class="w-full h-full object-cover rounded-full" onerror="this.onerror=null; this.src='https://placehold.co/100x100/172554/FFFFFF?text=TT';">
+                </div>
+                <div>
+                    <span id="nav-brand-title" class="font-bold tracking-wide text-xs md:text-sm block leading-tight text-white font-['Raleway'] transition-colors">TAWO E. TAWO, SAN & CO.</span>
+                    <span class="text-[7.5px] text-blue-400 font-semibold tracking-widest uppercase block">Legal Practitioners, Notary Public & Arbitrators</span>
+                </div>
+            </a>
+            <nav class="hidden lg:flex items-center space-x-4">
+                <a href="index.html" class="nav-link text-sm text-blue-300 font-bold transition-colors">Home</a>
+                <a href="about.html" class="nav-link text-sm text-gray-200 hover:text-white transition-colors font-medium">About Us</a>
+                <a href="team.html" class="nav-link text-sm text-gray-200 hover:text-white transition-colors font-medium">Our Team</a>
+                <a href="articles.html" class="nav-link text-sm text-gray-200 hover:text-white transition-colors font-medium">Insights &amp; Articles</a>
+                <a href="contact.html" class="nav-link text-sm text-gray-200 hover:text-white transition-colors font-medium">Contact</a>
+            </nav>
+
+            <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="lg:hidden text-white focus:outline-none p-2">
+                <i class="fa-solid fa-bars text-xl"></i>
+            </button>
+        </div>
+        <div id="mobile-menu" class="hidden lg:hidden absolute top-full left-0 right-0 bg-[#0F172A] border-b border-slate-800 px-6 py-6 space-y-3 shadow-xl">
+            <a href="index.html" class="block text-blue-300 font-bold">Home</a>
+            <a href="about.html" class="block text-gray-200 hover:text-white font-medium">About Us</a>
+            <a href="team.html" class="block text-gray-200 hover:text-white font-medium">Our Team</a>
+            <a href="articles.html" class="block text-gray-200 hover:text-white font-medium">Insights & Articles</a>
+            <a href="contact.html" class="block text-gray-200 hover:text-white font-medium">Contact</a>
+        </div>
+    </header>
+
+    <!-- Compact Executive Hero Section with Restored Dark Navy Background (#0F172A) -->
+    <section class="relative pt-32 pb-8 lg:pt-36 lg:pb-10 px-6 md:px-12 text-white overflow-hidden min-h-[640px] flex flex-col justify-end group bg-[#0F172A]">
+        
+        <!-- Background Images Container -->
+        <div class="absolute inset-0 z-0 pointer-events-none">
+            <!-- Restored original dark navy overlay gradient -->
+            <div class="absolute inset-0 bg-gradient-to-r from-[#0F172A]/95 via-[#0F172A]/80 to-transparent z-10"></div>
+            
+            <!-- Slide 1 Background: Chief Tawo SAN Portrait -->
+            <div class="hero-bg-img active absolute inset-0 bg-cover bg-[position:center_top] lg:bg-[position:80%_20%] bg-no-repeat" style="background-image: url('/tawo3.jpeg');"></div>
+            
+            <!-- Slide 2 Background Image -->
+            <div class="hero-bg-img absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url('https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&q=80&w=1600');"></div>
+            
+            <!-- Slide 3 Background Image: /lawyers.jpeg -->
+            <div class="hero-bg-img absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url('/lawyers.jpeg');"></div>
+        </div>
+
+        <!-- Carousel Controls -->
+        <button onclick="prevSlide()" class="absolute left-4 md:left-6 top-1/2 -translate-y-1/2 z-30 w-9 h-9 rounded-full bg-[#0F172A]/70 hover:bg-[#1E3A8A] border border-white/20 text-white flex items-center justify-center transition-all shadow-lg backdrop-blur-sm cursor-pointer" aria-label="Previous Slide">
+            <i class="fa-solid fa-chevron-left text-xs"></i>
+        </button>
+        <button onclick="nextSlide()" class="absolute right-4 md:right-6 top-1/2 -translate-y-1/2 z-30 w-9 h-9 rounded-full bg-[#0F172A]/70 hover:bg-[#1E3A8A] border border-white/20 text-white flex items-center justify-center transition-all shadow-lg backdrop-blur-sm cursor-pointer" aria-label="Next Slide">
+            <i class="fa-solid fa-chevron-right text-xs"></i>
+        </button>
+
+        <div class="max-w-7xl mx-auto w-full relative z-20 px-4 md:px-6">
+            <div id="hero-carousel" class="relative">
+                
+                <!-- Slide 1: Core Firm Identity -->
+                <div class="carousel-slide active space-y-3 max-w-2xl">
+                    <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white leading-tight tracking-tight font-['Raleway']">
+                        Optimum Professionalism &amp; International Standards.
+                    </h1>
+                    <p class="text-xs sm:text-sm text-gray-200 font-normal leading-relaxed">
+                        Tawo E. Tawo, SAN & Co. is a premier firm of Legal Practitioners, consultants, Notary Public and Arbitrators incorporated under the Laws of the Federal Republic of Nigeria.
+                    </p>
+                </div>
+
+                <!-- Slide 2: Mission & Vision Focus -->
+                <div class="carousel-slide space-y-3 max-w-2xl">
+                    <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold leading-tight tracking-tight text-white font-['Raleway']">
+                        Illuminating the Gateway of Legal Practice.
+                    </h1>
+                    <p class="text-xs sm:text-sm text-gray-200 font-normal leading-relaxed">
+                        To serve as a multidimensional solution hub catering to the intricate professional needs of diverse clients with utmost professionalism, ethical standards, and prompt service delivery.
+                    </p>
+                    <div class="flex flex-wrap gap-2 pt-1">
+                        <a href="about.html" class="px-5 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs transition-all shadow-lg flex items-center space-x-2">
+                            <span>Learn More About Us</span> &rarr;
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Slide 3: Capacity Building & Teamwork -->
+                <div class="carousel-slide space-y-3 max-w-2xl">
+                    <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold leading-tight tracking-tight text-white font-['Raleway']">
+                        Empowering Minds Through Rigorous In-House Discussions.
+                    </h1>
+                    <p class="text-xs sm:text-sm text-gray-200 font-normal leading-relaxed">
+                        Team spirit is given a pride of place. Through regular in-house conferences, case reviews, and seminars, our attorneys stay completely updated with extant legislation and case law.
+                    </p>
+                    <div class="flex flex-wrap gap-2 pt-1">
+                        <a href="team.html" class="px-5 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs transition-all shadow-lg flex items-center space-x-2">
+                            <span>Meet Our Team</span> &rarr;
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Bottom Row: Carousel Dots & "Next Story" Card Preview Widget -->
+            <div class="mt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pt-3 border-t border-white/10">
+                <!-- Navigation Dots -->
+                <div class="flex items-center space-x-2">
+                    <button onclick="currentSlide(0)" class="carousel-dot w-8 h-2 rounded-full bg-blue-400 transition-all cursor-pointer" aria-label="Slide 1"></button>
+                    <button onclick="currentSlide(1)" class="carousel-dot w-2 h-2 rounded-full bg-white/30 hover:bg-white/60 transition-all cursor-pointer" aria-label="Slide 2"></button>
+                    <button onclick="currentSlide(2)" class="carousel-dot w-2 h-2 rounded-full bg-white/30 hover:bg-white/60 transition-all cursor-pointer" aria-label="Slide 3"></button>
+                </div>
+
+                <!-- Next Story Widget -->
+                <div onclick="nextSlide()" class="bg-[#0F172A]/90 hover:bg-[#0F172A] border border-white/20 rounded-lg p-2 flex items-center space-x-2.5 backdrop-blur-md cursor-pointer transition-all shadow-xl group max-w-xs">
+                    <div class="w-8 h-8 rounded overflow-hidden bg-slate-800 shrink-0 border border-white/10">
+                        <img id="next-story-img" src="https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&q=80&w=200" alt="Next Story Preview" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
+                    </div>
+                    <div>
+                        <span class="text-[7px] uppercase tracking-widest text-blue-300 font-bold block">Next Story</span>
+                        <span id="next-story-title" class="text-[11px] font-semibold text-white line-clamp-1 group-hover:text-blue-300 transition-colors font-['Raleway']">Our Mission &amp; Vision</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Integrated Expertise & Practice Domains Section -->
+    <section id="expertise" class="py-16 px-6 md:px-12 max-w-7xl mx-auto space-y-16">
+        <div class="text-center max-w-3xl mx-auto space-y-4">
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-[#0F172A] font-['Raleway']">Our Practice Expertise &amp; Core Domains</h2>
+            <p class="text-xs sm:text-sm text-gray-600 leading-relaxed">The firm's practice covers several broad legal areas, delivering specialized, optimum counsel across complex commercial and municipal law sectors.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Domain 1: Litigation / Advocacy and Arbitration -->
+            <div class="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all flex flex-col justify-between">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-[#172554] text-white flex items-center justify-center text-xl mb-6 shadow-md"><i class="fa-solid fa-gavel"></i></div>
+                    <h3 class="text-lg font-extrabold text-[#0F172A] mb-4 font-['Raleway']">Litigation, Advocacy &amp; Arbitration</h3>
+                    <ul class="space-y-2.5 text-xs sm:text-sm text-gray-600">
+                        <li class="flex items-start space-x-2">
+                            <i class="fa-solid fa-check text-[#172554] mt-1 shrink-0"></i>
+                            <span>Commercial and criminal litigation, including debt recovery</span>
+                        </li>
+                        <li class="flex items-start space-x-2">
+                            <i class="fa-solid fa-check text-[#172554] mt-1 shrink-0"></i>
+                            <span>Commencing and defending court actions and legal proceedings</span>
+                        </li>
+                        <li class="flex items-start space-x-2">
+                            <i class="fa-solid fa-check text-[#172554] mt-1 shrink-0"></i>
+                            <span>Arbitration, mediation, and reconciliation</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Domain 2: Commercial Law and Business Advisory -->
+            <div class="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all flex flex-col justify-between">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-[#172554] text-white flex items-center justify-center text-xl mb-6 shadow-md"><i class="fa-solid fa-building-columns"></i></div>
+                    <h3 class="text-lg font-extrabold text-[#0F172A] mb-4 font-['Raleway']">Commercial Law &amp; Business Advisory</h3>
+                    <ul class="space-y-2.5 text-xs sm:text-sm text-gray-600">
+                        <li class="flex items-start space-x-2">
+                            <i class="fa-solid fa-check text-[#172554] mt-1 shrink-0"></i>
+                            <span>Comprehensive legal drafting and property documentation</span>
+                        </li>
+                        <li class="flex items-start space-x-2">
+                            <i class="fa-solid fa-check text-[#172554] mt-1 shrink-0"></i>
+                            <span>Loan agreements, syndication, guarantees, and equipment leasing</span>
+                        </li>
+                        <li class="flex items-start space-x-2">
+                            <i class="fa-solid fa-check text-[#172554] mt-1 shrink-0"></i>
+                            <span>Company formation, joint ventures, mergers, and acquisitions</span>
+                        </li>
+                        <li class="flex items-start space-x-2">
+                            <i class="fa-solid fa-check text-[#172554] mt-1 shrink-0"></i>
+                            <span>Escrow agency, cross-border trade, and investment advisory</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Domain 3: Admiralty -->
+            <div class="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all flex flex-col justify-between">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-[#172554] text-white flex items-center justify-center text-xl mb-6 shadow-md"><i class="fa-solid fa-ship"></i></div>
+                    <h3 class="text-lg font-extrabold text-[#0F172A] mb-4 font-['Raleway']">Admiralty</h3>
+                    <ul class="space-y-2.5 text-xs sm:text-sm text-gray-600">
+                        <li class="flex items-start space-x-2">
+                            <i class="fa-solid fa-check text-[#172554] mt-1 shrink-0"></i>
+                            <span>Maritime and shipping law, vessel registration, and P&amp;I</span>
+                        </li>
+                        <li class="flex items-start space-x-2">
+                            <i class="fa-solid fa-check text-[#172554] mt-1 shrink-0"></i>
+                            <span>International sale and trade, charter parties, and syndication</span>
+                        </li>
+                        <li class="flex items-start space-x-2">
+                            <i class="fa-solid fa-check text-[#172554] mt-1 shrink-0"></i>
+                            <span>Vessel acquisitions, cargo claims, mortgages, and arrests</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Domain 4: Aviation -->
+            <div class="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all flex flex-col justify-between">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-[#172554] text-white flex items-center justify-center text-xl mb-6 shadow-md"><i class="fa-solid fa-plane"></i></div>
+                    <h3 class="text-lg font-extrabold text-[#0F172A] mb-4 font-['Raleway']">Aviation</h3>
+                    <ul class="space-y-2.5 text-xs sm:text-sm text-gray-600">
+                        <li class="flex items-start space-x-2">
+                            <i class="fa-solid fa-check text-[#172554] mt-1 shrink-0"></i>
+                            <span>Routine advisory services and dispute settlement (litigation)</span>
+                        </li>
+                        <li class="flex items-start space-x-2">
+                            <i class="fa-solid fa-check text-[#172554] mt-1 shrink-0"></i>
+                            <span>Charter parties and international carriage of goods</span>
+                        </li>
+                        <li class="flex items-start space-x-2">
+                            <i class="fa-solid fa-check text-[#172554] mt-1 shrink-0"></i>
+                            <span>Banking, finance, and aircraft-related mortgages</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Domain 5: Mining, Energy and Natural Resources -->
+            <div class="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all flex flex-col justify-between md:col-span-2 lg:col-span-2">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-[#172554] text-white flex items-center justify-center text-xl mb-6 shadow-md"><i class="fa-solid fa-oil-well"></i></div>
+                    <h3 class="text-lg font-extrabold text-[#0F172A] mb-4 font-['Raleway']">Mining, Energy &amp; Natural Resources</h3>
+                    <ul class="space-y-2.5 text-xs sm:text-sm text-gray-600 grid grid-cols-1 sm:grid-cols-2 gap-x-6">
+                        <li class="flex items-start space-x-2">
+                            <i class="fa-solid fa-check text-[#172554] mt-1 shrink-0"></i>
+                            <span>Oil and gas law, power purchase &amp; franchise agreements</span>
+                        </li>
+                        <li class="flex items-start space-x-2">
+                            <i class="fa-solid fa-check text-[#172554] mt-1 shrink-0"></i>
+                            <span>Grid connection agreements and NERC/TCN licensing</span>
+                        </li>
+                        <li class="flex items-start space-x-2">
+                            <i class="fa-solid fa-check text-[#172554] mt-1 shrink-0"></i>
+                            <span>Mining leases, licenses, and extraction consultancy</span>
+                        </li>
+                        <li class="flex items-start space-x-2">
+                            <i class="fa-solid fa-check text-[#172554] mt-1 shrink-0"></i>
+                            <span>Mining-related tax issues and project finance options</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Office Network Section (Interactive Map Links) -->
+    <section class="bg-slate-100 border-y border-gray-200 py-16 px-6 md:px-12">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            <div class="lg:col-span-5 space-y-4">
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-[#0F172A] font-['Raleway']">Our Office Network</h2>
+                <p class="text-xs sm:text-sm text-gray-600 leading-relaxed">
+                    To serve our diverse clientele efficiently, our firm maintains fully equipped offices across key Nigerian commercial and political centers, alongside an international liaison. Click any office location below to view directions on Google Maps.
+                </p>
+            </div>
+            <div class="lg:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-4">
+                <a href="https://maps.google.com/?q=27A+Oke+Agbe+Street+Garki+II+Abuja" target="_blank" rel="noopener noreferrer" class="bg-white p-4 rounded-xl border border-gray-200 shadow-xs text-center hover:border-[#172554] hover:shadow-md transition-all group">
+                    <i class="fa-solid fa-location-dot text-[#172554] mb-2 group-hover:scale-110 transition-transform"></i>
+                    <h4 class="text-xs font-bold text-[#0F172A] font-['Raleway']">Abuja Office</h4>
+                    <span class="text-[10px] text-[#172554] underline block mt-1">View on Map</span>
+                </a>
+                <a href="https://maps.google.com/?q=29B+Olorunnimbe+Street+Wemabod+Estate+Ikeja+Lagos" target="_blank" rel="noopener noreferrer" class="bg-white p-4 rounded-xl border border-gray-200 shadow-xs text-center hover:border-[#172554] hover:shadow-md transition-all group">
+                    <i class="fa-solid fa-location-dot text-[#172554] mb-2 group-hover:scale-110 transition-transform"></i>
+                    <h4 class="text-xs font-bold text-[#0F172A] font-['Raleway']">Lagos Office</h4>
+                    <span class="text-[10px] text-[#172554] underline block mt-1">View on Map</span>
+                </a>
+                <a href="https://maps.google.com/?q=Otu+Archibong+Street+Satellite+Town+Calabar" target="_blank" rel="noopener noreferrer" class="bg-white p-4 rounded-xl border border-gray-200 shadow-xs text-center hover:border-[#172554] hover:shadow-md transition-all group">
+                    <i class="fa-solid fa-location-dot text-[#172554] mb-2 group-hover:scale-110 transition-transform"></i>
+                    <h4 class="text-xs font-bold text-[#0F172A] font-['Raleway']">Calabar Office</h4>
+                    <span class="text-[10px] text-[#172554] underline block mt-1">View on Map</span>
+                </a>
+                <a href="https://maps.google.com/?q=INEC+Road+Kpansia+Yenagoa+Bayelsa+State" target="_blank" rel="noopener noreferrer" class="bg-white p-4 rounded-xl border border-gray-200 shadow-xs text-center hover:border-[#172554] hover:shadow-md transition-all group">
+                    <i class="fa-solid fa-location-dot text-[#172554] mb-2 group-hover:scale-110 transition-transform"></i>
+                    <h4 class="text-xs font-bold text-[#0F172A] font-['Raleway']">Yenagoa Office</h4>
+                    <span class="text-[10px] text-[#172554] underline block mt-1">View on Map</span>
+                </a>
+                <a href="https://maps.google.com/?q=70+Wrenthorpe+Vale+Clifton+Nottingham+Ng11+9BY" target="_blank" rel="noopener noreferrer" class="bg-white p-4 rounded-xl border border-gray-200 shadow-xs text-center hover:border-[#172554] hover:shadow-md transition-all group">
+                    <i class="fa-solid fa-earth-americas text-[#172554] mb-2 group-hover:scale-110 transition-transform"></i>
+                    <h4 class="text-xs font-bold text-[#0F172A] font-['Raleway']">London Liaison</h4>
+                    <span class="text-[10px] text-[#172554] underline block mt-1">View on Map</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#172554] text-gray-300 text-sm border-t border-blue-900 py-16 px-6 md:px-12">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center space-y-6 md:space-y-0">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-full overflow-hidden border border-white bg-white flex items-center justify-center p-0.5">
+                    <img src="/WhatsApp Image 2026-10-08 at 13.10.32.jpeg" alt="Logo" class="w-full h-full object-cover rounded-full" onerror="this.onerror=null; this.src='https://placehold.co/100x100/172554/FFFFFF?text=TT';">
+                </div>
+                <span class="font-bold text-white text-sm font-['Raleway']">TAWO E. TAWO, SAN & CO.</span>
+            </div>
+            <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-xs">
+                <a href="index.html" class="hover:text-white transition-colors">Home</a>
+                <a href="about.html" class="hover:text-white transition-colors">About Us</a>
+                <a href="team.html" class="hover:text-white transition-colors">Our Team</a>
+                <a href="articles.html" class="hover:text-white transition-colors">Insights & Articles</a>
+                <a href="contact.html" class="hover:text-white transition-colors">Contact</a>
+            </div>
+            <div class="flex items-center space-x-2">
+                <a href="https://www.linkedin.com/company/tawo-e-tawo-san-co" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-full bg-blue-950 flex items-center justify-center text-white hover:bg-white hover:text-[#172554] transition-all shadow-xs" aria-label="LinkedIn">
+                    <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                </a>
+                <a href="https://www.instagram.com/tawoetawosan.co?stkn=enA1ems2cHdoaXcx" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-full bg-blue-950 flex items-center justify-center text-white hover:bg-white hover:text-[#172554] transition-all shadow-xs" aria-label="Instagram">
+                    <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                </a>
+                <a href="https://www.facebook.com/61594079804654/" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-full bg-blue-950 flex items-center justify-center text-white hover:bg-white hover:text-[#172554] transition-all shadow-xs" aria-label="Facebook">
+                    <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg>
+                </a>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto mt-8 pt-6 border-t border-blue-900 text-center text-xs text-blue-200">
+            <p>&copy; 2026 Tawo E. Tawo, SAN & Co.</p>
+            <p> All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Interactive Scripts for Mobile Menu & Scroll Header Effect -->
+    <script>
+        function toggleMobileMenu() { 
+            document.getElementById('mobile-menu').classList.toggle('hidden'); 
+        }
+
+        // Navbar Scroll Effect: Transparent at top -> Solid white with shadow on scroll
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            const brandTitle = document.getElementById('nav-brand-title');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+
+            if (window.scrollY > 30) {
+                navbar.classList.remove('bg-transparent', 'py-3');
+                navbar.classList.add('bg-white/95', 'backdrop-blur-md', 'border-b', 'border-gray-200/80', 'py-2', 'shadow-sm');
+                
+                brandTitle.classList.remove('text-white');
+                brandTitle.classList.add('text-[#0F172A]');
+
+                mobileBtn.classList.remove('text-white');
+                mobileBtn.classList.add('text-[#0F172A]');
+
+                navLinks.forEach(link => {
+                    if (!link.classList.contains('text-blue-300')) {
+                        link.classList.remove('text-gray-200', 'hover:text-white');
+                        link.classList.add('text-gray-700', 'hover:text-[#172554]');
+                    }
+                });
+            } else {
+                navbar.classList.remove('bg-white/95', 'backdrop-blur-md', 'border-b', 'border-gray-200/80', 'py-2', 'shadow-sm');
+                navbar.classList.add('bg-transparent', 'py-3');
+
+                brandTitle.classList.remove('text-[#0F172A]');
+                brandTitle.classList.add('text-white');
+
+                mobileBtn.classList.remove('text-[#0F172A]');
+                mobileBtn.classList.add('text-white');
+
+                navLinks.forEach(link => {
+                    if (!link.classList.contains('text-blue-300')) {
+                        link.classList.remove('text-gray-700', 'hover:text-[#172554]');
+                        link.classList.add('text-gray-200', 'hover:text-white');
+                    }
+                });
+            }
+        });
+    </script>
+
+    <!-- Carousel & Next Story Engine -->
+    <script>
+        let slideIndex = 0;
+        const slides = document.querySelectorAll('.carousel-slide');
+        const bgImages = document.querySelectorAll('.hero-bg-img');
+        const dots = document.querySelectorAll('.carousel-dot');
+        const nextStoryTitle = document.getElementById('next-story-title');
+        const nextStoryImg = document.getElementById('next-story-img');
+        
+        const storyData = [
+            {
+                title: "Our Mission & Vision",
+                img: "https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&q=80&w=200"
+            },
+            {
+                title: "Capacity Building & Teamwork",
+                img: "/lawyers.jpeg"
+            },
+            {
+                title: "Optimum Professionalism & Standards",
+                img: "/tawo.jpg"
+            }
+        ];
+
+        function showSlide(n) {
+            slides.forEach((slide) => { slide.classList.remove('active'); });
+            bgImages.forEach((img) => { img.classList.remove('active'); });
+            dots.forEach(dot => {
+                dot.classList.remove('w-8', 'bg-blue-400');
+                dot.classList.add('w-2', 'bg-white/30');
             });
+
+            slideIndex = (n + slides.length) % slides.length;
+            
+            slides[slideIndex].classList.add('active');
+            bgImages[slideIndex].classList.add('active');
+            dots[slideIndex].classList.remove('w-2', 'bg-white/30');
+            dots[slideIndex].classList.add('w-8', 'bg-blue-400');
+
+            const nextIdx = (slideIndex + 1) % slides.length;
+            nextStoryTitle.innerText = storyData[nextIdx].title;
+            nextStoryImg.src = storyData[nextIdx].img;
+        }
+
+        function nextSlide() { showSlide(slideIndex + 1); resetTimer(); }
+        function prevSlide() { showSlide(slideIndex - 1); resetTimer(); }
+        function currentSlide(n) { showSlide(n); resetTimer(); }
+
+        let slideInterval = setInterval(() => { showSlide(slideIndex + 1); }, 6000);
+
+        function resetTimer() {
+            clearInterval(slideInterval);
+            slideInterval = setInterval(() => { showSlide(slideIndex + 1); }, 6000);
         }
     </script>
 </body>
