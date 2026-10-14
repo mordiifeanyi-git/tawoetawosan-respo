@@ -5,9 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Articles & Insights | TAWO E. TAWO, SAN & CO.</title>
 
+    <!-- Standard SEO Meta Tags -->
     <meta name="title" content="Tawo E. Tawo, SAN & Co. | Legal Practitioners & Arbitrators">
     <meta name="description" content="Premier Nigerian law firm providing expert legal services in commercial litigation, corporate law, and arbitration across Abuja, Lagos, and Calabar.">
     <meta name="robots" content="index, follow">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Tawo E. Tawo, SAN & Co. | Legal Practitioners & Arbitrators">
+    <meta property="og:description" content="Premier Nigerian law firm providing rigorous intellect and unyielding courtroom advocacy.">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -18,16 +22,32 @@
             --bg-offwhite: #F8FAFC; 
             --text-slate: #334155; 
         }
+        
         body { font-family: 'Roboto', 'Raleway', Arial, Helvetica, sans-serif; background-color: var(--bg-offwhite); color: var(--text-slate); line-height: 1.7; overflow-x: hidden; }
         h1, h2, h3, h4, h5, h6 { font-family: 'Raleway', 'Roboto', Arial, Helvetica, sans-serif; color: #0F172A; }
     </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { 
+                        royal: { 
+                            DEFAULT: '#172554', 
+                            dark: '#0F172A', 
+                            light: '#3B82F6', 
+                            bright: '#2563EB' 
+                        } 
+                    }
+                }
+            }
+        }
+    </script>
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 </head>
 <body class="antialiased selection:bg-blue-500 selection:text-white">
 
-    <!-- Navigation Bar -->
+    <!-- Navigation Bar (Matches team.html perfectly) -->
     <header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-transparent py-3 px-6 md:px-12">
         <div class="max-w-7xl mx-auto flex items-center justify-between">
             <a href="index.html" class="flex items-center space-x-3 group">
@@ -35,7 +55,7 @@
                     <img src="/WhatsApp Image 2026-10-08 at 13.10.32.jpeg" alt="Logo" class="w-full h-full object-cover rounded-full" onerror="this.onerror=null; this.src='https://placehold.co/100x100/172554/FFFFFF?text=TT';">
                 </div>
                 <div>
-                    <span id="nav-brand-title" class="font-bold tracking-wide text-xs md:text-sm block leading-tight text-white font-['Raleway']">TAWO E. TAWO, SAN & CO.</span>
+                    <span id="nav-brand-title" class="font-bold tracking-wide text-xs md:text-sm block leading-tight text-white font-['Raleway'] transition-colors">TAWO E. TAWO, SAN & CO.</span>
                     <span class="text-[7.5px] text-blue-500 font-semibold tracking-widest uppercase block">Legal Practitioners, Notary Public & Arbitrators</span>
                 </div>
             </a>
@@ -52,93 +72,37 @@
                 <i class="fa-solid fa-bars text-xl"></i>
             </button>
         </div>
+        
+        <div id="mobile-menu" class="hidden lg:hidden absolute top-full left-0 right-0 bg-[#172554] border-b border-blue-900 px-6 py-6 space-y-3 shadow-xl">
+            <a href="index.html" class="block text-gray-200 hover:text-white font-medium">Home</a>
+            <a href="about.html" class="block text-gray-200 hover:text-white font-medium">About Us</a>
+            <a href="team.html" class="block text-gray-200 hover:text-white font-medium">Our Team</a>
+            <a href="articles.html" class="block text-blue-200 font-bold">Insights & Articles</a>
+            <a href="contact.html" class="block text-gray-200 hover:text-white font-medium">Contact</a>
+        </div>
     </header>
 
-    <!-- Page Header Hero -->
+    <!-- Compact Reduced Page Header Hero -->
     <section class="bg-[#172554] pt-24 pb-10 px-6 md:px-12 text-white text-center relative overflow-hidden">
-        <div class="max-w-4xl mx-auto space-y-2 relative z-10">
-            <h1 class="text-2xl sm:text-3xl font-extrabold text-white font-['Raleway']">Insights &amp; Articles</h1>
+        <div class="absolute inset-0 bg-gradient-to-r from-[#172554]/95 via-[#1e3a8a]/80 to-transparent z-0 pointer-events-none"></div>
+        <div class="max-w-3xl mx-auto space-y-2 relative z-10">
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-white font-['Raleway']">INSIGHTS &amp; ARTICLES</h1>
             <p class="text-xs text-gray-100 font-normal max-w-lg mx-auto leading-relaxed">
                 Expert analysis, regulatory updates, and legal commentaries authored by senior practitioners at Tawo E. Tawo, SAN &amp; Co.
             </p>
         </div>
     </section>
 
-    <!-- Hardcoded Articles Section -->
-    <section class="py-16 px-6 md:px-12 max-w-7xl mx-auto">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <article class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
-                <div class="p-6 sm:p-8 space-y-4">
-                    <div class="flex items-center justify-between text-xs text-gray-500 font-medium">
-                        <span class="px-3 py-1 rounded-full bg-blue-50 text-[#172554] font-semibold">Commercial Litigation</span>
-                        <span>October 12, 2026</span>
-                    </div>
-                    <h3 class="text-lg font-extrabold text-[#0F172A] font-['Raleway'] hover:text-[#172554] transition-colors leading-snug">
-                        <a href="corporate-restructuring-guide.html">Navigating Complex Corporate Restructuring Under Nigerian Law</a>
-                    </h3>
-                    <p class="text-xs text-gray-600 line-clamp-3 leading-relaxed">
-                        An examination of recent statutory updates governing corporate reorganizations, asset protection, and high-stakes dispute resolution frameworks.
-                    </p>
-                </div>
-                <div class="px-6 sm:px-8 pb-6 pt-2 border-t border-gray-100 flex items-center justify-between">
-                    <span class="text-xs text-gray-500 font-medium">By Editorial Desk</span>
-                    <a href="corporate-restructuring-guide.html" class="text-xs font-bold text-[#172554] hover:underline flex items-center space-x-1"><span>Read Article</span> &rarr;</a>
-                </div>
-            </article>
+    <main class="py-16 px-6 md:px-12 max-w-7xl mx-auto space-y-16">
 
-            <article class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
-                <div class="p-6 sm:p-8 space-y-4">
-                    <div class="flex items-center justify-between text-xs text-gray-500 font-medium">
-                        <span class="px-3 py-1 rounded-full bg-blue-50 text-[#172554] font-semibold">Arbitration</span>
-                        <span>September 28, 2026</span>
-                    </div>
-                    <h3 class="text-lg font-extrabold text-[#0F172A] font-['Raleway'] hover:text-[#172554] transition-colors leading-snug">
-                        <a href="arbitration-trends-2026.html">The Rise of Alternative Dispute Resolution in Cross-Border Trade</a>
-                    </h3>
-                    <p class="text-xs text-gray-600 line-clamp-3 leading-relaxed">
-                        Why institutional arbitration continues to surpass traditional courtroom litigation for resolving multinational commercial disputes.
-                    </p>
-                </div>
-                <div class="px-6 sm:px-8 pb-6 pt-2 border-t border-gray-100 flex items-center justify-between">
-                    <span class="text-xs text-gray-500 font-medium">By Senior Practice Group</span>
-                    <a href="arbitration-trends-2026.html" class="text-xs font-bold text-[#172554] hover:underline flex items-center space-x-1"><span>Read Article</span> &rarr;</a>
-                </div>
-            </article>
-
-            <article class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
-                <div class="p-6 sm:p-8 space-y-4">
-                    <div class="flex items-center justify-between text-xs text-gray-500 font-medium">
-                        <span class="px-3 py-1 rounded-full bg-blue-50 text-[#172554] font-semibold">Appellate Practice</span>
-                        <span>September 14, 2026</span>
-                    </div>
-                    <h3 class="text-lg font-extrabold text-[#0F172A] font-['Raleway'] hover:text-[#172554] transition-colors leading-snug">
-                        <a href="supreme-court-rulings.html">Landmark Rulings: Key Precedents from the Supreme Court This Year</a>
-                    </h3>
-                    <p class="text-xs text-gray-600 line-clamp-3 leading-relaxed">
-                        A concise review of significant appellate decisions impacting property rights, contract interpretation, and procedural law.
-                    </p>
-                </div>
-                <div class="px-6 sm:px-8 pb-6 pt-2 border-t border-gray-100 flex items-center justify-between">
-                    <span class="text-xs text-gray-500 font-medium">By Litigation Department</span>
-                    <a href="supreme-court-rulings.html" class="text-xs font-bold text-[#172554] hover:underline flex items-center space-x-1"><span>Read Article</span> &rarr;</a>
-                </div>
-            </article>
-        </div>
-    </section>
-
-    <!-- Firm Meetings & Media Bulletins Section (Dynamically injected published posts appear here) -->
-    <section class="bg-slate-100 border-t border-gray-200 py-16 px-6 md:px-12">
-        <div class="max-w-7xl mx-auto space-y-12">
+        <!-- Firm Meetings, Conferences & Media Highlights Section (Dynamically Loads Published Articles) -->
+        <div class="space-y-6">
+            <h2 class="text-2xl font-extrabold text-[#0F172A] font-['Raleway'] border-b border-gray-200 pb-3">Firm Meetings, Conferences &amp; Media Highlights</h2>
             
-            <div class="text-center max-w-3xl mx-auto space-y-3">
-                <h2 class="text-2xl sm:text-3xl font-extrabold text-[#0F172A] font-['Raleway']">Firm Meetings, Conferences &amp; Media Highlights</h2>
-            </div>
-
-            <!-- Published & Video Media Grid Container -->
             <div class="space-y-4">
                 <div class="flex items-center space-x-2 text-xs font-bold text-[#172554] tracking-wider uppercase font-['Raleway']">
                     <i class="fa-solid fa-circle-play text-blue-600"></i>
-                    <span>Featured Video Recordings &amp; Published Highlights</span>
+                    <span>Published Articles &amp; Video Recordings</span>
                 </div>
 
                 <!-- Grid will hold both hardcoded video slots and dynamic GitHub markdown items -->
@@ -198,11 +162,41 @@
                 </div>
             </div>
         </div>
-    </section>
 
-    <!-- Footer -->
-    <footer class="bg-[#172554] text-gray-300 text-sm border-t border-blue-900 py-12 px-6 md:px-12 text-center">
-        <p class="text-xs text-blue-200">&copy; 2026 Tawo E. Tawo SAN & Co. All Rights Reserved.</p>
+    </main>
+
+    <!-- Footer (Matches team.html footer completely) -->
+    <footer class="bg-[#172554] text-gray-300 text-sm border-t border-blue-900 py-16 px-6 md:px-12">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center space-y-6 md:space-y-0">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-full overflow-hidden border border-white bg-white flex items-center justify-center p-0.5">
+                    <img src="/WhatsApp Image 2026-10-08 at 13.10.32.jpeg" alt="Logo" class="w-full h-full object-cover rounded-full" onerror="this.onerror=null; this.src='https://placehold.co/100x100/172554/FFFFFF?text=TT';">
+                </div>
+                <span class="font-bold text-white text-sm font-['Raleway']">TAWO E. TAWO, SAN & CO.</span>
+            </div>
+            <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-xs">
+                <a href="index.html" class="hover:text-white transition-colors">Home</a>
+                <a href="about.html" class="hover:text-white transition-colors">About Us</a>
+                <a href="team.html" class="hover:text-white transition-colors">Our Team</a>
+                <a href="articles.html" class="hover:text-white transition-colors">Insights & Articles</a>
+                <a href="contact.html" class="hover:text-white transition-colors">Contact</a>
+            </div>
+            <div class="flex items-center space-x-2">
+                <a href="https://www.linkedin.com/company/tawo-e-tawo-san-co" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-full bg-blue-950 flex items-center justify-center text-white hover:bg-white hover:text-[#172554] transition-all shadow-xs" aria-label="LinkedIn">
+                    <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                </a>
+                <a href="https://www.instagram.com/tawoetawosan.co?stkn=enA1ems2cHdoaXcx" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-full bg-blue-950 flex items-center justify-center text-white hover:bg-white hover:text-[#172554] transition-all shadow-xs" aria-label="Instagram">
+                    <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                </a>
+                <a href="https://www.facebook.com/61594079804654/" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-full bg-blue-950 flex items-center justify-center text-white hover:bg-white hover:text-[#172554] transition-all shadow-xs" aria-label="Facebook">
+                    <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg>
+                </a>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto mt-8 pt-6 border-t border-blue-900 text-center text-xs text-blue-200">
+            <p>&copy; 2026 Tawo E. Tawo SAN & Co.</p>
+            <p> All Rights Reserved.</p>
+        </div>
     </footer>
 
     <!-- Expanded Event Modal (Organized to prevent image overlapping) -->
@@ -366,6 +360,48 @@
         function toggleMobileMenu() { 
             document.getElementById('mobile-menu').classList.toggle('hidden'); 
         }
+
+        // Navbar Scroll Effect (Matches team.html)
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            const brandTitle = document.getElementById('nav-brand-title');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+
+            if (window.scrollY > 30) {
+                navbar.classList.remove('bg-transparent', 'py-3');
+                navbar.classList.add('bg-white/95', 'backdrop-blur-md', 'border-b', 'border-gray-200/80', 'py-2', 'shadow-sm');
+                
+                brandTitle.classList.remove('text-white');
+                brandTitle.classList.add('text-[#0F172A]');
+
+                mobileBtn.classList.remove('text-white');
+                mobileBtn.classList.add('text-[#0F172A]');
+
+                navLinks.forEach(link => {
+                    if (!link.classList.contains('text-blue-200')) {
+                        link.classList.remove('text-gray-200', 'hover:text-white');
+                        link.classList.add('text-gray-700', 'hover:text-[#172554]');
+                    }
+                });
+            } else {
+                navbar.classList.remove('bg-white/95', 'backdrop-blur-md', 'border-b', 'border-gray-200/80', 'py-2', 'shadow-sm');
+                navbar.classList.add('bg-transparent', 'py-3');
+
+                brandTitle.classList.remove('text-[#0F172A]');
+                brandTitle.classList.add('text-white');
+
+                mobileBtn.classList.remove('text-[#0F172A]');
+                mobileBtn.classList.add('text-white');
+
+                navLinks.forEach(link => {
+                    if (!link.classList.contains('text-blue-200')) {
+                        link.classList.remove('text-gray-700', 'hover:text-[#172554]');
+                        link.classList.add('text-gray-200', 'hover:text-white');
+                    }
+                });
+            }
+        });
     </script>
 
     <!-- Dynamic Media Injector -->
