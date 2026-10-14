@@ -5,13 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Articles & Insights | TAWO E. TAWO, SAN & CO.</title>
 
-    <!-- Standard SEO Meta Tags -->
     <meta name="title" content="Tawo E. Tawo, SAN & Co. | Legal Practitioners & Arbitrators">
     <meta name="description" content="Premier Nigerian law firm providing expert legal services in commercial litigation, corporate law, and arbitration across Abuja, Lagos, and Calabar.">
     <meta name="robots" content="index, follow">
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Tawo E. Tawo, SAN & Co. | Legal Practitioners & Arbitrators">
-    <meta property="og:description" content="Premier Nigerian law firm providing rigorous intellect and unyielding courtroom advocacy.">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -22,36 +18,12 @@
             --bg-offwhite: #F8FAFC; 
             --text-slate: #334155; 
         }
-        
         body { font-family: 'Roboto', 'Raleway', Arial, Helvetica, sans-serif; background-color: var(--bg-offwhite); color: var(--text-slate); line-height: 1.7; overflow-x: hidden; }
         h1, h2, h3, h4, h5, h6 { font-family: 'Raleway', 'Roboto', Arial, Helvetica, sans-serif; color: #0F172A; }
     </style>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: { 
-                        royal: { 
-                            DEFAULT: '#172554', 
-                            dark: '#0F172A', 
-                            light: '#3B82F6', 
-                            bright: '#2563EB' 
-                        } 
-                    }
-                }
-            }
-        }
-    </script>
-    <!-- Google Fonts for Roboto & Raleway -->
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- EmailJS SDK Script -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-    <script type="text/javascript">
-        (function() {
-            emailjs.init("YOUR_PUBLIC_KEY");
-        })();
-    </script>
 </head>
 <body class="antialiased selection:bg-blue-500 selection:text-white">
 
@@ -63,7 +35,7 @@
                     <img src="/WhatsApp Image 2026-10-08 at 13.10.32.jpeg" alt="Logo" class="w-full h-full object-cover rounded-full" onerror="this.onerror=null; this.src='https://placehold.co/100x100/172554/FFFFFF?text=TT';">
                 </div>
                 <div>
-                    <span id="nav-brand-title" class="font-bold tracking-wide text-xs md:text-sm block leading-tight text-white font-['Raleway'] transition-colors">TAWO E. TAWO, SAN & CO.</span>
+                    <span id="nav-brand-title" class="font-bold tracking-wide text-xs md:text-sm block leading-tight text-white font-['Raleway']">TAWO E. TAWO, SAN & CO.</span>
                     <span class="text-[7.5px] text-blue-500 font-semibold tracking-widest uppercase block">Legal Practitioners, Notary Public & Arbitrators</span>
                 </div>
             </a>
@@ -80,19 +52,10 @@
                 <i class="fa-solid fa-bars text-xl"></i>
             </button>
         </div>
-        
-        <div id="mobile-menu" class="hidden lg:hidden absolute top-full left-0 right-0 bg-[#172554] border-b border-blue-900 px-6 py-6 space-y-3 shadow-xl">
-            <a href="index.html" class="block text-gray-200 hover:text-white font-medium">Home</a>
-            <a href="about.html" class="block text-gray-200 hover:text-white font-medium">About Us</a>
-            <a href="team.html" class="block text-gray-200 hover:text-white font-medium">Our Team</a>
-            <a href="articles.html" class="block text-blue-200 font-bold">Insights & Articles</a>
-            <a href="contact.html" class="block text-gray-200 hover:text-white font-medium">Contact</a>
-        </div>
     </header>
 
-    <!-- Compact Reduced Page Header Hero -->
+    <!-- Page Header Hero -->
     <section class="bg-[#172554] pt-24 pb-10 px-6 md:px-12 text-white text-center relative overflow-hidden">
-        <div class="absolute inset-0 bg-gradient-to-r from-[#172554]/95 via-[#1e3a8a]/80 to-transparent z-0 pointer-events-none"></div>
         <div class="max-w-4xl mx-auto space-y-2 relative z-10">
             <h1 class="text-2xl sm:text-3xl font-extrabold text-white font-['Raleway']">Insights &amp; Articles</h1>
             <p class="text-xs text-gray-100 font-normal max-w-lg mx-auto leading-relaxed">
@@ -101,11 +64,9 @@
         </div>
     </section>
 
-    <!-- Blog Grid / Articles Section (Includes Both Hardcoded + Dynamically Published Articles from GitHub) -->
+    <!-- Hardcoded Articles Section -->
     <section class="py-16 px-6 md:px-12 max-w-7xl mx-auto">
-        <div id="articles-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            
-            <!-- Article Card 1 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <article class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
                 <div class="p-6 sm:p-8 space-y-4">
                     <div class="flex items-center justify-between text-xs text-gray-500 font-medium">
@@ -125,7 +86,6 @@
                 </div>
             </article>
 
-            <!-- Article Card 2 -->
             <article class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
                 <div class="p-6 sm:p-8 space-y-4">
                     <div class="flex items-center justify-between text-xs text-gray-500 font-medium">
@@ -145,7 +105,6 @@
                 </div>
             </article>
 
-            <!-- Article Card 3 -->
             <article class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
                 <div class="p-6 sm:p-8 space-y-4">
                     <div class="flex items-center justify-between text-xs text-gray-500 font-medium">
@@ -164,11 +123,10 @@
                     <a href="supreme-court-rulings.html" class="text-xs font-bold text-[#172554] hover:underline flex items-center space-x-1"><span>Read Article</span> &rarr;</a>
                 </div>
             </article>
-
         </div>
     </section>
 
-    <!-- Firm Meetings & Media Bulletins Section -->
+    <!-- Firm Meetings & Media Bulletins Section (Dynamically injected published posts appear here) -->
     <section class="bg-slate-100 border-t border-gray-200 py-16 px-6 md:px-12">
         <div class="max-w-7xl mx-auto space-y-12">
             
@@ -176,69 +134,61 @@
                 <h2 class="text-2xl sm:text-3xl font-extrabold text-[#0F172A] font-['Raleway']">Firm Meetings, Conferences &amp; Media Highlights</h2>
             </div>
 
-            <!-- Top Row: 3 Playable Video Logs -->
+            <!-- Published & Video Media Grid Container -->
             <div class="space-y-4">
                 <div class="flex items-center space-x-2 text-xs font-bold text-[#172554] tracking-wider uppercase font-['Raleway']">
                     <i class="fa-solid fa-circle-play text-blue-600"></i>
-                    <span>Featured Video Recordings </span>
+                    <span>Featured Video Recordings &amp; Published Highlights</span>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Grid will hold both hardcoded video slots and dynamic GitHub markdown items -->
+                <div id="dynamic-media-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8">
                     
-                    <!-- Video Slot 1 -->
+                    <!-- Default Video Slot 1 -->
                     <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
                         <div class="h-52 bg-slate-950 overflow-hidden relative">
                             <video controls class="w-full h-full object-cover" poster="/lawyers.jpeg" preload="metadata">
                                 <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" type="video/mp4">
-                                Your browser does not support HTML5 video.
                             </video>
                         </div>
                         <div class="p-6 space-y-2 cursor-pointer" onclick="openBlogModalData(0)">
                             <div class="text-[10px] text-gray-500 font-semibold uppercase tracking-wider">Abuja HQ &bull; October 2026</div>
-                            <h3 class="text-base font-bold text-[#0F172A] font-['Raleway'] hover:text-[#172554] transition-colors">Quarterly En Banc Case Review &amp; Appellate Update</h3>
-                            <p class="text-xs text-gray-600 leading-relaxed line-clamp-2">
-                                In-house conference analyzing recent Supreme Court judgments and trial court procedures.
-                            </p>
+                            <h3 class="text-base font-bold text-[#0F172A] font-['Raleway']">Quarterly En Banc Case Review &amp; Appellate Update</h3>
+                            <p class="text-xs text-gray-600 leading-relaxed line-clamp-2">In-house conference analyzing recent Supreme Court judgments and trial court procedures.</p>
                         </div>
                         <div class="px-6 pb-5 pt-2 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-[#172554] cursor-pointer" onclick="openBlogModalData(0)">
                             <span>Expand Full Notes &amp; Photo Gallery</span> &rarr;
                         </div>
                     </div>
 
-                    <!-- Video Slot 2 -->
+                    <!-- Default Video Slot 2 -->
                     <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
                         <div class="h-52 bg-slate-950 overflow-hidden relative">
                             <video controls class="w-full h-full object-cover" poster="/tawo.jpg" preload="metadata">
                                 <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" type="video/mp4">
-                                Your browser does not support HTML5 video.
                             </video>
                         </div>
                         <div class="p-6 space-y-2 cursor-pointer" onclick="openBlogModalData(1)">
                             <div class="text-[10px] text-gray-500 font-semibold uppercase tracking-wider">Lagos Branch &bull; September 2026</div>
-                            <h3 class="text-base font-bold text-[#0F172A] font-['Raleway'] hover:text-[#172554] transition-colors">Leadership Session on Cross-Border Arbitration</h3>
-                            <p class="text-xs text-gray-600 leading-relaxed line-clamp-2">
-                                Chief Tawo E. Tawo, SAN leading discussions on international trade and arbitration enforcement.
-                            </p>
+                            <h3 class="text-base font-bold text-[#0F172A] font-['Raleway']">Leadership Session on Cross-Border Arbitration</h3>
+                            <p class="text-xs text-gray-600 leading-relaxed line-clamp-2">Chief Tawo E. Tawo, SAN leading discussions on international trade and arbitration enforcement.</p>
                         </div>
                         <div class="px-6 pb-5 pt-2 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-[#172554] cursor-pointer" onclick="openBlogModalData(1)">
                             <span>Expand Full Notes &amp; Photo Gallery</span> &rarr;
                         </div>
                     </div>
 
-                    <!-- Video Slot 3 -->
+                    <!-- Default Video Slot 3 -->
                     <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
                         <div class="h-52 bg-slate-950 overflow-hidden relative">
                             <video controls class="w-full h-full object-cover" poster="https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&q=80&w=800" preload="metadata">
                                 <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" type="video/mp4">
-                                Your browser does not support HTML5 video.
                             </video>
                         </div>
                         <div class="p-6 space-y-2 cursor-pointer" onclick="openBlogModalData(2)">
                             <div class="text-[10px] text-gray-500 font-semibold uppercase tracking-wider">Yenagoa Office &bull; September 2026</div>
-                            <h3 class="text-base font-bold text-[#0F172A] font-['Raleway'] hover:text-[#172554] transition-colors">Maritime &amp; Admiralty Practice Panel Session</h3>
-                            <p class="text-xs text-gray-600 leading-relaxed line-clamp-2">
-                                Specialized seminar on maritime claim enforcement, vessel arrest, and charter parties.
-                            </p>
+                            <h3 class="text-base font-bold text-[#0F172A] font-['Raleway']">Maritime &amp; Admiralty Practice Panel Session</h3>
+                            <p class="text-xs text-gray-600 leading-relaxed line-clamp-2">Specialized seminar on maritime claim enforcement, vessel arrest, and charter parties.</p>
                         </div>
                         <div class="px-6 pb-5 pt-2 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-[#172554] cursor-pointer" onclick="openBlogModalData(2)">
                             <span>Expand Full Notes &amp; Photo Gallery</span> &rarr;
@@ -247,144 +197,38 @@
 
                 </div>
             </div>
-
-            <!-- Bottom Row: 2 Multi-Image Photo Bulletins -->
-            <div class="space-y-4 pt-4">
-                <div class="flex items-center space-x-2 text-xs font-bold text-[#172554] tracking-wider uppercase font-['Raleway']">
-                    <i class="fa-solid fa-images"></i>
-                    <span>Photo Gallery </span>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    
-                    <!-- Photo Bulletin 1 -->
-                    <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group cursor-pointer" onclick="openBlogModalData(3)">
-                        <div class="space-y-4">
-                            <div class="flex items-center justify-between text-[10px] text-gray-500 font-semibold uppercase tracking-wider">
-                                <span>Abuja HQ &bull; August 2026</span>
-                                <span class="px-2.5 py-0.5 rounded bg-blue-50 text-[#172554] font-bold">Visual Update Gallery</span>
-                            </div>
-                            <h3 class="text-lg font-bold text-[#0F172A] font-['Raleway'] group-hover:text-[#172554] transition-colors">
-                                Associate Mentorship &amp; Trial Advocacy Workshop
-                            </h3>
-                            <p class="text-xs text-gray-600 leading-relaxed">
-                                Practical courtroom simulation and oral argument training designed to sharpen trial advocacy proficiency for young lawyers in chambers.
-                            </p>
-                            <div class="grid grid-cols-3 gap-2 pt-2">
-                                <div class="h-24 rounded-lg overflow-hidden bg-slate-100 border border-gray-200">
-                                    <img src="https://images.unsplash.com/photo-1450133064473-71024230f91b?auto=format&fit=crop&q=80&w=400" alt="Photo 1" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
-                                </div>
-                                <div class="h-24 rounded-lg overflow-hidden bg-slate-100 border border-gray-200">
-                                    <img src="/lawyers.jpeg" alt="Photo 2" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
-                                </div>
-                                <div class="h-24 rounded-lg overflow-hidden bg-slate-100 border border-gray-200 relative">
-                                    <img src="/tawo.jpg" alt="Photo 3" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
-                                    <div class="absolute inset-0 bg-slate-950/40 flex items-center justify-center text-white text-[10px] font-bold">+2 More</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="pt-5 mt-4 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-[#172554]">
-                            <span>View All Photos &amp; Event Summary</span> &rarr;
-                        </div>
-                    </div>
-
-                    <!-- Photo Bulletin 2 -->
-                    <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group cursor-pointer" onclick="openBlogModalData(4)">
-                        <div class="space-y-4">
-                            <div class="flex items-center justify-between text-[10px] text-gray-500 font-semibold uppercase tracking-wider">
-                                <span>Pan-Nigerian Hub &bull; August 2026</span>
-                                <span class="px-2.5 py-0.5 rounded bg-blue-50 text-[#172554] font-bold">Visual Update Gallery</span>
-                            </div>
-                            <h3 class="text-lg font-bold text-[#0F172A] font-['Raleway'] group-hover:text-[#172554] transition-colors">
-                                Annual Inter-Office Coordination &amp; Strategy Meeting
-                            </h3>
-                            <p class="text-xs text-gray-600 leading-relaxed">
-                                Delegates from Abuja, Lagos, Calabar, Yenagoa, and London offices collaborating on firm-wide administrative and legal service expansion.
-                            </p>
-                            <div class="grid grid-cols-3 gap-2 pt-2">
-                                <div class="h-24 rounded-lg overflow-hidden bg-slate-100 border border-gray-200">
-                                    <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&q=80&w=400" alt="Photo 1" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
-                                </div>
-                                <div class="h-24 rounded-lg overflow-hidden bg-slate-100 border border-gray-200">
-                                    <img src="https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&q=80&w=400" alt="Photo 2" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
-                                </div>
-                                <div class="h-24 rounded-lg overflow-hidden bg-slate-100 border border-gray-200 relative">
-                                    <img src="/lawyers.jpeg" alt="Photo 3" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
-                                    <div class="absolute inset-0 bg-slate-950/40 flex items-center justify-center text-white text-[10px] font-bold">+3 More</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="pt-5 mt-4 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-[#172554]">
-                            <span>View All Photos &amp; Event Summary</span> &rarr;
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- Newsletter Section -->
-    <section class="bg-white border-t border-gray-200 py-16 px-6 md:px-12">
-        <div class="max-w-4xl mx-auto text-center space-y-6">
-            <span class="text-xs font-bold tracking-widest text-[#172554] uppercase">Stay Informed</span>
-            <h2 class="text-2xl sm:text-3xl font-extrabold text-[#0F172A] font-['Raleway']">Receive Direct Legal Updates &amp; Bulletins</h2>
-            <form id="newsletter-form" onsubmit="sendSubscriberEmail(event)" class="flex flex-col sm:flex-row items-center justify-center gap-3 max-w-md mx-auto pt-2">
-                <input type="email" id="subscriber-email" placeholder="Enter your professional email" required class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:border-[#172554] text-xs sm:text-sm bg-white">
-                <button type="submit" id="submit-btn" class="w-full sm:w-auto px-6 py-3 rounded-lg bg-[#172554] hover:bg-blue-900 text-white font-bold text-xs sm:text-sm transition-all shadow-md shrink-0 cursor-pointer">Subscribe</button>
-            </form>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="bg-[#172554] text-gray-300 text-sm border-t border-blue-900 py-16 px-6 md:px-12">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center space-y-6 md:space-y-0">
-            <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-full overflow-hidden border border-white bg-white flex items-center justify-center p-0.5">
-                    <img src="/WhatsApp Image 2026-10-08 at 13.10.32.jpeg" alt="Logo" class="w-full h-full object-cover rounded-full" onerror="this.onerror=null; this.src='https://placehold.co/100x100/172554/FFFFFF?text=TT';">
-                </div>
-                <span class="font-bold text-white text-sm font-['Raleway']">TAWO E. TAWO, SAN & CO.</span>
-            </div>
-            <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-xs">
-                <a href="index.html" class="hover:text-white transition-colors">Home</a>
-                <a href="about.html" class="hover:text-white transition-colors">About Us</a>
-                <a href="team.html" class="hover:text-white transition-colors">Our Team</a>
-                <a href="articles.html" class="hover:text-white transition-colors">Insights & Articles</a>
-                <a href="contact.html" class="hover:text-white transition-colors">Contact</a>
-            </div>
-        </div>
-        <div class="max-w-7xl mx-auto mt-8 pt-6 border-t border-blue-900 text-center text-xs text-blue-200">
-            <p>&copy; 2026 Tawo E. Tawo SAN & Co. All Rights Reserved.</p>
-        </div>
+    <footer class="bg-[#172554] text-gray-300 text-sm border-t border-blue-900 py-12 px-6 md:px-12 text-center">
+        <p class="text-xs text-blue-200">&copy; 2026 Tawo E. Tawo SAN & Co. All Rights Reserved.</p>
     </footer>
 
     <!-- Expanded Event Modal -->
     <div id="blog-details-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md hidden p-4 sm:p-6 overflow-y-auto">
         <div class="bg-white rounded-3xl shadow-2xl border border-gray-100 max-w-4xl w-full my-8 overflow-hidden relative transform transition-all scale-95 opacity-0 duration-300 max-h-[90vh] flex flex-col" id="modal-container-box">
-            
             <div class="bg-[#172554] text-white p-6 sm:p-8 flex items-start justify-between shrink-0">
                 <div class="space-y-1 pr-6">
                     <span id="modal-meta" class="text-[10px] sm:text-xs font-bold text-blue-300 uppercase tracking-wider block">Location &bull; Date</span>
                     <h3 id="modal-title" class="text-xl sm:text-2xl font-extrabold text-white font-['Raleway'] leading-tight">Event Title</h3>
                 </div>
-                <button onclick="closeBlogModal()" class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors shrink-0">
+                <button onclick="closeBlogModal()" class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/25 text-white flex items-center justify-center transition-colors shrink-0">
                     <i class="fa-solid fa-xmark text-lg"></i>
                 </button>
             </div>
 
             <div class="p-6 sm:p-8 overflow-y-auto space-y-6 text-gray-700 text-xs sm:text-sm leading-relaxed">
-                <div id="modal-gallery-container" class="space-y-2">
-                    <span class="text-[11px] font-bold text-[#0F172A] uppercase tracking-wider block font-['Raleway']"><i class="fa-solid fa-images text-[#172554] mr-1"></i> Gallery / Image</span>
-                    <div id="modal-gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3"></div>
+                <div id="modal-gallery-container" class="space-y-2 hidden">
+                    <span class="text-[11px] font-bold text-[#0F172A] uppercase tracking-wider block font-['Raleway']"><i class="fa-solid fa-image text-[#172554] mr-1"></i> Featured Image</span>
+                    <div id="modal-gallery-grid" class="grid grid-cols-1 gap-3"></div>
                 </div>
 
-                <div id="modal-video-container" class="space-y-2 border-t border-gray-100 pt-4">
+                <div id="modal-video-container" class="space-y-2 border-t border-gray-100 pt-4 hidden">
                     <span class="text-[11px] font-bold text-[#0F172A] uppercase tracking-wider block font-['Raleway']"><i class="fa-solid fa-circle-play text-[#172554] mr-1"></i> Video Recording</span>
                     <div class="rounded-2xl overflow-hidden border border-gray-200 bg-slate-950 aspect-video shadow-md">
                         <video id="modal-video" controls class="w-full h-full object-contain">
                             <source id="modal-video-src" src="" type="video/mp4">
-                            Your browser does not support HTML5 video playback.
                         </video>
                     </div>
                 </div>
@@ -400,7 +244,6 @@
                     Close Proceedings
                 </button>
             </div>
-
         </div>
     </div>
 
@@ -410,37 +253,23 @@
             {
                 title: "Quarterly En Banc Case Review & Appellate Update",
                 meta: "Abuja HQ • October 2026",
-                images: ["/lawyers.jpeg", "/tawo.jpg", "https://images.unsplash.com/photo-1450133064473-71024230f91b?auto=format&fit=crop&q=80&w=600"],
+                images: ["/lawyers.jpeg", "/tawo.jpg"],
                 video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
-                body: "<p>Senior partners and associates convened at the Abuja headquarters for our quarterly in-house conference. The meeting focused on analyzing recent Supreme Court precedents on statutory interpretation, commercial contract enforcement, and arbitration award enforcement.</p>"
+                body: "<p>Senior partners and associates convened at the Abuja headquarters for our quarterly in-house conference.</p>"
             },
             {
                 title: "Leadership Session on Cross-Border Arbitration",
                 meta: "Lagos Branch • September 2026",
-                images: ["/tawo.jpg", "/lawyers.jpeg", "https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&q=80&w=600"],
+                images: ["/tawo.jpg", "/lawyers.jpeg"],
                 video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
-                body: "<p>Chief Tawo E. Tawo, SAN presided over an intensive strategic session with the Lagos commercial law group covering international trade and arbitration enforcement.</p>"
+                body: "<p>Chief Tawo E. Tawo, SAN presided over an intensive strategic session with the Lagos commercial law group.</p>"
             },
             {
                 title: "Maritime & Admiralty Practice Panel Session",
                 meta: "Calabar Office • September 2026",
-                images: ["https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&q=80&w=600", "/lawyers.jpeg", "/tawo.jpg"],
+                images: ["/lawyers.jpeg"],
                 video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
-                body: "<p>Our maritime law specialists hosted a dedicated seminar on vessel arrest procedures, charter party disputes, and P&I club coverage.</p>"
-            },
-            {
-                title: "Associate Mentorship & Trial Advocacy Workshop",
-                meta: "Abuja HQ • August 2026",
-                images: ["https://images.unsplash.com/photo-1450133064473-71024230f91b?auto=format&fit=crop&q=80&w=600", "/lawyers.jpeg", "/tawo.jpg", "https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&q=80&w=600"],
-                video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
-                body: "<p>Practical courtroom simulations for junior counsel, focusing on cross-examination techniques and appellate brief drafting.</p>"
-            },
-            {
-                title: "Annual Inter-Office Coordination & Strategy Meeting",
-                meta: "Pan-Nigerian Hub • August 2026",
-                images: ["https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&q=80&w=600", "https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&q=80&w=600", "/lawyers.jpeg", "/tawo.jpg"],
-                video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
-                body: "<p>Delegates from Abuja, Lagos, Calabar, Yenagoa, and London offices held a joint assembly to streamline client onboarding and digital case management.</p>"
+                body: "<p>Our maritime law specialists hosted a dedicated seminar on vessel arrest procedures.</p>"
             }
         ];
 
@@ -453,24 +282,25 @@
             document.getElementById('modal-title').innerText = data.title;
             document.getElementById('modal-meta').innerText = data.meta;
             
+            const galleryContainer = document.getElementById('modal-gallery-container');
             const galleryGrid = document.getElementById('modal-gallery-grid');
             galleryGrid.innerHTML = '';
-            data.images.forEach(imgUrl => {
-                const imgDiv = document.createElement('div');
-                imgDiv.className = 'h-36 rounded-xl overflow-hidden bg-slate-100 border border-gray-200 shadow-xs';
-                imgDiv.innerHTML = `<img src="${imgUrl}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">`;
-                galleryGrid.appendChild(imgDiv);
-            });
+            if (data.images && data.images.length > 0) {
+                galleryContainer.classList.remove('hidden');
+                data.images.forEach(img => {
+                    galleryGrid.innerHTML += `<div class="h-36 rounded-xl overflow-hidden border border-gray-200"><img src="${img}" class="w-full h-full object-cover"></div>`;
+                });
+            } else {
+                galleryContainer.classList.add('hidden');
+            }
 
             const videoElem = document.getElementById('modal-video');
             const videoSrc = document.getElementById('modal-video-src');
             videoSrc.src = data.video;
             videoElem.load();
+            document.getElementById('modal-video-container').classList.remove('hidden');
 
             document.getElementById('modal-body-text').innerHTML = data.body;
-            document.getElementById('modal-video-container').classList.remove('hidden');
-            document.getElementById('modal-gallery-container').classList.remove('hidden');
-
             showModalElement();
         }
 
@@ -530,38 +360,16 @@
         function toggleMobileMenu() { 
             document.getElementById('mobile-menu').classList.toggle('hidden'); 
         }
-
-        window.addEventListener('scroll', function() {
-            const navbar = document.getElementById('navbar');
-            const brandTitle = document.getElementById('nav-brand-title');
-            const mobileBtn = document.getElementById('mobile-menu-btn');
-
-            if (window.scrollY > 30) {
-                navbar.classList.remove('bg-transparent', 'py-3');
-                navbar.classList.add('bg-white/95', 'backdrop-blur-md', 'border-b', 'border-gray-200/80', 'py-2', 'shadow-sm');
-                brandTitle.classList.remove('text-white');
-                brandTitle.classList.add('text-[#0F172A]');
-                mobileBtn.classList.remove('text-white');
-                mobileBtn.classList.add('text-[#0F172A]');
-            } else {
-                navbar.classList.remove('bg-white/95', 'backdrop-blur-md', 'border-b', 'border-gray-200/80', 'py-2', 'shadow-sm');
-                navbar.classList.add('bg-transparent', 'py-3');
-                brandTitle.classList.remove('text-[#0F172A]');
-                brandTitle.classList.add('text-white');
-                mobileBtn.classList.remove('text-[#0F172A]');
-                mobileBtn.classList.add('text-white');
-            }
-        });
     </script>
 
-    <!-- Dynamic Markdown Parser for Published Articles -->
+    <!-- Dynamic Media Injector -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
         marked.setOptions({ html: true, gfm: true });
 
-        async function loadDynamicArticles() {
-            const container = document.getElementById('articles-container');
-            if (!container) return;
+        async function loadDynamicMediaHighlights() {
+            const gridContainer = document.getElementById('dynamic-media-grid');
+            if (!gridContainer) return;
 
             const repoOwner = 'mordiifeanyi-git';
             const repoName = 'tawoetawosan-respo';
@@ -580,7 +388,7 @@
                         const content = await rawResponse.text();
 
                         const metaMatch = content.match(/^---([\s\S]*?)---/);
-                        let title = 'Untitled Article';
+                        let title = 'Untitled Highlight';
                         let date = '';
                         let videoUrl = '';
                         let imageUrl = '';
@@ -603,8 +411,8 @@
                         const parts = content.split('---');
                         const bodyMarkdown = parts.length > 2 ? parts.slice(2).join('---').trim() : content;
                         const bodyHtml = marked.parse(bodyMarkdown);
-                        const snippet = bodyMarkdown.replace(/[#*`_]/g, '').substring(0, 130) + '...';
-                        const formattedDate = date ? new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase() : 'RECENT ENTRY';
+                        const snippet = bodyMarkdown.replace(/[#*`_]/g, '').substring(0, 100) + '...';
+                        const formattedDate = date ? new Date(date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }).toUpperCase() : 'RECENT HIGHLIGHT';
 
                         const articleObj = {
                             id: i,
@@ -612,48 +420,46 @@
                             date: formattedDate,
                             imageUrl: imageUrl,
                             videoUrl: videoUrl,
-                            bodyHtml: bodyHtml,
-                            snippet: snippet
+                            bodyHtml: bodyHtml
                         };
                         dynamicArticlesMap.push(articleObj);
 
-                        const card = document.createElement('article');
+                        // Build a card matching the Media Highlights layout
+                        const card = document.createElement('div');
                         card.className = 'bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between cursor-pointer';
                         card.onclick = () => openDynamicArticleModal(i);
 
-                        let mediaHtml = '';
+                        let mediaBanner = '';
                         if (imageUrl) {
-                            mediaHtml = `<div class="h-48 bg-slate-900 overflow-hidden"><img src="${imageUrl}" class="w-full h-full object-cover"></div>`;
+                            mediaBanner = `<div class="h-52 bg-slate-900 overflow-hidden"><img src="${imageUrl}" class="w-full h-full object-cover"></div>`;
                         } else if (videoUrl) {
-                            mediaHtml = `<div class="h-48 bg-slate-950 flex items-center justify-center text-white"><i class="fa-solid fa-circle-play text-4xl text-blue-400"></i></div>`;
+                            mediaBanner = `<div class="h-52 bg-slate-950 flex items-center justify-center text-white"><i class="fa-solid fa-circle-play text-4xl text-blue-400"></i></div>`;
+                        } else {
+                            mediaBanner = `<div class="h-52 bg-slate-900 flex items-center justify-center text-white"><i class="fa-solid fa-scale-balanced text-3xl text-blue-300"></i></div>`;
                         }
 
                         card.innerHTML = `
-                            <div>
-                                ${mediaHtml}
-                                <div class="p-6 sm:p-8 space-y-3">
-                                    <div class="flex items-center justify-between text-[10px] text-gray-500 font-semibold uppercase tracking-wider">
-                                        <span class="px-2.5 py-1 rounded-full bg-blue-50 text-[#172554]">Legal Insight</span>
-                                        <span>${formattedDate}</span>
-                                    </div>
-                                    <h3 class="text-base font-extrabold text-[#0F172A] font-['Raleway'] hover:text-[#172554] transition-colors line-clamp-2">${title}</h3>
-                                    <p class="text-xs text-gray-600 line-clamp-3 leading-relaxed">${snippet}</p>
-                                </div>
+                            ${mediaBanner}
+                            <div class="p-6 space-y-2">
+                                <div class="text-[10px] text-gray-500 font-semibold uppercase tracking-wider">Chambers Bulletin &bull; ${formattedDate}</div>
+                                <h3 class="text-base font-bold text-[#0F172A] font-['Raleway']">${title}</h3>
+                                <p class="text-xs text-gray-600 leading-relaxed line-clamp-2">${snippet}</p>
                             </div>
-                            <div class="px-6 sm:px-8 pb-6 pt-2 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-[#172554]">
-                                <span>Read Full Proceedings</span> &rarr;
+                            <div class="px-6 pb-5 pt-2 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-[#172554]">
+                                <span>Expand Full Notes &amp; Proceedings</span> &rarr;
                             </div>
                         `;
-                        // Append published GitHub articles to the top of the grid
-                        container.prepend(card);
+
+                        // Prepend to the media highlights grid
+                        gridContainer.prepend(card);
                     }
                 }
             } catch (error) {
-                console.error('Error loading dynamic articles:', error);
+                console.error('Error loading dynamic highlights:', error);
             }
         }
 
-        document.addEventListener('DOMContentLoaded', loadDynamicArticles);
+        document.addEventListener('DOMContentLoaded', loadDynamicMediaHighlights);
     </script>
 </body>
 </html>
