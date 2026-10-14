@@ -47,7 +47,7 @@
 </head>
 <body class="antialiased selection:bg-blue-500 selection:text-white">
 
-    <!-- Navigation Bar (Matches team.html perfectly) -->
+    <!-- Navigation Bar (Matches team.html design & scroll effect) -->
     <header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-transparent py-3 px-6 md:px-12">
         <div class="max-w-7xl mx-auto flex items-center justify-between">
             <a href="index.html" class="flex items-center space-x-3 group">
@@ -82,7 +82,7 @@
         </div>
     </header>
 
-    <!-- Compact Reduced Page Header Hero -->
+    <!-- Compact Hero Header -->
     <section class="bg-[#172554] pt-24 pb-10 px-6 md:px-12 text-white text-center relative overflow-hidden">
         <div class="absolute inset-0 bg-gradient-to-r from-[#172554]/95 via-[#1e3a8a]/80 to-transparent z-0 pointer-events-none"></div>
         <div class="max-w-3xl mx-auto space-y-2 relative z-10">
@@ -95,20 +95,89 @@
 
     <main class="py-16 px-6 md:px-12 max-w-7xl mx-auto space-y-16">
 
-        <!-- Firm Meetings, Conferences & Media Highlights Section (Dynamically Loads Published Articles) -->
+        <!-- SECTION 1: Featured Legal Articles & Practice Guides -->
         <div class="space-y-6">
-            <h2 class="text-2xl font-extrabold text-[#0F172A] font-['Raleway'] border-b border-gray-200 pb-3">Firm Meetings, Conferences &amp; Media Highlights</h2>
+            <h2 class="text-2xl font-extrabold text-[#0F172A] font-['Raleway'] border-b border-gray-200 pb-3">Legal Insights &amp; Practice Guides</h2>
             
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- Card 1 -->
+                <article class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+                    <div class="p-6 sm:p-8 space-y-4">
+                        <div class="flex items-center justify-between text-xs text-gray-500 font-medium">
+                            <span class="px-3 py-1 rounded-full bg-blue-50 text-[#172554] font-semibold">Commercial Litigation</span>
+                            <span>October 12, 2026</span>
+                        </div>
+                        <h3 class="text-lg font-extrabold text-[#0F172A] font-['Raleway'] hover:text-[#172554] transition-colors leading-snug">
+                            <a href="corporate-restructuring-guide.html">Navigating Complex Corporate Restructuring Under Nigerian Law</a>
+                        </h3>
+                        <p class="text-xs text-gray-600 line-clamp-3 leading-relaxed">
+                            An examination of recent statutory updates governing corporate reorganizations, asset protection, and high-stakes dispute resolution frameworks.
+                        </p>
+                    </div>
+                    <div class="px-6 sm:px-8 pb-6 pt-2 border-t border-gray-100 flex items-center justify-between">
+                        <span class="text-xs text-gray-500 font-medium">By Editorial Desk</span>
+                        <a href="corporate-restructuring-guide.html" class="text-xs font-bold text-[#172554] hover:underline flex items-center space-x-1"><span>Read Article</span> &rarr;</a>
+                    </div>
+                </article>
+
+                <!-- Card 2 -->
+                <article class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+                    <div class="p-6 sm:p-8 space-y-4">
+                        <div class="flex items-center justify-between text-xs text-gray-500 font-medium">
+                            <span class="px-3 py-1 rounded-full bg-blue-50 text-[#172554] font-semibold">Arbitration</span>
+                            <span>September 28, 2026</span>
+                        </div>
+                        <h3 class="text-lg font-extrabold text-[#0F172A] font-['Raleway'] hover:text-[#172554] transition-colors leading-snug">
+                            <a href="arbitration-trends-2026.html">The Rise of Alternative Dispute Resolution in Cross-Border Trade</a>
+                        </h3>
+                        <p class="text-xs text-gray-600 line-clamp-3 leading-relaxed">
+                            Why institutional arbitration continues to surpass traditional courtroom litigation for resolving multinational commercial disputes.
+                        </p>
+                    </div>
+                    <div class="px-6 sm:px-8 pb-6 pt-2 border-t border-gray-100 flex items-center justify-between">
+                        <span class="text-xs text-gray-500 font-medium">By Senior Practice Group</span>
+                        <a href="arbitration-trends-2026.html" class="text-xs font-bold text-[#172554] hover:underline flex items-center space-x-1"><span>Read Article</span> &rarr;</a>
+                    </div>
+                </article>
+
+                <!-- Card 3 -->
+                <article class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+                    <div class="p-6 sm:p-8 space-y-4">
+                        <div class="flex items-center justify-between text-xs text-gray-500 font-medium">
+                            <span class="px-3 py-1 rounded-full bg-blue-50 text-[#172554] font-semibold">Appellate Practice</span>
+                            <span>September 14, 2026</span>
+                        </div>
+                        <h3 class="text-lg font-extrabold text-[#0F172A] font-['Raleway'] hover:text-[#172554] transition-colors leading-snug">
+                            <a href="supreme-court-rulings.html">Landmark Rulings: Key Precedents from the Supreme Court This Year</a>
+                        </h3>
+                        <p class="text-xs text-gray-600 line-clamp-3 leading-relaxed">
+                            A concise review of significant appellate decisions impacting property rights, contract interpretation, and procedural law.
+                        </p>
+                    </div>
+                    <div class="px-6 sm:px-8 pb-6 pt-2 border-t border-gray-100 flex items-center justify-between">
+                        <span class="text-xs text-gray-500 font-medium">By Litigation Department</span>
+                        <a href="supreme-court-rulings.html" class="text-xs font-bold text-[#172554] hover:underline flex items-center space-x-1"><span>Read Article</span> &rarr;</a>
+                    </div>
+                </article>
+
+            </div>
+        </div>
+
+        <!-- SECTION 2: Firm Meetings, Conferences & Media Highlights (Contains Video Logs, Photo Bulletins, & Dynamically Published GitHub Articles) -->
+        <div class="space-y-8">
+            <h2 class="text-2xl font-extrabold text-[#0F172A] font-['Raleway'] border-b border-gray-200 pb-3">Firm Meetings, Conferences &amp; Media Highlights</h2>
+
+            <!-- Video Recordings Block -->
             <div class="space-y-4">
                 <div class="flex items-center space-x-2 text-xs font-bold text-[#172554] tracking-wider uppercase font-['Raleway']">
                     <i class="fa-solid fa-circle-play text-blue-600"></i>
-                    <span>Published Articles &amp; Video Recordings</span>
+                    <span>Featured Video Recordings &amp; Dynamic Submissions</span>
                 </div>
 
-                <!-- Grid will hold both hardcoded video slots and dynamic GitHub markdown items -->
                 <div id="dynamic-media-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8">
                     
-                    <!-- Default Video Slot 1 -->
+                    <!-- Video Slot 1 -->
                     <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
                         <div class="h-52 bg-slate-950 overflow-hidden relative">
                             <video controls class="w-full h-full object-cover" poster="/lawyers.jpeg" preload="metadata">
@@ -125,7 +194,7 @@
                         </div>
                     </div>
 
-                    <!-- Default Video Slot 2 -->
+                    <!-- Video Slot 2 -->
                     <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
                         <div class="h-52 bg-slate-950 overflow-hidden relative">
                             <video controls class="w-full h-full object-cover" poster="/tawo.jpg" preload="metadata">
@@ -142,7 +211,7 @@
                         </div>
                     </div>
 
-                    <!-- Default Video Slot 3 -->
+                    <!-- Video Slot 3 -->
                     <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
                         <div class="h-52 bg-slate-950 overflow-hidden relative">
                             <video controls class="w-full h-full object-cover" poster="https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&q=80&w=800" preload="metadata">
@@ -161,8 +230,82 @@
 
                 </div>
             </div>
-        </div>
 
+            <!-- Multi-Image Photo Bulletins Block -->
+            <div class="space-y-4 pt-4">
+                <div class="flex items-center space-x-2 text-xs font-bold text-[#172554] tracking-wider uppercase font-['Raleway']">
+                    <i class="fa-solid fa-images"></i>
+                    <span>Photo Gallery Bulletins</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    
+                    <!-- Photo Bulletin 1 -->
+                    <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group cursor-pointer" onclick="openBlogModalData(3)">
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between text-[10px] text-gray-500 font-semibold uppercase tracking-wider">
+                                <span>Abuja HQ &bull; August 2026</span>
+                                <span class="px-2.5 py-0.5 rounded bg-blue-50 text-[#172554] font-bold">Visual Gallery</span>
+                            </div>
+                            <h3 class="text-lg font-bold text-[#0F172A] font-['Raleway'] group-hover:text-[#172554] transition-colors">
+                                Associate Mentorship &amp; Trial Advocacy Workshop
+                            </h3>
+                            <p class="text-xs text-gray-600 leading-relaxed">
+                                Practical courtroom simulation and oral argument training designed to sharpen trial advocacy proficiency for young lawyers in chambers.
+                            </p>
+                            <div class="grid grid-cols-3 gap-2 pt-2">
+                                <div class="h-24 rounded-lg overflow-hidden bg-slate-100 border border-gray-200">
+                                    <img src="https://images.unsplash.com/photo-1450133064473-71024230f91b?auto=format&fit=crop&q=80&w=400" alt="Photo 1" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
+                                </div>
+                                <div class="h-24 rounded-lg overflow-hidden bg-slate-100 border border-gray-200">
+                                    <img src="/lawyers.jpeg" alt="Photo 2" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
+                                </div>
+                                <div class="h-24 rounded-lg overflow-hidden bg-slate-100 border border-gray-200 relative">
+                                    <img src="/tawo.jpg" alt="Photo 3" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
+                                    <div class="absolute inset-0 bg-slate-950/40 flex items-center justify-center text-white text-[10px] font-bold">+2 More</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pt-5 mt-4 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-[#172554]">
+                            <span>View All Photos &amp; Event Summary</span> &rarr;
+                        </div>
+                    </div>
+
+                    <!-- Photo Bulletin 2 -->
+                    <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group cursor-pointer" onclick="openBlogModalData(4)">
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between text-[10px] text-gray-500 font-semibold uppercase tracking-wider">
+                                <span>Pan-Nigerian Hub &bull; August 2026</span>
+                                <span class="px-2.5 py-0.5 rounded bg-blue-50 text-[#172554] font-bold">Visual Gallery</span>
+                            </div>
+                            <h3 class="text-lg font-bold text-[#0F172A] font-['Raleway'] group-hover:text-[#172554] transition-colors">
+                                Annual Inter-Office Coordination &amp; Strategy Meeting
+                            </h3>
+                            <p class="text-xs text-gray-600 leading-relaxed">
+                                Delegates from Abuja, Lagos, Calabar, Yenagoa, and London offices collaborating on firm-wide administrative and legal service expansion.
+                            </p>
+                            <div class="grid grid-cols-3 gap-2 pt-2">
+                                <div class="h-24 rounded-lg overflow-hidden bg-slate-100 border border-gray-200">
+                                    <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&q=80&w=400" alt="Photo 1" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
+                                </div>
+                                <div class="h-24 rounded-lg overflow-hidden bg-slate-100 border border-gray-200">
+                                    <img src="https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&q=80&w=400" alt="Photo 2" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
+                                </div>
+                                <div class="h-24 rounded-lg overflow-hidden bg-slate-100 border border-gray-200 relative">
+                                    <img src="/lawyers.jpeg" alt="Photo 3" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
+                                    <div class="absolute inset-0 bg-slate-950/40 flex items-center justify-center text-white text-[10px] font-bold">+3 More</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pt-5 mt-4 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-[#172554]">
+                            <span>View All Photos &amp; Event Summary</span> &rarr;
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
     </main>
 
     <!-- Footer (Matches team.html footer completely) -->
@@ -199,7 +342,7 @@
         </div>
     </footer>
 
-    <!-- Expanded Event Modal (Organized to prevent image overlapping) -->
+    <!-- Expanded Modal (Organized to prevent image overlapping) -->
     <div id="blog-details-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md hidden p-4 sm:p-6 overflow-y-auto">
         <div class="bg-white rounded-3xl shadow-2xl border border-gray-100 max-w-3xl w-full my-auto overflow-hidden relative transform transition-all scale-95 opacity-0 duration-300 max-h-[90vh] flex flex-col" id="modal-container-box">
             
@@ -213,7 +356,7 @@
                 </button>
             </div>
 
-            <!-- Scrollable Flex Container preventing text/image lap or overlap -->
+            <!-- Scrollable Flex Container preventing image lap or text overlap -->
             <div class="p-6 overflow-y-auto space-y-6 flex-1 text-gray-700 text-xs sm:text-sm leading-relaxed">
                 
                 <div id="modal-media-wrapper" class="space-y-4">
@@ -251,21 +394,35 @@
                 meta: "Abuja HQ • October 2026",
                 images: ["/lawyers.jpeg", "/tawo.jpg"],
                 video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
-                body: "<p>Senior partners and associates convened at the Abuja headquarters for our quarterly in-house conference.</p>"
+                body: "<p>Senior partners and associates convened at the Abuja headquarters for our quarterly in-house conference analyzing recent Supreme Court judgments and trial court procedures.</p>"
             },
             {
                 title: "Leadership Session on Cross-Border Arbitration",
                 meta: "Lagos Branch • September 2026",
                 images: ["/tawo.jpg", "/lawyers.jpeg"],
                 video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
-                body: "<p>Chief Tawo E. Tawo, SAN presided over an intensive strategic session with the Lagos commercial law group.</p>"
+                body: "<p>Chief Tawo E. Tawo, SAN presided over an intensive strategic session with the Lagos commercial law group covering international trade and arbitration enforcement.</p>"
             },
             {
                 title: "Maritime & Admiralty Practice Panel Session",
                 meta: "Calabar Office • September 2026",
                 images: ["/lawyers.jpeg"],
                 video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
-                body: "<p>Our maritime law specialists hosted a dedicated seminar on vessel arrest procedures.</p>"
+                body: "<p>Our maritime law specialists hosted a dedicated seminar on vessel arrest procedures, charter party disputes, and P&I club coverage.</p>"
+            },
+            {
+                title: "Associate Mentorship & Trial Advocacy Workshop",
+                meta: "Abuja HQ • August 2026",
+                images: ["https://images.unsplash.com/photo-1450133064473-71024230f91b?auto=format&fit=crop&q=80&w=600", "/lawyers.jpeg", "/tawo.jpg"],
+                video: "",
+                body: "<p>Practical courtroom simulations and oral argument training designed to sharpen trial advocacy proficiency for young lawyers in chambers.</p>"
+            },
+            {
+                title: "Annual Inter-Office Coordination & Strategy Meeting",
+                meta: "Pan-Nigerian Hub • August 2026",
+                images: ["https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&q=80&w=600", "https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&q=80&w=600", "/lawyers.jpeg"],
+                video: "",
+                body: "<p>Delegates from Abuja, Lagos, Calabar, Yenagoa, and London offices collaborating on firm-wide administrative and legal service expansion.</p>"
             }
         ];
 
@@ -361,7 +518,7 @@
             document.getElementById('mobile-menu').classList.toggle('hidden'); 
         }
 
-        // Navbar Scroll Effect (Matches team.html)
+        // Navbar Scroll Effect (Exact match to team.html)
         window.addEventListener('scroll', function() {
             const navbar = document.getElementById('navbar');
             const brandTitle = document.getElementById('nav-brand-title');
@@ -404,7 +561,7 @@
         });
     </script>
 
-    <!-- Dynamic Media Injector -->
+    <!-- Dynamic Media Injector for Published Articles -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
         marked.setOptions({ html: true, gfm: true });
