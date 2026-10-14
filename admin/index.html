@@ -214,8 +214,8 @@
         </main>
 
         <!-- VIEW 2: DECAP CMS PORTAL -->
-        <main id="view-cms" class="hidden flex-1 w-full bg-slate-100">
-            <div id="nc-root"></div>
+        <main id="view-cms" class="hidden flex-1 w-full bg-slate-100 P-4">
+            <div id="nc-root" class="w-full h-full min-h-[70vh]"></div>
         </main>
 
         <!-- EXPANDED EVENT MODAL -->
@@ -427,6 +427,12 @@
             } else {
                 wbView.classList.add('hidden');
                 cmsView.classList.remove('hidden');
+
+                // Initialize Decap CMS only once when switching to the tab
+if (!window.cmsInitialized && typeof CMS !== 'undefined') {
+    CMS.init();
+    window.cmsInitialized = true;
+}
                 btnCms.className = "px-3 sm:px-4 py-2 rounded-lg bg-[#172554] text-white shadow transition-all flex items-center";
                 btnWb.className = "px-3 sm:px-4 py-2 rounded-lg text-blue-200 hover:text-white hover:bg-white/10 transition-all flex items-center";
             }
