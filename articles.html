@@ -645,11 +645,9 @@
         }
     </script>
 
-    <!-- Include Marked library to parse Markdown into HTML -->
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
 <script>
-  // 1. Configure marked to allow HTML tags (<video>, <iframe>, <img>)
   marked.setOptions({
     html: true,
     gfm: true
@@ -665,22 +663,62 @@
       if (!response.ok) throw new Error('No articles found.');
       
       const files = await response.json();
-      container.innerHTML = ''; // Clear existing placeholder content
+      container.innerHTML = '';
 
       for (const file of files) {
         if (file.name.endsWith('.md')) {
           const rawResponse = await fetch(file.download_url);
           const content = await rawResponse.text();
           
-          // Separate Frontmatter metadata (YAML) from body text
+          // Extract frontmatter metadata
+          const metaMatch = content.match(/^---([\s\S]*?)---/);
+          let videoUrl = '';
+          let imageUrl = '';
+          let title = '';
+
+          if (metaMatch) {
+            const yaml = metaMatch[1];
+            
+            const titleMatch = yaml.match(/title:\ "?(.*?)"?$/m);
+            if (titleMatch) title = titleMatch[1];
+
+            const videoMatch = yaml.match(/video:\ "?(.*?)"?$/m);
+            if (videoMatch) videoUrl = videoMatch[1];
+
+            const imageMatch = yaml.match(/image:\ "?(.*?)"?$/m);
+            if (imageMatch) imageUrl = imageMatch[1];
+          }
+
+          // Extract markdown body text
           const parts = content.split('---');
           const bodyMarkdown = parts.length > 2 ? parts.slice(2).join('---') : content;
-          
+
+          // Build HTML blocks
+          let mediaHtml = '';
+          if (videoUrl) {
+            mediaHtml += `
+              <div class="article-video" style="margin: 15px 0;">
+                <video width="100%" controls style="border-radius: 8px;">
+                  <source src="${videoUrl}" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
+              </div>`;
+          } else if (imageUrl) {
+            mediaHtml += `
+              <div class="article-image" style="margin: 15px 0;">
+                <img src="${imageUrl}" alt="${title}" style="max-width: 100%; height: auto; border-radius: 8px;">
+              </div>`;
+          }
+
           const articleDiv = document.createElement('article');
-          articleDiv.className = 'cms-article'; // Replace with your article CSS class if needed
-          
-          // 2. Assign parsed markdown to innerHTML so HTML tags render live elements
-          articleDiv.innerHTML = marked.parse(bodyMarkdown);
+          articleDiv.className = 'cms-article';
+          articleDiv.style.marginBottom = '40px';
+
+          articleDiv.innerHTML = `
+            ${title ? `<h2 style="font-weight: bold; margin-bottom: 10px;">${title}</h2>` : ''}
+            ${mediaHtml}
+            <div class="article-body">${marked.parse(bodyMarkdown)}</div>
+          `;
           
           container.appendChild(articleDiv);
         }
@@ -692,6 +730,5 @@
 
   document.addEventListener('DOMContentLoaded', loadArticles);
 </script>
-
 </body>
 </html>
