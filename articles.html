@@ -205,42 +205,44 @@
         <p class="text-xs text-blue-200">&copy; 2026 Tawo E. Tawo SAN & Co. All Rights Reserved.</p>
     </footer>
 
-    <!-- Expanded Event Modal -->
+    <!-- Expanded Event Modal (Organized to prevent image overlapping) -->
     <div id="blog-details-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md hidden p-4 sm:p-6 overflow-y-auto">
-        <div class="bg-white rounded-3xl shadow-2xl border border-gray-100 max-w-4xl w-full my-8 overflow-hidden relative transform transition-all scale-95 opacity-0 duration-300 max-h-[90vh] flex flex-col" id="modal-container-box">
-            <div class="bg-[#172554] text-white p-6 sm:p-8 flex items-start justify-between shrink-0">
+        <div class="bg-white rounded-3xl shadow-2xl border border-gray-100 max-w-3xl w-full my-auto overflow-hidden relative transform transition-all scale-95 opacity-0 duration-300 max-h-[90vh] flex flex-col" id="modal-container-box">
+            
+            <div class="bg-[#172554] text-white p-6 flex items-start justify-between shrink-0">
                 <div class="space-y-1 pr-6">
-                    <span id="modal-meta" class="text-[10px] sm:text-xs font-bold text-blue-300 uppercase tracking-wider block">Location &bull; Date</span>
-                    <h3 id="modal-title" class="text-xl sm:text-2xl font-extrabold text-white font-['Raleway'] leading-tight">Event Title</h3>
+                    <span id="modal-meta" class="text-[10px] font-bold text-blue-300 uppercase tracking-wider block">Location &bull; Date</span>
+                    <h3 id="modal-title" class="text-xl font-extrabold text-white font-['Raleway'] leading-tight">Event Title</h3>
                 </div>
-                <button onclick="closeBlogModal()" class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/25 text-white flex items-center justify-center transition-colors shrink-0">
-                    <i class="fa-solid fa-xmark text-lg"></i>
+                <button onclick="closeBlogModal()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/25 text-white flex items-center justify-center transition-colors shrink-0 cursor-pointer">
+                    <i class="fa-solid fa-xmark text-base"></i>
                 </button>
             </div>
 
-            <div class="p-6 sm:p-8 overflow-y-auto space-y-6 text-gray-700 text-xs sm:text-sm leading-relaxed">
-                <div id="modal-gallery-container" class="space-y-2 hidden">
-                    <span class="text-[11px] font-bold text-[#0F172A] uppercase tracking-wider block font-['Raleway']"><i class="fa-solid fa-image text-[#172554] mr-1"></i> Featured Image</span>
-                    <div id="modal-gallery-grid" class="grid grid-cols-1 gap-3"></div>
+            <!-- Scrollable Flex Container preventing text/image lap or overlap -->
+            <div class="p-6 overflow-y-auto space-y-6 flex-1 text-gray-700 text-xs sm:text-sm leading-relaxed">
+                
+                <div id="modal-media-wrapper" class="space-y-4">
+                    <!-- Dynamic image or gallery grid rendered here cleanly -->
                 </div>
 
                 <div id="modal-video-container" class="space-y-2 border-t border-gray-100 pt-4 hidden">
                     <span class="text-[11px] font-bold text-[#0F172A] uppercase tracking-wider block font-['Raleway']"><i class="fa-solid fa-circle-play text-[#172554] mr-1"></i> Video Recording</span>
-                    <div class="rounded-2xl overflow-hidden border border-gray-200 bg-slate-950 aspect-video shadow-md">
+                    <div class="rounded-xl overflow-hidden border border-gray-200 bg-slate-950 aspect-video shadow-md">
                         <video id="modal-video" controls class="w-full h-full object-contain">
                             <source id="modal-video-src" src="" type="video/mp4">
                         </video>
                     </div>
                 </div>
 
-                <div class="space-y-3 border-t border-gray-100 pt-4">
-                    <h4 class="text-sm font-extrabold text-[#0F172A] font-['Raleway']">Full Proceedings &amp; Briefing Summary</h4>
-                    <div id="modal-body-text" class="space-y-3 text-gray-600 leading-relaxed"></div>
+                <div class="space-y-2 pt-2 border-t border-gray-100">
+                    <h4 class="text-xs font-extrabold text-[#0F172A] uppercase tracking-wider font-['Raleway']">Full Proceedings &amp; Briefing Summary</h4>
+                    <div id="modal-body-text" class="space-y-3 text-gray-600 leading-relaxed font-sans"></div>
                 </div>
             </div>
 
             <div class="p-4 bg-slate-50 border-t border-gray-100 text-right shrink-0">
-                <button onclick="closeBlogModal()" class="px-6 py-2.5 rounded-xl bg-[#172554] hover:bg-blue-900 text-white font-bold text-xs transition-all shadow-md">
+                <button onclick="closeBlogModal()" class="px-5 py-2 rounded-xl bg-[#172554] hover:bg-blue-900 text-white font-bold text-xs transition-all shadow cursor-pointer">
                     Close Proceedings
                 </button>
             </div>
@@ -282,23 +284,27 @@
             document.getElementById('modal-title').innerText = data.title;
             document.getElementById('modal-meta').innerText = data.meta;
             
-            const galleryContainer = document.getElementById('modal-gallery-container');
-            const galleryGrid = document.getElementById('modal-gallery-grid');
-            galleryGrid.innerHTML = '';
+            const mediaWrapper = document.getElementById('modal-media-wrapper');
+            mediaWrapper.innerHTML = '';
             if (data.images && data.images.length > 0) {
-                galleryContainer.classList.remove('hidden');
+                let gridHtml = '<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">';
                 data.images.forEach(img => {
-                    galleryGrid.innerHTML += `<div class="h-36 rounded-xl overflow-hidden border border-gray-200"><img src="${img}" class="w-full h-full object-cover"></div>`;
+                    gridHtml += `<div class="h-36 rounded-xl overflow-hidden border border-gray-200 bg-slate-50"><img src="${img}" class="w-full h-full object-cover"></div>`;
                 });
-            } else {
-                galleryContainer.classList.add('hidden');
+                gridHtml += '</div>';
+                mediaWrapper.innerHTML = gridHtml;
             }
 
-            const videoElem = document.getElementById('modal-video');
-            const videoSrc = document.getElementById('modal-video-src');
-            videoSrc.src = data.video;
-            videoElem.load();
-            document.getElementById('modal-video-container').classList.remove('hidden');
+            const videoContainer = document.getElementById('modal-video-container');
+            if (data.video) {
+                videoContainer.classList.remove('hidden');
+                const videoElem = document.getElementById('modal-video');
+                const videoSrc = document.getElementById('modal-video-src');
+                videoSrc.src = data.video;
+                videoElem.load();
+            } else {
+                videoContainer.classList.add('hidden');
+            }
 
             document.getElementById('modal-body-text').innerHTML = data.body;
             showModalElement();
@@ -312,21 +318,21 @@
             document.getElementById('modal-meta').innerText = `PUBLISHED • ${article.date}`;
             document.getElementById('modal-body-text').innerHTML = article.bodyHtml;
 
-            const galleryContainer = document.getElementById('modal-gallery-container');
-            const galleryGrid = document.getElementById('modal-gallery-grid');
-            galleryGrid.innerHTML = '';
+            const mediaWrapper = document.getElementById('modal-media-wrapper');
+            mediaWrapper.innerHTML = '';
+
             if (article.imageUrl) {
-                galleryContainer.classList.remove('hidden');
-                galleryGrid.innerHTML = `<div class="h-48 rounded-xl overflow-hidden border border-gray-200"><img src="${article.imageUrl}" class="w-full h-full object-cover"></div>`;
-            } else {
-                galleryContainer.classList.add('hidden');
+                mediaWrapper.innerHTML += `
+                    <div class="rounded-xl overflow-hidden border border-gray-200 max-h-64 bg-slate-100 flex items-center justify-center">
+                        <img src="${article.imageUrl}" class="w-full h-auto max-h-64 object-contain" />
+                    </div>`;
             }
 
             const videoContainer = document.getElementById('modal-video-container');
-            const videoElem = document.getElementById('modal-video');
-            const videoSrc = document.getElementById('modal-video-src');
             if (article.videoUrl) {
                 videoContainer.classList.remove('hidden');
+                const videoElem = document.getElementById('modal-video');
+                const videoSrc = document.getElementById('modal-video-src');
                 videoSrc.src = article.videoUrl;
                 videoElem.load();
             } else {
@@ -380,79 +386,76 @@
 
                 const files = await response.json();
                 dynamicArticlesMap = [];
+                const mdFiles = files.filter(f => f.name.endsWith('.md'));
 
-                for (let i = 0; i < files.length; i++) {
-                    const file = files[i];
-                    if (file.name.endsWith('.md')) {
-                        const rawResponse = await fetch(file.download_url);
-                        const content = await rawResponse.text();
+                for (let i = 0; i < mdFiles.length; i++) {
+                    const file = mdFiles[i];
+                    const rawResponse = await fetch(file.download_url);
+                    const content = await rawResponse.text();
 
-                        const metaMatch = content.match(/^---([\s\S]*?)---/);
-                        let title = 'Untitled Highlight';
-                        let date = '';
-                        let videoUrl = '';
-                        let imageUrl = '';
+                    const metaMatch = content.match(/^---([\s\S]*?)---/);
+                    let title = 'Untitled Highlight';
+                    let date = '';
+                    let videoUrl = '';
+                    let imageUrl = '';
 
-                        if (metaMatch) {
-                            const yaml = metaMatch[1];
-                            const titleMatch = yaml.match(/title:\s*["']?(.*?)["']?$/m);
-                            if (titleMatch) title = titleMatch[1];
+                    if (metaMatch) {
+                        const yaml = metaMatch[1];
+                        const titleMatch = yaml.match(/title:\s*["']?(.*?)["']?$/m);
+                        if (titleMatch) title = titleMatch[1];
 
-                            const dateMatch = yaml.match(/date:\s*["']?(.*?)["']?$/m);
-                            if (dateMatch) date = dateMatch[1];
+                        const dateMatch = yaml.match(/date:\s*["']?(.*?)["']?$/m);
+                        if (dateMatch) date = dateMatch[1];
 
-                            const videoMatch = yaml.match(/video:\s*["']?(.*?)["']?$/m);
-                            if (videoMatch && videoMatch[1] !== "undefined" && videoMatch[1] !== "") videoUrl = videoMatch[1];
+                        const videoMatch = yaml.match(/video:\s*["']?(.*?)["']?$/m);
+                        if (videoMatch && videoMatch[1] !== "undefined" && videoMatch[1] !== "") videoUrl = videoMatch[1];
 
-                            const imageMatch = yaml.match(/image:\s*["']?(.*?)["']?$/m);
-                            if (imageMatch && imageMatch[1] !== "undefined" && imageMatch[1] !== "") imageUrl = imageMatch[1];
-                        }
-
-                        const parts = content.split('---');
-                        const bodyMarkdown = parts.length > 2 ? parts.slice(2).join('---').trim() : content;
-                        const bodyHtml = marked.parse(bodyMarkdown);
-                        const snippet = bodyMarkdown.replace(/[#*`_]/g, '').substring(0, 100) + '...';
-                        const formattedDate = date ? new Date(date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }).toUpperCase() : 'RECENT HIGHLIGHT';
-
-                        const articleObj = {
-                            id: i,
-                            title: title,
-                            date: formattedDate,
-                            imageUrl: imageUrl,
-                            videoUrl: videoUrl,
-                            bodyHtml: bodyHtml
-                        };
-                        dynamicArticlesMap.push(articleObj);
-
-                        // Build a card matching the Media Highlights layout
-                        const card = document.createElement('div');
-                        card.className = 'bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between cursor-pointer';
-                        card.onclick = () => openDynamicArticleModal(i);
-
-                        let mediaBanner = '';
-                        if (imageUrl) {
-                            mediaBanner = `<div class="h-52 bg-slate-900 overflow-hidden"><img src="${imageUrl}" class="w-full h-full object-cover"></div>`;
-                        } else if (videoUrl) {
-                            mediaBanner = `<div class="h-52 bg-slate-950 flex items-center justify-center text-white"><i class="fa-solid fa-circle-play text-4xl text-blue-400"></i></div>`;
-                        } else {
-                            mediaBanner = `<div class="h-52 bg-slate-900 flex items-center justify-center text-white"><i class="fa-solid fa-scale-balanced text-3xl text-blue-300"></i></div>`;
-                        }
-
-                        card.innerHTML = `
-                            ${mediaBanner}
-                            <div class="p-6 space-y-2">
-                                <div class="text-[10px] text-gray-500 font-semibold uppercase tracking-wider">Chambers Bulletin &bull; ${formattedDate}</div>
-                                <h3 class="text-base font-bold text-[#0F172A] font-['Raleway']">${title}</h3>
-                                <p class="text-xs text-gray-600 leading-relaxed line-clamp-2">${snippet}</p>
-                            </div>
-                            <div class="px-6 pb-5 pt-2 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-[#172554]">
-                                <span>Expand Full Notes &amp; Proceedings</span> &rarr;
-                            </div>
-                        `;
-
-                        // Prepend to the media highlights grid
-                        gridContainer.prepend(card);
+                        const imageMatch = yaml.match(/image:\s*["']?(.*?)["']?$/m);
+                        if (imageMatch && imageMatch[1] !== "undefined" && imageMatch[1] !== "") imageUrl = imageMatch[1];
                     }
+
+                    const parts = content.split('---');
+                    const bodyMarkdown = parts.length > 2 ? parts.slice(2).join('---').trim() : content;
+                    const bodyHtml = marked.parse(bodyMarkdown);
+                    const snippet = bodyMarkdown.replace(/[#*`_]/g, '').substring(0, 100) + '...';
+                    const formattedDate = date ? new Date(date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }).toUpperCase() : 'RECENT HIGHLIGHT';
+
+                    const articleObj = {
+                        id: i,
+                        title: title,
+                        date: formattedDate,
+                        imageUrl: imageUrl,
+                        videoUrl: videoUrl,
+                        bodyHtml: bodyHtml
+                    };
+                    dynamicArticlesMap.push(articleObj);
+
+                    const card = document.createElement('div');
+                    card.className = 'bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between cursor-pointer';
+                    card.onclick = () => openDynamicArticleModal(i);
+
+                    let mediaBanner = '';
+                    if (imageUrl) {
+                        mediaBanner = `<div class="h-52 bg-slate-900 overflow-hidden"><img src="${imageUrl}" class="w-full h-full object-cover"></div>`;
+                    } else if (videoUrl) {
+                        mediaBanner = `<div class="h-52 bg-slate-950 flex items-center justify-center text-white"><i class="fa-solid fa-circle-play text-4xl text-blue-400"></i></div>`;
+                    } else {
+                        mediaBanner = `<div class="h-52 bg-slate-900 flex items-center justify-center text-white"><i class="fa-solid fa-scale-balanced text-3xl text-blue-300"></i></div>`;
+                    }
+
+                    card.innerHTML = `
+                        ${mediaBanner}
+                        <div class="p-6 space-y-2">
+                            <div class="text-[10px] text-gray-500 font-semibold uppercase tracking-wider">Chambers Bulletin &bull; ${formattedDate}</div>
+                            <h3 class="text-base font-bold text-[#0F172A] font-['Raleway']">${title}</h3>
+                            <p class="text-xs text-gray-600 leading-relaxed line-clamp-2">${snippet}</p>
+                        </div>
+                        <div class="px-6 pb-5 pt-2 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-[#172554]">
+                            <span>Expand Full Notes &amp; Proceedings</span> &rarr;
+                        </div>
+                    `;
+
+                    gridContainer.prepend(card);
                 }
             } catch (error) {
                 console.error('Error loading dynamic highlights:', error);
