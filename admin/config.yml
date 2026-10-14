@@ -1,16 +1,19 @@
 backend:
-  name: git-gateway
+  name: github
+  repo: mordiifeanyi-git/tawoetawosan-respo
   branch: main
+  base_url: https://tawoetawosan-respo.vercel.app
+  auth_endpoint: api/auth
 
-media_folder: "uploads"
-public_folder: "/uploads"
+media_folder: uploads
+public_folder: /uploads
 
 collections:
-  - name: "articles"
-    label: "Articles"
-    folder: "articles"
+  - name: articles
+    label: Articles
+    folder: articles
     create: true
-    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    slug: "{{slug}}"
     fields:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Publish Date", name: "date", widget: "datetime" }

@@ -466,36 +466,36 @@ ${body}`;
         }
 
         function initDecapCMS() {
-            if (window.CMS) {
-                CMS.init({
-                    config: {
-                        backend: {
-                            name: 'github',
-                            repo: 'mordiifeanyi-git/tawoetawosan-respo',
-                            branch: 'main',
-                            base_url: 'https://tawoetawosan-respo.vercel.app', // Your exact Vercel site domain
-                            auth_endpoint: 'api/auth'
-                                },
-                                media_folder: 'uploads',
-                                public_folder: '/uploads',
-                                collections: [
-                                    {
-                                        name: 'articles',
-                                        label: 'Articles',
-                                        folder: 'articles',
-                                create: true,
-                                slug: '{{slug}}',
-                                fields: [
-                                    { label: 'Title', name: 'title', widget: 'string' },
-                                    { label: 'Publish Date', name: 'date', widget: 'datetime' },
-                                    { label: 'Featured Image', name: 'image', widget: 'image', required: false },
-                                    { label: 'Video File or Link', name: 'video', widget: 'file', required: false },
-                                    { label: 'Body', name: 'body', widget: 'markdown' }
-                                ]
-                            }
+    if (window.CMS) {
+        CMS.init({
+            config: {
+                backend: {
+                    name: 'github',
+                    repo: 'mordiifeanyi-git/tawoetawosan-respo',
+                    branch: 'main',
+                    base_url: 'https://tawoetawosan-respo.vercel.app',
+                    auth_endpoint: 'api/auth'
+                },
+                media_folder: 'uploads',
+                public_folder: '/uploads',
+                collections: [
+                    {
+                        name: 'articles',
+                        label: 'Articles',
+                        folder: 'articles',
+                        create: true,
+                        slug: '{{slug}}',
+                        fields: [
+                            { label: 'Title', name: 'title', widget: 'string' },
+                            { label: 'Publish Date', name: 'date', widget: 'datetime' },
+                            { label: 'Featured Image', name: 'image', widget: 'image', required: false },
+                            { label: 'Video File or Link', name: 'video', widget: 'file', required: false },
+                            { label: 'Body', name: 'body', widget: 'markdown' }
                         ]
                     }
-                });
+                ]
+            }
+        });
     }
 }
     </script>
