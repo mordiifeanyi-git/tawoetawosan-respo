@@ -649,20 +649,24 @@
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
 <script>
+  // 1. Configure marked to allow HTML tags (<video>, <iframe>, <img>)
+  marked.setOptions({
+    html: true,
+    gfm: true
+  });
+
   async function loadArticles() {
     const container = document.getElementById('articles-container');
     const repoOwner = 'mordiifeanyi-git';
     const repoName = 'tawoetawosan-respo';
     
     try {
-      // Fetch list of files in the articles directory from GitHub API
       const response = await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/articles`);
-      if (!response.ok) throw new Error('No articles found yet.');
+      if (!response.ok) throw new Error('No articles found.');
       
       const files = await response.json();
-      container.innerHTML = ''; // Clear loading text
+      container.innerHTML = ''; // Clear existing placeholder content
 
-      // Loop through markdown files and render them
       for (const file of files) {
         if (file.name.endsWith('.md')) {
           const rawResponse = await fetch(file.download_url);
@@ -673,19 +677,21 @@
           const bodyMarkdown = parts.length > 2 ? parts.slice(2).join('---') : content;
           
           const articleDiv = document.createElement('article');
-          articleDiv.className = 'cms-article';
+          articleDiv.className = 'cms-article'; // Replace with your article CSS class if needed
+          
+          // 2. Assign parsed markdown to innerHTML so HTML tags render live elements
           articleDiv.innerHTML = marked.parse(bodyMarkdown);
           
           container.appendChild(articleDiv);
         }
       }
     } catch (error) {
-      container.innerHTML = '<p>No articles available at the moment.</p>';
-      console.error(error);
+      console.error('Error loading articles:', error);
     }
   }
 
   document.addEventListener('DOMContentLoaded', loadArticles);
 </script>
+
 </body>
 </html>
