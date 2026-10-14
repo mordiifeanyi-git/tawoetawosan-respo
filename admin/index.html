@@ -313,7 +313,7 @@
         let uploadedImageUrl = '';
         let uploadedVideoUrl = '';
 
-        function handleImageFileUpload(event) {
+        function handleImageFileUpload(event) { 
             const file = event.target.files[0];
             if (file) {
                 uploadedImageUrl = URL.createObjectURL(file);
