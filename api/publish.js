@@ -1,75 +1,74 @@
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+      return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { title, date, body, filename } = req.body;
+  const { title, body } = req.body;
 
   if (!title || !body) {
-    return res.status(400).json({ error: 'Title and body are required.' });
+      return res.status(400).json({ error: 'Title and content body are required.' });
   }
 
-  const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
-  const REPO_OWNER = 'mordiifeanyi-git';
-  const REPO_NAME = 'tawoetawosan-respo';
-  const BRANCH = 'main';
+  // Slugify title for clean filename
+  const filename = title
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)+/g, '') + '.md';
 
-  // Build clean filename from slug
-  const slug = filename || title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
-  const filePath = `articles/${slug}.md`;
+  const repoOwner = 'mordiifeanyi-git';
+  const repoName = 'tawoetawosan-respo';
+  const githubToken = process.env.GITHUB_TOKEN;
 
-  // Format as Markdown with frontmatter header
-  const fileContent = `---
-title: "${title.replace(/"/g, '\\"')}"
-date: "${date || new Date().toISOString()}"
----
-
-${body}`;
-
-  const encodedContent = Buffer.from(fileContent).toString('base64');
+  if (!githubToken) {
+      return res.status(500).json({ error: 'GitHub token not configured on server.' });
+  }
 
   try {
-    let sha = null;
-    const getFileRes = await fetch(
-      `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${filePath}`,
-      {
-        headers: {
-          Authorization: `Bearer ${GITHUB_TOKEN}`,
-          Accept: 'application/vnd.github.v3+json',
-        },
+      const filePath = `articles/${filename}`;
+      const githubApiUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${filePath}`;
+
+      // 1. Check if the file already exists on GitHub to obtain its SHA (for clean overwrites)
+      let sha = null;
+      const checkRes = await fetch(githubApiUrl, {
+          headers: {
+              'Authorization': `Bearer ${githubToken}`,
+              'Accept': 'application/vnd.github.v3+json'
+          }
+      });
+
+      if (checkRes.ok) {
+          const existingFileData = await checkRes.json();
+          sha = existingFileData.sha;
       }
-    );
 
-    if (getFileRes.ok) {
-      const existingFile = await getFileRes.json();
-      sha = existingFile.sha;
-    }
+      // 2. Encode body into Base64 (UTF-8 safe)
+      const contentEncoded = Buffer.from(body, 'utf-8').toString('base64');
 
-    const putRes = await fetch(
-      `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${filePath}`,
-      {
-        method: 'PUT',
-        headers: {
-          Authorization: `Bearer ${GITHUB_TOKEN}`,
-          'Content-Type': 'application/json',
-          Accept: 'application/vnd.github.v3+json',
-        },
-        body: JSON.stringify({
-          message: `Publish article: ${title}`,
-          content: encodedContent,
-          branch: BRANCH,
-          ...(sha ? { sha } : {}),
-        }),
+      // 3. Commit/Push file directly to GitHub main branch
+      const putRes = await fetch(githubApiUrl, {
+          method: 'PUT',
+          headers: {
+              'Authorization': `Bearer ${githubToken}`,
+              'Accept': 'application/vnd.github.v3+json',
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+              message: `Publish article: ${title} via Admin Workbench`,
+              content: contentEncoded,
+              branch: 'main',
+              ...(sha && { sha }) // Pass existing SHA to overwrite properly without stacking
+          })
+      });
+
+      if (putRes.ok) {
+          return res.status(200).json({ message: 'Article published successfully' });
+      } else {
+          const errorData = await putRes.json();
+          return res.status(500).json({ error: errorData.message || 'Failed to push to GitHub' });
       }
-    );
 
-    if (!putRes.ok) {
-      const errData = await putRes.json();
-      return res.status(500).json({ error: errData.message || 'Failed to publish to GitHub.' });
-    }
-
-    return res.status(200).json({ success: true, message: 'Article published live!' });
-  } catch (error) {
-    return res.status(500).json({ error: error.message });
+  } catch (err) {
+      console.error('Publish error:', err);
+      return res.status(500).json({ error: 'Internal server error during publishing' });
   }
 }
