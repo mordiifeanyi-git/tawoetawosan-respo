@@ -304,18 +304,11 @@
         function generateMarkdownString() {
             const title = document.getElementById('input-title').value || 'Untitled Article';
             const date = document.getElementById('input-date').value || new Date().toISOString().split('T')[0];
-            const imageUrl = document.getElementById('input-image-url').value;
-            const videoUrl = document.getElementById('input-video-url').value;
+            const imageUrl = document.getElementById('input-image-url').value || '';
+            const videoUrl = document.getElementById('input-video-url').value || '';
             const body = document.getElementById('input-body').value || '';
 
-            return `---
-title: "${title}"
-date: "${date}"
-image: "${imageUrl}"
-video: "${videoUrl}"
----
-
-${body}`;
+            return `---\ntitle: "${title}"\ndate: "${date}"\nimage: "${imageUrl}"\nvideo: "${videoUrl}"\n---\n\n${body}`;
         }
 
         function copyMarkdown() {
