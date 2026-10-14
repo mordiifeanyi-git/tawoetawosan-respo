@@ -111,7 +111,9 @@
                         <i class="fa-regular fa-copy mr-2 text-[#172554]"></i> Copy .MD
                     </button>
                     <button onclick="downloadMarkdown()" class="px-4 py-2.5 rounded-xl bg-[#172554] hover:bg-blue-900 text-white font-bold text-xs transition-all flex items-center shadow-md">
-                        <i class="fa-solid fa-download mr-2 text-blue-300"></i> Save .MD File
+                        <button id="publish-btn" onclick="publishArticle()" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg shadow transition-all flex items-center gap-2">
+                            <i class="fa-solid fa-paper-plane mr-1.5"></i> Publish Article Live
+                          </button>
                     </button>
                 </div>
             </div>
@@ -503,6 +505,45 @@ ${body}`;
             }
         });
     }
+}
+async function publishArticle() {
+  const title = document.getElementById('article-title')?.value || document.querySelector('input[type="text"]')?.value || 'Untitled Article';
+  const body = document.getElementById('article-body')?.value || document.querySelector('textarea')?.value || '';
+  const date = new Date().toISOString();
+
+  if (!body.trim()) {
+    alert('Please enter article content before publishing.');
+    return;
+  }
+
+  const btn = document.getElementById('publish-btn');
+  if (btn) {
+    btn.disabled = true;
+    btn.innerText = 'Publishing...';
+  }
+
+  try {
+    const res = await fetch('/api/publish', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title, body, date })
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      alert('🎉 Article published successfully! It will be live on the site in ~20 seconds.');
+    } else {
+      alert('Error publishing: ' + (data.error || 'Failed to publish'));
+    }
+  } catch (err) {
+    alert('Failed to connect to publishing service.');
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.innerText = 'Publish Article Live';
+    }
+  }
 }
     </script>
 </body>
