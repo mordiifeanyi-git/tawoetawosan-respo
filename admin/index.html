@@ -313,7 +313,6 @@
             const file = event.target.files[0];
             if (!file) return;
 
-            // Optional check for very large video files (>35MB) to advise compression for web playback
             if (file.size > 35 * 1024 * 1024) {
                 alert(`Note: "${file.name}" is quite large (${(file.size / (1024*1024)).toFixed(1)}MB). Please ensure it is compressed for optimal visitor loading times.`);
             }
@@ -343,10 +342,9 @@
 
                     const data = await res.json();
                     if (res.ok) {
-                        // Automatically set the repository path into the input field
                         document.getElementById(targetInputId).value = data.path;
                         updateLivePreview();
-                        alert(`✅ ${file.name} uploaded successfully from your device and linked!`);
+                        alert(`✅ ${file.name} uploaded successfully and linked to ${data.path}!`);
                     } else {
                         alert('Upload failed: ' + (data.error || 'Server error'));
                     }
