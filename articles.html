@@ -352,10 +352,9 @@
 
                 <div id="modal-video-container" class="space-y-2 border-t border-gray-100 pt-4 hidden">
                     <span class="text-[11px] font-bold text-[#0F172A] uppercase tracking-wider block font-['Raleway']"><i class="fa-solid fa-circle-play text-[#172554] mr-1"></i> Video Recording</span>
-                    <div class="rounded-xl overflow-hidden border border-gray-200 bg-slate-950 aspect-video shadow-md">
-                        <video id="modal-video" controls class="w-full h-full object-contain">
-                            <source id="modal-video-src" src="" type="video/mp4">
-                        </video>
+                    <!-- Universal Video Player Box (Supports YouTube iframe or local MP4 video) -->
+                    <div id="modal-video-player-box" class="rounded-xl overflow-hidden border border-gray-200 bg-slate-950 aspect-video shadow-md flex items-center justify-center">
+                        <!-- Dynamically injected player goes here -->
                     </div>
                 </div>
 
@@ -415,6 +414,33 @@
 
         let dynamicArticlesMap = [];
 
+        // Universal video renderer helper supporting both YouTube links and direct MP4 files
+        function renderVideoPlayerIntoBox(videoUrl, containerBoxId) {
+            const container = document.getElementById(containerBoxId);
+            if (!container || !videoUrl) return;
+
+            const ytMatch = videoUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/))([\w-]{11})/);
+
+            if (ytMatch && ytMatch[1]) {
+                const videoId = ytMatch[1];
+                container.innerHTML = `
+                    <iframe 
+                        class="w-full h-full aspect-video" 
+                        src="https://www.youtube.com/embed/${videoId}?rel=0" 
+                        title="YouTube video player" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>`;
+            } else {
+                container.innerHTML = `
+                    <video controls class="w-full h-full object-contain">
+                        <source src="${videoUrl}" type="video/mp4">
+                        Your browser does not support video playback.
+                    </video>`;
+            }
+        }
+
         function openBlogModalData(index) {
             const data = eventDataList[index];
             if (!data) return;
@@ -436,10 +462,7 @@
             const videoContainer = document.getElementById('modal-video-container');
             if (data.video) {
                 videoContainer.classList.remove('hidden');
-                const videoElem = document.getElementById('modal-video');
-                const videoSrc = document.getElementById('modal-video-src');
-                videoSrc.src = data.video;
-                videoElem.load();
+                renderVideoPlayerIntoBox(data.video, 'modal-video-player-box');
             } else {
                 videoContainer.classList.add('hidden');
             }
@@ -469,10 +492,7 @@
             const videoContainer = document.getElementById('modal-video-container');
             if (article.videoUrl) {
                 videoContainer.classList.remove('hidden');
-                const videoElem = document.getElementById('modal-video');
-                const videoSrc = document.getElementById('modal-video-src');
-                videoSrc.src = article.videoUrl;
-                videoElem.load();
+                renderVideoPlayerIntoBox(article.videoUrl, 'modal-video-player-box');
             } else {
                 videoContainer.classList.add('hidden');
             }
@@ -493,8 +513,8 @@
         function closeBlogModal() {
             const modal = document.getElementById('blog-details-modal');
             const box = document.getElementById('modal-container-box');
-            const videoElem = document.getElementById('modal-video');
-            if (videoElem) videoElem.pause();
+            const playerBox = document.getElementById('modal-video-player-box');
+            if (playerBox) playerBox.innerHTML = ''; // Stops playing video/iframe
 
             box.classList.remove('scale-100', 'opacity-100');
             box.classList.add('scale-95', 'opacity-0');
