@@ -100,7 +100,7 @@
             <h2 class="text-2xl font-extrabold text-[#0F172A] font-['Raleway'] border-b border-gray-200 pb-3">Legal Insights &amp; Practice Guides</h2>
             
             <div id="dynamic-articles-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Hardcoded Hard Articles -->
+                <!-- Hardcoded Articles -->
                 <article class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
                     <div class="p-6 sm:p-8 space-y-4">
                         <div class="flex items-center justify-between text-xs text-gray-500 font-medium">
@@ -567,7 +567,7 @@
         });
     </script>
 
-    <!-- Dynamic Media & Article Separator Script -->
+    <!-- Dynamic Type-Based Content Separator Script -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
         marked.setOptions({ html: true, gfm: true });
@@ -595,25 +595,32 @@
 
                     let title = 'Untitled Publication';
                     let date = '';
+                    let postType = 'article'; // Default fallback
                     let videoUrl = '';
                     let imageUrl = '';
 
-                    const titleMatch = content.match(/title:\s*["']?(.*?)["']?(?=\s*(date:|image:|video:|---|$))/i);
+                    const titleMatch = content.match(/title:\s*["']?(.*?)["']?(?=\s*(date:|type:|image:|video:|---|$))/i);
                     if (titleMatch) title = titleMatch[1].replace(/["']/g, '');
 
-                    const dateMatch = content.match(/date:\s*["']?(.*?)["']?(?=\s*(title:|image:|video:|---|$))/i);
+                    const dateMatch = content.match(/date:\s*["']?(.*?)["']?(?=\s*(title:|type:|image:|video:|---|$))/i);
                     if (dateMatch) date = dateMatch[1].replace(/["']/g, '');
 
-                    const videoMatch = content.match(/video:\s*["']?(.*?)["']?(?=\s*(title:|date:|image:|---|$))/i);
+                    const typeMatch = content.match(/type:\s*["']?(.*?)["']?(?=\s*(title:|date:|image:|video:|---|$))/i);
+                    if (typeMatch && typeMatch[1]) {
+                        postType = typeMatch[1].replace(/["']/g, '').trim();
+                    }
+
+                    const videoMatch = content.match(/video:\s*["']?(.*?)["']?(?=\s*(title:|date:|type:|image:|---|$))/i);
                     if (videoMatch && videoMatch[1] !== "undefined" && videoMatch[1] !== '""') videoUrl = videoMatch[1].replace(/["']/g, '').trim();
 
-                    const imageMatch = content.match(/image:\s*["']?(.*?)["']?(?=\s*(title:|date:|video:|---|$))/i);
+                    const imageMatch = content.match(/image:\s*["']?(.*?)["']?(?=\s*(title:|date:|type:|video:|---|$))/i);
                     if (imageMatch && imageMatch[1] !== "undefined" && imageMatch[1] !== '""') imageUrl = imageMatch[1].replace(/["']/g, '').trim();
 
                     let cleanMarkdown = content
                         .replace(/^---[\s\S]*?---/, '')
                         .replace(/title:\s*["']?.*?["']?/gi, '')
                         .replace(/date:\s*["']?.*?["']?/gi, '')
+                        .replace(/type:\s*["']?.*?["']?/gi, '')
                         .replace(/image:\s*["']?.*?["']?/gi, '')
                         .replace(/video:\s*["']?.*?["']?/gi, '')
                         .replace(/---/g, '')
@@ -633,9 +640,9 @@
                     };
                     dynamicArticlesMap.push(articleObj);
 
-                    // --- SEPARATION LOGIC ---
-                    // If NO video URL is provided, treat as a written Article (links to article.html)
-                    if (!videoUrl) {
+                    // --- EXPLICIT ROUTING BASED ON ADMIN TYPE SELECTION ---
+                    if (postType === 'article') {
+                        // Renders in Legal Insights & Practice Guides (Links to article.html)
                         const articleCard = document.createElement('article');
                         articleCard.className = 'bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between';
 
@@ -664,9 +671,8 @@
                             </div>
                         `;
                         articlesGrid.prepend(articleCard);
-                    } 
-                    // If a video URL is provided, treat as a Firm Meeting / Media Highlight (opens modal)
-                    else {
+                    } else {
+                        // Renders in Firm Meetings & Media Highlights (Opens Modal)
                         const mediaCard = document.createElement('div');
                         mediaCard.className = 'bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between cursor-pointer';
                         mediaCard.onclick = () => openDynamicArticleModal(i);
@@ -690,13 +696,15 @@
                                         </div>
                                     </div>
                                 </div>`;
-                        } else {
+                        } else if (videoUrl) {
                             mediaBanner = `
                                 <div class="h-52 bg-slate-950 overflow-hidden relative">
                                     <video controls class="w-full h-full object-cover">
                                         <source src="${videoUrl}" type="video/mp4">
                                     </video>
                                 </div>`;
+                        } else {
+                            mediaBanner = `<div class="h-52 bg-slate-900 flex items-center justify-center text-white"><i class="fa-solid fa-scale-balanced text-3xl text-blue-300"></i></div>`;
                         }
 
                         mediaCard.innerHTML = `
