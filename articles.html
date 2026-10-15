@@ -47,7 +47,7 @@
 </head>
 <body class="antialiased selection:bg-blue-500 selection:text-white">
 
-    <!-- Navigation Bar (Matches team.html design & scroll effect) -->
+    <!-- Navigation Bar -->
     <header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-transparent py-3 px-6 md:px-12">
         <div class="max-w-7xl mx-auto flex items-center justify-between">
             <a href="index.html" class="flex items-center space-x-3 group">
@@ -95,13 +95,11 @@
 
     <main class="py-16 px-6 md:px-12 max-w-7xl mx-auto space-y-16">
 
-        <!-- SECTION 1: Featured Legal Articles & Practice Guides -->
+        <!-- SECTION 1: Featured Hardcoded Articles -->
         <div class="space-y-6">
             <h2 class="text-2xl font-extrabold text-[#0F172A] font-['Raleway'] border-b border-gray-200 pb-3">Legal Insights &amp; Practice Guides</h2>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                
-                <!-- Card 1 -->
                 <article class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
                     <div class="p-6 sm:p-8 space-y-4">
                         <div class="flex items-center justify-between text-xs text-gray-500 font-medium">
@@ -121,7 +119,6 @@
                     </div>
                 </article>
 
-                <!-- Card 2 -->
                 <article class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
                     <div class="p-6 sm:p-8 space-y-4">
                         <div class="flex items-center justify-between text-xs text-gray-500 font-medium">
@@ -141,7 +138,6 @@
                     </div>
                 </article>
 
-                <!-- Card 3 -->
                 <article class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
                     <div class="p-6 sm:p-8 space-y-4">
                         <div class="flex items-center justify-between text-xs text-gray-500 font-medium">
@@ -160,21 +156,20 @@
                         <a href="supreme-court-rulings.html" class="text-xs font-bold text-[#172554] hover:underline flex items-center space-x-1"><span>Read Article</span> &rarr;</a>
                     </div>
                 </article>
-
             </div>
         </div>
 
-        <!-- SECTION 2: Firm Meetings, Conferences & Media Highlights (Contains Video Logs, Photo Bulletins, & Dynamically Published GitHub Articles) -->
+        <!-- SECTION 2: Firm Meetings & Dynamic Published Media Container -->
         <div class="space-y-8">
             <h2 class="text-2xl font-extrabold text-[#0F172A] font-['Raleway'] border-b border-gray-200 pb-3">Firm Meetings, Conferences &amp; Media Highlights</h2>
 
-            <!-- Video Recordings Block -->
             <div class="space-y-4">
                 <div class="flex items-center space-x-2 text-xs font-bold text-[#172554] tracking-wider uppercase font-['Raleway']">
                     <i class="fa-solid fa-circle-play text-blue-600"></i>
                     <span>Featured Video Recordings &amp; Dynamic Submissions</span>
                 </div>
 
+                <!-- Grid dynamically populated with both defaults and newly published GitHub Markdown items -->
                 <div id="dynamic-media-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8">
                     
                     <!-- Video Slot 1 -->
@@ -231,7 +226,7 @@
                 </div>
             </div>
 
-            <!-- Multi-Image Photo Bulletins Block -->
+            <!-- Photo Bulletins Block -->
             <div class="space-y-4 pt-4">
                 <div class="flex items-center space-x-2 text-xs font-bold text-[#172554] tracking-wider uppercase font-['Raleway']">
                     <i class="fa-solid fa-images"></i>
@@ -239,8 +234,6 @@
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    
-                    <!-- Photo Bulletin 1 -->
                     <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group cursor-pointer" onclick="openBlogModalData(3)">
                         <div class="space-y-4">
                             <div class="flex items-center justify-between text-[10px] text-gray-500 font-semibold uppercase tracking-wider">
@@ -271,7 +264,6 @@
                         </div>
                     </div>
 
-                    <!-- Photo Bulletin 2 -->
                     <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group cursor-pointer" onclick="openBlogModalData(4)">
                         <div class="space-y-4">
                             <div class="flex items-center justify-between text-[10px] text-gray-500 font-semibold uppercase tracking-wider">
@@ -301,14 +293,13 @@
                             <span>View All Photos &amp; Event Summary</span> &rarr;
                         </div>
                     </div>
-
                 </div>
             </div>
 
         </div>
     </main>
 
-    <!-- Footer (Matches team.html footer completely) -->
+    <!-- Footer -->
     <footer class="bg-[#172554] text-gray-300 text-sm border-t border-blue-900 py-16 px-6 md:px-12">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center space-y-6 md:space-y-0">
             <div class="flex items-center space-x-3">
@@ -342,7 +333,7 @@
         </div>
     </footer>
 
-    <!-- Expanded Modal (Organized to prevent image overlapping) -->
+    <!-- Clean Non-overlapping Modal Structure -->
     <div id="blog-details-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md hidden p-4 sm:p-6 overflow-y-auto">
         <div class="bg-white rounded-3xl shadow-2xl border border-gray-100 max-w-3xl w-full my-auto overflow-hidden relative transform transition-all scale-95 opacity-0 duration-300 max-h-[90vh] flex flex-col" id="modal-container-box">
             
@@ -356,12 +347,8 @@
                 </button>
             </div>
 
-            <!-- Scrollable Flex Container preventing image lap or text overlap -->
             <div class="p-6 overflow-y-auto space-y-6 flex-1 text-gray-700 text-xs sm:text-sm leading-relaxed">
-                
-                <div id="modal-media-wrapper" class="space-y-4">
-                    <!-- Dynamic image or gallery grid rendered here cleanly -->
-                </div>
+                <div id="modal-media-wrapper" class="space-y-4"></div>
 
                 <div id="modal-video-container" class="space-y-2 border-t border-gray-100 pt-4 hidden">
                     <span class="text-[11px] font-bold text-[#0F172A] uppercase tracking-wider block font-['Raleway']"><i class="fa-solid fa-circle-play text-[#172554] mr-1"></i> Video Recording</span>
@@ -386,7 +373,7 @@
         </div>
     </div>
 
-    <!-- Scripts -->
+    <!-- UI Interaction Scripts -->
     <script>
         const eventDataList = [
             {
@@ -518,7 +505,6 @@
             document.getElementById('mobile-menu').classList.toggle('hidden'); 
         }
 
-        // Navbar Scroll Effect (Exact match to team.html)
         window.addEventListener('scroll', function() {
             const navbar = document.getElementById('navbar');
             const brandTitle = document.getElementById('nav-brand-title');
@@ -561,107 +547,7 @@
         });
     </script>
 
-  <!-- Dynamic Media Injector for Published Articles -->
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  <script>
-      marked.setOptions({ html: true, gfm: true });
-
-      async function loadDynamicMediaHighlights() {
-          const gridContainer = document.getElementById('dynamic-media-grid');
-          if (!gridContainer) return;
-
-          const repoOwner = 'mordiifeanyi-git';
-          const repoName = 'tawoetawosan-respo';
-
-          try {
-              const response = await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/articles`);
-              if (!response.ok) return;
-
-              const files = await response.json();
-              dynamicArticlesMap = [];
-              const mdFiles = files.filter(f => f.name.endsWith('.md'));
-
-              for (let i = 0; i < mdFiles.length; i++) {
-                  const file = mdFiles[i];
-                  const rawResponse = await fetch(file.download_url);
-                  const content = await rawResponse.text();
-
-                  let title = 'Untitled Highlight';
-                  let date = '';
-                  let videoUrl = '';
-                  let imageUrl = '';
-
-                  // Extract Metadata using Regex
-                  const titleMatch = content.match(/title:\s*["']?(.*?)["']?(?=\s*(date:|image:|video:|---|$))/i);
-                  if (titleMatch) title = titleMatch[1].replace(/["']/g, '');
-
-                  const dateMatch = content.match(/date:\s*["']?(.*?)["']?(?=\s*(title:|image:|video:|---|$))/i);
-                  if (dateMatch) date = dateMatch[1].replace(/["']/g, '');
-
-                  const videoMatch = content.match(/video:\s*["']?(.*?)["']?(?=\s*(title:|date:|image:|---|$))/i);
-                  if (videoMatch && videoMatch[1] !== "undefined" && videoMatch[1] !== '""') videoUrl = videoMatch[1].replace(/["']/g, '').trim();
-
-                  const imageMatch = content.match(/image:\s*["']?(.*?)["']?(?=\s*(title:|date:|video:|---|$))/i);
-                  if (imageMatch && imageMatch[1] !== "undefined" && imageMatch[1] !== '""') imageUrl = imageMatch[1].replace(/["']/g, '').trim();
-
-                  // Aggressively strip all frontmatter remnants (title:, date:, image:, video:, ---)
-                  let cleanMarkdown = content
-                      .replace(/^---[\s\S]*?---/, '')
-                      .replace(/title:\s*["']?.*?["']?/gi, '')
-                      .replace(/date:\s*["']?.*?["']?/gi, '')
-                      .replace(/image:\s*["']?.*?["']?/gi, '')
-                      .replace(/video:\s*["']?.*?["']?/gi, '')
-                      .replace(/---/g, '')
-                      .trim();
-
-                  const bodyHtml = marked.parse(cleanMarkdown);
-                  const snippet = cleanMarkdown.replace(/[#*`_]/g, '').substring(0, 100) + '...';
-                  const formattedDate = date ? new Date(date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }).toUpperCase() : 'RECENT HIGHLIGHT';
-
-                  const articleObj = {
-                      id: i,
-                      title: title,
-                      date: formattedDate,
-                      imageUrl: imageUrl,
-                      videoUrl: videoUrl,
-                      bodyHtml: bodyHtml
-                  };
-                  dynamicArticlesMap.push(articleObj);
-
-                  const card = document.createElement('div');
-                  card.className = 'bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between cursor-pointer';
-                  card.onclick = () => openDynamicArticleModal(i);
-
-                  let mediaBanner = '';
-                  if (imageUrl) {
-                      mediaBanner = `<div class="h-52 bg-slate-900 overflow-hidden"><img src="${imageUrl}" class="w-full h-full object-cover"></div>`;
-                  } else if (videoUrl) {
-                      mediaBanner = `<div class="h-52 bg-slate-950 flex items-center justify-center text-white"><i class="fa-solid fa-circle-play text-4xl text-blue-400"></i></div>`;
-                  } else {
-                      mediaBanner = `<div class="h-52 bg-slate-900 flex items-center justify-center text-white"><i class="fa-solid fa-scale-balanced text-3xl text-blue-300"></i></div>`;
-                  }
-
-                  card.innerHTML = `
-                      ${mediaBanner}
-                      <div class="p-6 space-y-2">
-                          <div class="text-[10px] text-gray-500 font-semibold uppercase tracking-wider">Chambers Bulletin &bull; ${formattedDate}</div>
-                          <h3 class="text-base font-bold text-[#0F172A] font-['Raleway']">${title}</h3>
-                          <p class="text-xs text-gray-600 leading-relaxed line-clamp-2">${snippet}</p>
-                      </div>
-                      <div class="px-6 pb-5 pt-2 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-[#172554]">
-                          <span>Expand Full Notes &amp; Proceedings</span> &rarr;
-                      </div>
-                  `;
-
-                  gridContainer.prepend(card);
-              }
-          } catch (error) {
-              console.error('Error loading dynamic highlights:', error);
-          }
-      }
-
-      document.addEventListener('DOMContentLoaded', loadDynamicMediaHighlights);
-  </script><!-- Dynamic Media Injector for Published Articles -->
+    <!-- Dynamic Media Injector Script -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
         marked.setOptions({ html: true, gfm: true });
@@ -691,7 +577,6 @@
                     let videoUrl = '';
                     let imageUrl = '';
 
-                    // Extract Metadata using Regex
                     const titleMatch = content.match(/title:\s*["']?(.*?)["']?(?=\s*(date:|image:|video:|---|$))/i);
                     if (titleMatch) title = titleMatch[1].replace(/["']/g, '');
 
@@ -704,7 +589,6 @@
                     const imageMatch = content.match(/image:\s*["']?(.*?)["']?(?=\s*(title:|date:|video:|---|$))/i);
                     if (imageMatch && imageMatch[1] !== "undefined" && imageMatch[1] !== '""') imageUrl = imageMatch[1].replace(/["']/g, '').trim();
 
-                    // Aggressively strip all frontmatter remnants (title:, date:, image:, video:, ---)
                     let cleanMarkdown = content
                         .replace(/^---[\s\S]*?---/, '')
                         .replace(/title:\s*["']?.*?["']?/gi, '')
@@ -762,57 +646,5 @@
 
         document.addEventListener('DOMContentLoaded', loadDynamicMediaHighlights);
     </script>
-
-                   // Completely strip out frontmatter block to leave pure body text
-                   let cleanMarkdown = content.replace(/^---[\s\S]*?---/, '').trim();
-
-                   const bodyHtml = marked.parse(cleanMarkdown);
-                   const snippet = cleanMarkdown.replace(/[#*`_]/g, '').substring(0, 100) + '...';
-                   const formattedDate = date ? new Date(date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }).toUpperCase() : 'RECENT HIGHLIGHT';
-
-                   const articleObj = {
-                       id: i,
-                       title: title,
-                       date: formattedDate,
-                       imageUrl: imageUrl,
-                       videoUrl: videoUrl,
-                       bodyHtml: bodyHtml
-                   };
-                   dynamicArticlesMap.push(articleObj);
-
-                   const card = document.createElement('div');
-                   card.className = 'bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between cursor-pointer';
-                   card.onclick = () => openDynamicArticleModal(i);
-
-                   let mediaBanner = '';
-                   if (imageUrl) {
-                       mediaBanner = `<div class="h-52 bg-slate-900 overflow-hidden"><img src="${imageUrl}" class="w-full h-full object-cover"></div>`;
-                   } else if (videoUrl) {
-                       mediaBanner = `<div class="h-52 bg-slate-950 flex items-center justify-center text-white"><i class="fa-solid fa-circle-play text-4xl text-blue-400"></i></div>`;
-                   } else {
-                       mediaBanner = `<div class="h-52 bg-slate-900 flex items-center justify-center text-white"><i class="fa-solid fa-scale-balanced text-3xl text-blue-300"></i></div>`;
-                   }
-
-                   card.innerHTML = `
-                       ${mediaBanner}
-                       <div class="p-6 space-y-2">
-                           <div class="text-[10px] text-gray-500 font-semibold uppercase tracking-wider">Chambers Bulletin &bull; ${formattedDate}</div>
-                           <h3 class="text-base font-bold text-[#0F172A] font-['Raleway']">${title}</h3>
-                           <p class="text-xs text-gray-600 leading-relaxed line-clamp-2">${snippet}</p>
-                       </div>
-                       <div class="px-6 pb-5 pt-2 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-[#172554]">
-                           <span>Expand Full Notes &amp; Proceedings</span> &rarr;
-                       </div>
-                   `;
-
-                   gridContainer.prepend(card);
-               }
-           } catch (error) {
-               console.error('Error loading dynamic highlights:', error);
-           }
-       }
-
-       document.addEventListener('DOMContentLoaded', loadDynamicMediaHighlights);
-   </script>
 </body>
 </html>
