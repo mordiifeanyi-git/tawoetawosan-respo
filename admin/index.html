@@ -130,18 +130,26 @@
                                 </div>
                             </div>
 
+                            <!-- Featured Image Dual Input (Choose File or URL) -->
                             <div class="space-y-1.5 pt-2 border-t border-gray-100">
                                 <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider font-['Raleway']">
-                                    <i class="fa-solid fa-image text-[#172554] mr-1"></i> Featured Image URL
+                                    <i class="fa-solid fa-image text-[#172554] mr-1"></i> Featured Image (Choose File or URL)
                                 </label>
-                                <input type="text" id="input-image-url" placeholder="https://..." oninput="updateLivePreview()" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-xs text-slate-800 bg-slate-50/50 focus:outline-none" />
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                    <input type="file" id="input-image-file" accept="image/*" onchange="handleLocalFileUpload(event, 'input-image-url')" class="w-full px-3 py-2 rounded-xl border border-gray-200 text-xs text-slate-600 bg-slate-50/50 file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-[10px] file:font-bold file:bg-[#172554] file:text-white cursor-pointer" />
+                                    <input type="text" id="input-image-url" placeholder="Or paste https://..." oninput="updateLivePreview()" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-xs text-slate-800 bg-slate-50/50 focus:outline-none" />
+                                </div>
                             </div>
 
+                            <!-- Video Recording Dual Input (Choose File or URL) -->
                             <div class="space-y-1.5 pt-2 border-t border-gray-100">
                                 <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider font-['Raleway']">
-                                    <i class="fa-solid fa-video text-[#172554] mr-1"></i> Video Recording URL (.mp4)
+                                    <i class="fa-solid fa-video text-[#172554] mr-1"></i> Video Recording (.mp4 File or URL)
                                 </label>
-                                <input type="text" id="input-video-url" placeholder="https://..." oninput="updateLivePreview()" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-xs text-slate-800 bg-slate-50/50 focus:outline-none" />
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                    <input type="file" id="input-video-file" accept="video/*" onchange="handleLocalFileUpload(event, 'input-video-url')" class="w-full px-3 py-2 rounded-xl border border-gray-200 text-xs text-slate-600 bg-slate-50/50 file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-[10px] file:font-bold file:bg-[#172554] file:text-white cursor-pointer" />
+                                    <input type="text" id="input-video-url" placeholder="Or paste https://..." oninput="updateLivePreview()" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-xs text-slate-800 bg-slate-50/50 focus:outline-none" />
+                                </div>
                             </div>
 
                             <div class="pt-2 border-t border-gray-100">
@@ -299,6 +307,18 @@
                 cardImg.classList.add('hidden');
                 cardVideoIcon.classList.remove('hidden');
             }
+        }
+
+        function handleLocalFileUpload(event, targetInputId) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(uploadEvent) {
+                document.getElementById(targetInputId).value = uploadEvent.target.result;
+                updateLivePreview();
+            };
+            reader.readAsDataURL(file);
         }
 
         function generateMarkdownString() {
