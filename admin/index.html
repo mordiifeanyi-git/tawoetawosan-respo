@@ -309,14 +309,56 @@
             }
         }
 
-        function handleLocalFileUpload(event, targetInputId) {
+        async function handleLocalFileUpload(event, targetInputId) {
             const file = event.target.files[0];
             if (!file) return;
 
+            // Optional check for very large video files (>35MB) to advise compression for web playback
+            if (file.size > 35 * 1024 * 1024) {
+                alert(`Note: "${file.name}" is quite large (${(file.size / (1024*1024)).toFixed(1)}MB). Please ensure it is compressed for optimal visitor loading times.`);
+            }
+
             const reader = new FileReader();
-            reader.onload = function(uploadEvent) {
-                document.getElementById(targetInputId).value = uploadEvent.target.result;
-                updateLivePreview();
+            reader.onload = async function(e) {
+                const base64Content = e.target.result.split(',')[1];
+                const cleanFilename = file.name.toLowerCase().replace(/[^a-z0-9.]+/g, '-');
+                const uploadPath = `media/${cleanFilename}`;
+
+                const btn = document.getElementById('publish-btn');
+                if (btn) {
+                    btn.disabled = true;
+                    btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Uploading ${file.name}...`;
+                }
+
+                try {
+                    const res = await fetch('/api/upload-media', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            path: uploadPath,
+                            content: base64Content,
+                            message: `Admin upload media: ${cleanFilename}`
+                        })
+                    });
+
+                    const data = await res.json();
+                    if (res.ok) {
+                        // Automatically set the repository path into the input field
+                        document.getElementById(targetInputId).value = data.path;
+                        updateLivePreview();
+                        alert(`✅ ${file.name} uploaded successfully from your device and linked!`);
+                    } else {
+                        alert('Upload failed: ' + (data.error || 'Server error'));
+                    }
+                } catch (err) {
+                    console.error('Upload error:', err);
+                    alert('Failed to connect to media upload service.');
+                } finally {
+                    if (btn) {
+                        btn.disabled = false;
+                        btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Publish Article Live';
+                    }
+                }
             };
             reader.readAsDataURL(file);
         }
