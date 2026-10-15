@@ -95,11 +95,12 @@
 
     <main class="py-16 px-6 md:px-12 max-w-7xl mx-auto space-y-16">
 
-        <!-- SECTION 1: Featured Hardcoded Articles -->
+        <!-- SECTION 1: Featured Written Articles (Standalone Article Pages) -->
         <div class="space-y-6">
             <h2 class="text-2xl font-extrabold text-[#0F172A] font-['Raleway'] border-b border-gray-200 pb-3">Legal Insights &amp; Practice Guides</h2>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div id="dynamic-articles-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Hardcoded Hard Articles -->
                 <article class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
                     <div class="p-6 sm:p-8 space-y-4">
                         <div class="flex items-center justify-between text-xs text-gray-500 font-medium">
@@ -159,7 +160,7 @@
             </div>
         </div>
 
-        <!-- SECTION 2: Firm Meetings & Dynamic Published Media Container -->
+        <!-- SECTION 2: Firm Meetings & Video / Media Highlights (Modal Popups) -->
         <div class="space-y-8">
             <h2 class="text-2xl font-extrabold text-[#0F172A] font-['Raleway'] border-b border-gray-200 pb-3">Firm Meetings, Conferences &amp; Media Highlights</h2>
 
@@ -169,7 +170,7 @@
                     <span>Featured Video Recordings &amp; Dynamic Submissions</span>
                 </div>
 
-                <!-- Grid dynamically populated with both defaults and newly published GitHub Markdown items -->
+                <!-- Grid populated with video highlights -->
                 <div id="dynamic-media-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8">
                     
                     <!-- Video Slot 1 -->
@@ -352,7 +353,7 @@
 
                 <div id="modal-video-container" class="space-y-2 border-t border-gray-100 pt-4 hidden">
                     <span class="text-[11px] font-bold text-[#0F172A] uppercase tracking-wider block font-['Raleway']"><i class="fa-solid fa-circle-play text-[#172554] mr-1"></i> Video Recording</span>
-                    <!-- Universal Video Player Box (Supports YouTube iframe or local MP4 video) -->
+                    <!-- Universal Video Player Box -->
                     <div id="modal-video-player-box" class="rounded-xl overflow-hidden border border-gray-200 bg-slate-950 aspect-video shadow-md flex items-center justify-center">
                         <!-- Dynamically injected player goes here -->
                     </div>
@@ -414,7 +415,6 @@
 
         let dynamicArticlesMap = [];
 
-        // Universal video renderer helper supporting both YouTube links and direct MP4 files
         function renderVideoPlayerIntoBox(videoUrl, containerBoxId) {
             const container = document.getElementById(containerBoxId);
             if (!container || !videoUrl) return;
@@ -514,7 +514,7 @@
             const modal = document.getElementById('blog-details-modal');
             const box = document.getElementById('modal-container-box');
             const playerBox = document.getElementById('modal-video-player-box');
-            if (playerBox) playerBox.innerHTML = ''; // Stops playing video/iframe
+            if (playerBox) playerBox.innerHTML = '';
 
             box.classList.remove('scale-100', 'opacity-100');
             box.classList.add('scale-95', 'opacity-0');
@@ -538,7 +538,7 @@
                 brandTitle.classList.remove('text-white');
                 brandTitle.classList.add('text-[#0F172A]');
 
-                mobileBtn.classList.remove('text-white');
+                mobileBtn.classList.remove('text-[#0F172A]');
                 mobileBtn.classList.add('text-[#0F172A]');
 
                 navLinks.forEach(link => {
@@ -567,14 +567,15 @@
         });
     </script>
 
-    <!-- Dynamic Media Injector Script -->
+    <!-- Dynamic Media & Article Separator Script -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
         marked.setOptions({ html: true, gfm: true });
 
-        async function loadDynamicMediaHighlights() {
-            const gridContainer = document.getElementById('dynamic-media-grid');
-            if (!gridContainer) return;
+        async function loadDynamicContent() {
+            const articlesGrid = document.getElementById('dynamic-articles-grid');
+            const mediaGrid = document.getElementById('dynamic-media-grid');
+            if (!articlesGrid && !mediaGrid) return;
 
             const repoOwner = 'mordiifeanyi-git';
             const repoName = 'tawoetawosan-respo';
@@ -592,7 +593,7 @@
                     const rawResponse = await fetch(file.download_url);
                     const content = await rawResponse.text();
 
-                    let title = 'Untitled Highlight';
+                    let title = 'Untitled Publication';
                     let date = '';
                     let videoUrl = '';
                     let imageUrl = '';
@@ -619,8 +620,8 @@
                         .trim();
 
                     const bodyHtml = marked.parse(cleanMarkdown);
-                    const snippet = cleanMarkdown.replace(/[#*`_]/g, '').substring(0, 100) + '...';
-                    const formattedDate = date ? new Date(date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }).toUpperCase() : 'RECENT HIGHLIGHT';
+                    const snippet = cleanMarkdown.replace(/[#*`_]/g, '').substring(0, 110) + '...';
+                    const formattedDate = date ? new Date(date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }).toUpperCase() : 'RECENT PUBLICATION';
 
                     const articleObj = {
                         id: i,
@@ -632,65 +633,92 @@
                     };
                     dynamicArticlesMap.push(articleObj);
 
-                    const card = document.createElement('div');
-                    card.className = 'bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between cursor-pointer';
-                    card.onclick = () => openDynamicArticleModal(i);
+                    // --- SEPARATION LOGIC ---
+                    // If NO video URL is provided, treat as a written Article (links to article.html)
+                    if (!videoUrl) {
+                        const articleCard = document.createElement('article');
+                        articleCard.className = 'bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between';
 
-                    // Extract YouTube ID for thumbnail preview if present
-                    let ytThumbUrl = '';
-                    if (videoUrl) {
+                        let bannerHtml = '';
+                        if (imageUrl) {
+                            bannerHtml = `<div class="h-48 bg-slate-900 overflow-hidden"><img src="${imageUrl}" class="w-full h-full object-cover"></div>`;
+                        }
+
+                        articleCard.innerHTML = `
+                            ${bannerHtml}
+                            <div class="p-6 sm:p-8 space-y-4">
+                                <div class="flex items-center justify-between text-xs text-gray-500 font-medium">
+                                    <span class="px-3 py-1 rounded-full bg-blue-50 text-[#172554] font-semibold">Legal Article</span>
+                                    <span>${formattedDate}</span>
+                                </div>
+                                <h3 class="text-lg font-extrabold text-[#0F172A] font-['Raleway'] hover:text-[#172554] transition-colors leading-snug">
+                                    <a href="article.html?file=${file.name}">${title}</a>
+                                </h3>
+                                <p class="text-xs text-gray-600 line-clamp-3 leading-relaxed">${snippet}</p>
+                            </div>
+                            <div class="px-6 sm:px-8 pb-6 pt-2 border-t border-gray-100 flex items-center justify-between">
+                                <span class="text-xs text-gray-500 font-medium">By Editorial Desk</span>
+                                <a href="article.html?file=${file.name}" class="text-xs font-bold text-[#172554] hover:underline flex items-center space-x-1">
+                                    <span>Read Article</span> &rarr;
+                                </a>
+                            </div>
+                        `;
+                        articlesGrid.prepend(articleCard);
+                    } 
+                    // If a video URL is provided, treat as a Firm Meeting / Media Highlight (opens modal)
+                    else {
+                        const mediaCard = document.createElement('div');
+                        mediaCard.className = 'bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between cursor-pointer';
+                        mediaCard.onclick = () => openDynamicArticleModal(i);
+
+                        let ytThumbUrl = '';
                         const ytMatch = videoUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/))([\w-]{11})/);
                         if (ytMatch && ytMatch[1]) {
                             ytThumbUrl = `https://i.ytimg.com/vi/${ytMatch[1]}/hqdefault.jpg`;
                         }
-                    }
 
-                    let mediaBanner = '';
-                    if (imageUrl) {
-                        mediaBanner = `<div class="h-52 bg-slate-900 overflow-hidden"><img src="${imageUrl}" class="w-full h-full object-cover"></div>`;
-                    } else if (ytThumbUrl) {
-                        mediaBanner = `
-                            <div class="h-52 bg-slate-950 overflow-hidden relative group">
-                                <img src="${ytThumbUrl}" 
-                                     onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&q=80&w=800';" 
-                                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-                                <div class="absolute inset-0 bg-slate-950/30 flex items-center justify-center">
-                                    <div class="w-12 h-12 rounded-full bg-blue-600/90 text-white flex items-center justify-center shadow-lg group-hover:bg-blue-500 transition-colors">
-                                        <i class="fa-solid fa-play text-lg ml-0.5"></i>
+                        let mediaBanner = '';
+                        if (imageUrl) {
+                            mediaBanner = `<div class="h-52 bg-slate-900 overflow-hidden"><img src="${imageUrl}" class="w-full h-full object-cover"></div>`;
+                        } else if (ytThumbUrl) {
+                            mediaBanner = `
+                                <div class="h-52 bg-slate-950 overflow-hidden relative group">
+                                    <img src="${ytThumbUrl}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&q=80&w=800';" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                    <div class="absolute inset-0 bg-slate-950/30 flex items-center justify-center">
+                                        <div class="w-12 h-12 rounded-full bg-blue-600/90 text-white flex items-center justify-center shadow-lg group-hover:bg-blue-500 transition-colors">
+                                            <i class="fa-solid fa-play text-lg ml-0.5"></i>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>`;
-                    } else if (videoUrl) {
-                        mediaBanner = `
-                            <div class="h-52 bg-slate-950 overflow-hidden relative">
-                                <video controls class="w-full h-full object-cover">
-                                    <source src="${videoUrl}" type="video/mp4">
-                                </video>
-                            </div>`;
-                    } else {
-                        mediaBanner = `<div class="h-52 bg-slate-900 flex items-center justify-center text-white"><i class="fa-solid fa-scale-balanced text-3xl text-blue-300"></i></div>`;
+                                </div>`;
+                        } else {
+                            mediaBanner = `
+                                <div class="h-52 bg-slate-950 overflow-hidden relative">
+                                    <video controls class="w-full h-full object-cover">
+                                        <source src="${videoUrl}" type="video/mp4">
+                                    </video>
+                                </div>`;
+                        }
+
+                        mediaCard.innerHTML = `
+                            ${mediaBanner}
+                            <div class="p-6 space-y-2">
+                                <div class="text-[10px] text-gray-500 font-semibold uppercase tracking-wider">Chambers Bulletin &bull; ${formattedDate}</div>
+                                <h3 class="text-base font-bold text-[#0F172A] font-['Raleway']">${title}</h3>
+                                <p class="text-xs text-gray-600 leading-relaxed line-clamp-2">${snippet}</p>
+                            </div>
+                            <div class="px-6 pb-5 pt-2 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-[#172554]">
+                                <span>Expand Full Notes &amp; Proceedings</span> &rarr;
+                            </div>
+                        `;
+                        mediaGrid.prepend(mediaCard);
                     }
-
-                    card.innerHTML = `
-                        ${mediaBanner}
-                        <div class="p-6 space-y-2">
-                            <div class="text-[10px] text-gray-500 font-semibold uppercase tracking-wider">Chambers Bulletin &bull; ${formattedDate}</div>
-                            <h3 class="text-base font-bold text-[#0F172A] font-['Raleway']">${title}</h3>
-                            <p class="text-xs text-gray-600 leading-relaxed line-clamp-2">${snippet}</p>
-                        </div>
-                        <div class="px-6 pb-5 pt-2 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-[#172554]">
-                            <span>Expand Full Notes &amp; Proceedings</span> &rarr;
-                        </div>
-                    `;
-
-                    gridContainer.prepend(card);
                 }
             } catch (error) {
-                console.error('Error loading dynamic highlights:', error);
+                console.error('Error loading dynamic content:', error);
             }
         }
 
-        document.addEventListener('DOMContentLoaded', loadDynamicMediaHighlights);
+        document.addEventListener('DOMContentLoaded', loadDynamicContent);
     </script>
 </body>
 </html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legal Insight | TAWO E. TAWO, SAN & CO.</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Roboto', 'Raleway', Arial, Helvetica, sans-serif; background-color: #F8FAFC; color: #334155; line-height: 1.8; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Raleway', 'Roboto', Arial, Helvetica, sans-serif; color: #0F172A; }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700;800&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="antialiased bg-[#F8FAFC]">
+
+    <!-- Navigation -->
+    <header class="bg-[#172554] py-3 px-6 md:px-12 text-white shadow-md">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <a href="index.html" class="flex items-center space-x-3">
+                <div class="w-9 h-9 rounded-full overflow-hidden bg-white flex items-center justify-center p-0.5">
+                    <img src="/WhatsApp Image 2026-10-08 at 13.10.32.jpeg" alt="Logo" class="w-full h-full object-cover rounded-full" onerror="this.src='https://placehold.co/100x100/172554/FFFFFF?text=TT';">
+                </div>
+                <span class="font-bold text-xs md:text-sm tracking-wide font-['Raleway']">TAWO E. TAWO, SAN & CO.</span>
+            </a>
+            <a href="articles.html" class="text-xs font-bold bg-white/10 hover:bg-white/20 px-4 py-2 rounded-xl transition-all">
+                &larr; Back to Insights &amp; Articles
+            </a>
+        </div>
+    </header>
+
+    <!-- Article Content Container -->
+    <main class="max-w-4xl mx-auto px-6 py-16 space-y-8">
+        
+        <!-- Header Info -->
+        <div class="space-y-4 border-b border-gray-200 pb-8">
+            <div class="flex items-center space-x-3 text-xs text-gray-500 font-semibold uppercase tracking-wider">
+                <span id="article-date" class="px-3 py-1 rounded-full bg-blue-50 text-[#172554]">Loading...</span>
+                <span>• Chambers Publication</span>
+            </div>
+            <h1 id="article-title" class="text-2xl sm:text-4xl font-extrabold text-[#0F172A] font-['Raleway'] leading-tight">
+                Loading Article...
+            </h1>
+        </div>
+
+        <!-- Media Banner / Video / Image Player Box -->
+        <div id="article-media-container" class="rounded-2xl overflow-hidden border border-gray-200 bg-slate-950 shadow-md hidden aspect-video flex items-center justify-center">
+            <!-- Dynamically injected player or image goes here -->
+        </div>
+
+        <!-- Markdown Body Content -->
+        <div id="article-body" class="bg-white p-8 sm:p-12 rounded-3xl border border-gray-200 shadow-sm space-y-6 text-gray-700 text-sm sm:text-base leading-relaxed">
+            <p class="text-gray-400 text-center py-12">Retrieving publication details from repository...</p>
+        </div>
+
+        <!-- Back Button -->
+        <div class="pt-6 text-center">
+            <a href="articles.html" class="inline-flex items-center space-x-2 px-6 py-3 rounded-xl bg-[#172554] text-white font-bold text-xs uppercase tracking-wider hover:bg-blue-900 transition-all shadow">
+                <i class="fa-solid fa-arrow-left"></i>
+                <span>Return to All Articles</span>
+            </a>
+        </div>
+
+    </main>
+
+    <!-- Markdown Parser Script -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+        marked.setOptions({ html: true, gfm: true });
+
+        async function loadSingleArticle() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const fileName = urlParams.get('file');
+
+            if (!fileName) {
+                document.getElementById('article-body').innerHTML = '<p class="text-red-500 font-bold">Error: No article specified.</p>';
+                return;
+            }
+
+            const repoOwner = 'mordiifeanyi-git';
+            const repoName = 'tawoetawosan-respo';
+            const fileUrl = `https://raw.githubusercontent.com/${repoOwner}/${repoName}/main/articles/${fileName}`;
+
+            try {
+                const res = await fetch(fileUrl);
+                if (!res.ok) throw new Error('Article not found.');
+
+                const content = await res.text();
+
+                // Extract Frontmatter Metadata
+                let title = 'Legal Insight';
+                let date = '';
+                let videoUrl = '';
+                let imageUrl = '';
+
+                const titleMatch = content.match(/title:\s*["']?(.*?)["']?(?=\s*(date:|image:|video:|---|$))/i);
+                if (titleMatch) title = titleMatch[1].replace(/["']/g, '');
+
+                const dateMatch = content.match(/date:\s*["']?(.*?)["']?(?=\s*(title:|image:|video:|---|$))/i);
+                if (dateMatch) date = dateMatch[1].replace(/["']/g, '');
+
+                const videoMatch = content.match(/video:\s*["']?(.*?)["']?(?=\s*(title:|date:|image:|---|$))/i);
+                if (videoMatch && videoMatch[1] !== "undefined" && videoMatch[1] !== '""') videoUrl = videoMatch[1].replace(/["']/g, '').trim();
+
+                const imageMatch = content.match(/image:\s*["']?(.*?)["']?(?=\s*(title:|date:|video:|---|$))/i);
+                if (imageMatch && imageMatch[1] !== "undefined" && imageMatch[1] !== '""') imageUrl = imageMatch[1].replace(/["']/g, '').trim();
+
+                // Clean Markdown Body
+                let cleanMarkdown = content
+                    .replace(/^---[\s\S]*?---/, '')
+                    .replace(/title:\s*["']?.*?["']?/gi, '')
+                    .replace(/date:\s*["']?.*?["']?/gi, '')
+                    .replace(/image:\s*["']?.*?["']?/gi, '')
+                    .replace(/video:\s*["']?.*?["']?/gi, '')
+                    .replace(/---/g, '')
+                    .trim();
+
+                // Populate Page Elements
+                document.getElementById('article-title').innerText = title;
+                document.title = `${title} | TAWO E. TAWO, SAN & CO.`;
+                document.getElementById('article-date').innerText = date ? new Date(date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }).toUpperCase() : 'RECENT PUBLICATION';
+                document.getElementById('article-body').innerHTML = marked.parse(cleanMarkdown);
+
+                // Handle Media (Video or Image Banner)
+                const mediaContainer = document.getElementById('article-media-container');
+                if (videoUrl) {
+                    mediaContainer.classList.remove('hidden');
+                    const ytMatch = videoUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/))([\w-]{11})/);
+                    if (ytMatch && ytMatch[1]) {
+                        mediaContainer.innerHTML = `
+                            <iframe class="w-full h-full aspect-video" src="https://www.youtube.com/embed/${ytMatch.id || ytMatch[1]}?rel=0" title="Video" frameborder="0" allowfullscreen></iframe>`;
+                    } else {
+                        mediaContainer.innerHTML = `
+                            <video controls class="w-full h-full object-contain">
+                                <source src="${videoUrl}" type="video/mp4">
+                            </video>`;
+                    }
+                } else if (imageUrl) {
+                    mediaContainer.classList.remove('hidden');
+                    mediaContainer.innerHTML = `<img src="${imageUrl}" class="w-full h-full object-cover">`;
+                }
+
+            } catch (err) {
+                console.error(err);
+                document.getElementById('article-body').innerHTML = '<p class="text-red-500 font-bold">Failed to load article content.</p>';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadSingleArticle);
+    </script>
+</body>
+</html>
