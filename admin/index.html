@@ -83,7 +83,7 @@
             <div class="max-w-4xl mx-auto space-y-2 relative z-10">
                 <h1 class="text-2xl sm:text-3xl font-extrabold text-white font-['Raleway']">Content Management Dashboard</h1>
                 <p class="text-xs text-gray-100 font-normal max-w-lg mx-auto leading-relaxed">
-                    Draft legal insights, publish video media, and upload photo galleries.
+                    Draft legal insights, publish video media, and upload multiple gallery photos from local storage.
                 </p>
             </div>
         </section>
@@ -174,12 +174,16 @@
                                 </div>
                             </div>
 
-                            <!-- Photo Gallery Inputs -->
+                            <!-- Multiple Photo Gallery Local Upload -->
                             <div class="space-y-1.5 pt-2 border-t border-gray-100">
                                 <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider font-['Raleway']">
-                                    <i class="fa-solid fa-images text-[#172554] mr-1"></i> Photo Gallery Photos (Comma-separated URLs)
+                                    <i class="fa-solid fa-images text-[#172554] mr-1"></i> Photo Gallery (Select Multiple from Device)
                                 </label>
-                                <input type="text" id="input-gallery" placeholder="e.g. /conference.jpeg, /tawo3.jpeg, /lawyers.jpeg" oninput="updateLivePreview()" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-xs text-slate-800 bg-slate-50/50 focus:outline-none" />
+                                <div class="space-y-2">
+                                    <input type="file" id="input-gallery-files" accept="image/*" multiple onchange="handleMultipleGalleryUpload(event)" class="w-full px-3 py-2 rounded-xl border border-gray-200 text-xs text-slate-600 bg-slate-50/50 file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-[10px] file:font-bold file:bg-[#172554] file:text-white cursor-pointer" />
+                                    <input type="text" id="input-gallery" placeholder="Comma-separated image paths..." oninput="updateLivePreview()" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-xs text-slate-800 bg-slate-50/50 focus:outline-none" />
+                                </div>
+                                <p class="text-[10px] text-gray-400">Select multiple photos from your local device to upload them automatically.</p>
                             </div>
 
                             <!-- Video Recording Input -->
@@ -408,7 +412,7 @@
                     if (res.ok) {
                         document.getElementById(targetInputId).value = data.path;
                         updateLivePreview();
-                        alert(`✅ ${file.name} uploaded successfully and linked to${data.path}!`);
+                        alert(`✅ ${file.name} uploaded successfully and linked to ${data.path}!`);
                     } else {
                         alert('Upload failed: ' + (data.error || 'Server error'));
                     }
@@ -423,6 +427,63 @@
                 }
             };
             reader.readAsDataURL(file);
+        }
+
+        async function handleMultipleGalleryUpload(event) {
+            const files = event.target.files;
+            if (!files || files.length === 0) return;
+
+            const galleryInput = document.getElementById('input-gallery');
+            let currentPaths = galleryInput.value ? galleryInput.value.split(',').map(s => s.trim()).filter(Boolean) : [];
+
+            const btn = document.getElementById('publish-btn');
+            if (btn) {
+                btn.disabled = true;
+            }
+
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                if (btn) btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Uploading ${i + 1}/${files.length}...`;
+
+                await new Promise((resolve) => {
+                    const reader = new FileReader();
+                    reader.onload = async function(e) {
+                        const base64Content = e.target.result.split(',')[1];
+                        const cleanFilename = `${Date.now()}-${file.name.toLowerCase().replace(/[^a-z0-9.]+/g, '-')}`;
+                        const uploadPath = `media/${cleanFilename}`;
+
+                        try {
+                            const res = await fetch('/api/upload-media', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    path: uploadPath,
+                                    content: base64Content,
+                                    message: `Admin upload gallery photo: ${cleanFilename}`
+                                })
+                            });
+
+                            const data = await res.json();
+                            if (res.ok) {
+                                currentPaths.push(data.path);
+                            }
+                        } catch (err) {
+                            console.error('Gallery upload error:', err);
+                        }
+                        resolve();
+                    };
+                    reader.readAsDataURL(file);
+                });
+            }
+
+            galleryInput.value = currentPaths.join(', ');
+            updateLivePreview();
+
+            if (btn) {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Publish Live';
+            }
+            alert(`✅ Successfully uploaded ${files.length} photo(s) to gallery!`);
         }
 
         function generateMarkdownString() {
