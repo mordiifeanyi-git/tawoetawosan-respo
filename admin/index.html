@@ -83,7 +83,7 @@
             <div class="max-w-4xl mx-auto space-y-2 relative z-10">
                 <h1 class="text-2xl sm:text-3xl font-extrabold text-white font-['Raleway']">Content Management Dashboard</h1>
                 <p class="text-xs text-gray-100 font-normal max-w-lg mx-auto leading-relaxed">
-                    Draft legal insights, manage repository files, and publish structured articles.
+                    Draft legal insights, manage repository files, and publish structured articles with author avatars.
                 </p>
             </div>
         </section>
@@ -148,6 +148,17 @@
                                 </div>
                             </div>
 
+                            <!-- Author Avatar Image Input -->
+                            <div class="space-y-1.5 pt-2 border-t border-gray-100">
+                                <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider font-['Raleway']">
+                                    <i class="fa-solid fa-user-tie text-[#172554] mr-1"></i> Author Avatar Photo (Bottom Right Badge)
+                                </label>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                    <input type="file" id="input-avatar-file" accept="image/*" onchange="handleLocalFileUpload(event, 'input-avatar-url')" class="w-full px-3 py-2 rounded-xl border border-gray-200 text-xs text-slate-600 bg-slate-50/50 file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-[10px] file:font-bold file:bg-[#172554] file:text-white cursor-pointer" />
+                                    <input type="text" id="input-avatar-url" placeholder="Or paste image URL..." oninput="updateLivePreview()" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-xs text-slate-800 bg-slate-50/50 focus:outline-none" />
+                                </div>
+                            </div>
+
                             <!-- Featured Image Dual Input (Choose File or URL) -->
                             <div class="space-y-1.5 pt-2 border-t border-gray-100">
                                 <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider font-['Raleway']">
@@ -186,7 +197,7 @@
                                 <span class="text-[10px] font-bold text-[#172554] bg-blue-50 px-2.5 py-1 rounded-full uppercase tracking-wider">Exact Website Match</span>
                             </div>
 
-                            <article class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between max-w-md mx-auto">
+                            <article class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between max-w-md mx-auto relative">
                                 <div class="p-6 space-y-4">
                                     <!-- Dynamic Interactive Media Box -->
                                     <div id="preview-card-banner" class="rounded-xl overflow-hidden aspect-video bg-slate-900 flex items-center justify-center text-white relative shadow-inner">
@@ -198,6 +209,10 @@
                                     </div>
                                     <h3 id="preview-card-title" class="text-lg font-extrabold text-[#0F172A] font-['Raleway'] leading-snug">Loan App Harassment & Predatory Digital Lending Under Nigerian Law</h3>
                                     <p id="preview-card-snippet" class="text-xs text-gray-600 line-clamp-3 leading-relaxed">Analyzing statutory protections under the FCCPA 2018...</p>
+                                </div>
+                                <!-- Author Avatar Bottom-Right Badge Preview -->
+                                <div id="preview-avatar-badge" class="absolute bottom-4 right-4 hidden w-10 h-10 rounded-full border-2 border-white shadow-md overflow-hidden bg-white">
+                                    <img id="preview-avatar-img" src="" class="w-full h-full object-cover">
                                 </div>
                             </article>
                         </div>
@@ -300,6 +315,7 @@
             const body = document.getElementById('input-body').value || '';
             const imageUrl = document.getElementById('input-image-url').value.trim();
             const videoUrl = document.getElementById('input-video-url').value.trim();
+            const avatarUrl = document.getElementById('input-avatar-url').value.trim();
 
             let formattedDate = 'RECENT ENTRY';
             if (dateVal) {
@@ -311,9 +327,17 @@
             document.getElementById('preview-card-category').innerText = category.split('•')[0].trim();
             document.getElementById('preview-card-snippet').innerText = body;
 
+            const avatarBadge = document.getElementById('preview-avatar-badge');
+            const avatarImg = document.getElementById('preview-avatar-img');
+            if (avatarUrl) {
+                avatarImg.src = avatarUrl;
+                avatarBadge.classList.remove('hidden');
+            } else {
+                avatarBadge.classList.add('hidden');
+            }
+
             const bannerContainer = document.getElementById('preview-card-banner');
 
-            // 1. If Video URL is provided, display interactive playable video (YouTube or local file)
             if (videoUrl) {
                 const ytMatch = videoUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/))([\w-]{11})/);
                 if (ytMatch && ytMatch[1]) {
@@ -333,13 +357,9 @@
                             Your browser does not support video playback.
                         </video>`;
                 }
-            } 
-            // 2. Else if Image URL is provided, render featured image
-            else if (imageUrl) {
+            } else if (imageUrl) {
                 bannerContainer.innerHTML = `<img src="${imageUrl}" class="w-full h-full object-cover" alt="Banner" />`;
-            } 
-            // 3. Fallback placeholder
-            else {
+            } else {
                 bannerContainer.innerHTML = `
                     <div class="flex flex-col items-center justify-center text-center p-4">
                         <i class="fa-solid fa-scale-balanced text-4xl text-blue-400 mb-2 opacity-90"></i>
@@ -351,10 +371,6 @@
         async function handleLocalFileUpload(event, targetInputId) {
             const file = event.target.files[0];
             if (!file) return;
-
-            if (file.size > 35 * 1024 * 1024) {
-                alert(`Note: "${file.name}" is quite large (${(file.size / (1024*1024)).toFixed(1)}MB). Please ensure it is compressed for optimal visitor loading times.`);
-            }
 
             const reader = new FileReader();
             reader.onload = async function(e) {
@@ -406,9 +422,10 @@
             const postType = document.querySelector('input[name="post-type"]:checked').value;
             const imageUrl = document.getElementById('input-image-url').value || '';
             const videoUrl = document.getElementById('input-video-url').value || '';
+            const authorAvatar = document.getElementById('input-avatar-url').value || '';
             const body = document.getElementById('input-body').value || '';
 
-            return `---\ntitle: "${title}"\ndate: "${date}"\ntype: "${postType}"\nimage: "${imageUrl}"\nvideo: "${videoUrl}"\n---\n\n${body}`;
+            return `---\ntitle: "${title}"\ndate: "${date}"\ntype: "${postType}"\nimage: "${imageUrl}"\nvideo: "${videoUrl}"\nauthor_avatar: "${authorAvatar}"\n---\n\n${body}`;
         }
 
         function copyMarkdown() {

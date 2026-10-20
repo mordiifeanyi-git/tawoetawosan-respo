@@ -92,7 +92,7 @@
 
     <main class="py-16 px-6 md:px-12 max-w-7xl mx-auto space-y-16">
 
-        <!-- SECTION 1: Featured Written Articles (Standalone Article Pages) -->
+        <!-- SECTION 1: Featured Written Articles -->
         <div class="space-y-6">
             <h2 class="text-2xl font-extrabold text-[#0F172A] font-['Raleway'] border-b border-gray-200 pb-3">Legal Insights &amp; Practice Guides</h2>
             
@@ -101,7 +101,7 @@
             </div>
         </div>
 
-        <!-- SECTION 2: Firm Meetings & Video / Media Highlights (Modal Popups) -->
+        <!-- SECTION 2: Firm Meetings & Video / Media Highlights -->
         <div class="space-y-8">
             <h2 class="text-2xl font-extrabold text-[#0F172A] font-['Raleway'] border-b border-gray-200 pb-3">Media Highlights</h2>
 
@@ -111,7 +111,6 @@
                     <span>Chambers Proceedings &amp; Media</span>
                 </div>
 
-                <!-- Grid populated with media highlights -->
                 <div id="dynamic-media-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <!-- Dynamically populated from publishing admin -->
                 </div>
@@ -351,23 +350,27 @@
                     let postType = 'article'; 
                     let videoUrl = '';
                     let imageUrl = '';
+                    let authorAvatar = '';
 
-                    const titleMatch = content.match(/title:\s*["']?(.*?)["']?(?=\s*(date:|type:|image:|video:|---|$))/i);
+                    const titleMatch = content.match(/title:\s*["']?(.*?)["']?(?=\s*(date:|type:|image:|video:|author_avatar:|---|$))/i);
                     if (titleMatch) title = titleMatch[1].replace(/["']/g, '');
 
-                    const dateMatch = content.match(/date:\s*["']?(.*?)["']?(?=\s*(title:|type:|image:|video:|---|$))/i);
+                    const dateMatch = content.match(/date:\s*["']?(.*?)["']?(?=\s*(title:|type:|image:|video:|author_avatar:|---|$))/i);
                     if (dateMatch) date = dateMatch[1].replace(/["']/g, '');
 
-                    const typeMatch = content.match(/type:\s*["']?(.*?)["']?(?=\s*(title:|date:|image:|video:|---|$))/i);
+                    const typeMatch = content.match(/type:\s*["']?(.*?)["']?(?=\s*(title:|date:|image:|video:|author_avatar:|---|$))/i);
                     if (typeMatch && typeMatch[1]) {
                         postType = typeMatch[1].replace(/["']/g, '').trim();
                     }
 
-                    const videoMatch = content.match(/video:\s*["']?(.*?)["']?(?=\s*(title:|date:|type:|image:|---|$))/i);
+                    const videoMatch = content.match(/video:\s*["']?(.*?)["']?(?=\s*(title:|date:|type:|image:|author_avatar:|---|$))/i);
                     if (videoMatch && videoMatch[1] !== "undefined" && videoMatch[1] !== '""') videoUrl = videoMatch[1].replace(/["']/g, '').trim();
 
-                    const imageMatch = content.match(/image:\s*["']?(.*?)["']?(?=\s*(title:|date:|type:|video:|---|$))/i);
+                    const imageMatch = content.match(/image:\s*["']?(.*?)["']?(?=\s*(title:|date:|type:|video:|author_avatar:|---|$))/i);
                     if (imageMatch && imageMatch[1] !== "undefined" && imageMatch[1] !== '""') imageUrl = imageMatch[1].replace(/["']/g, '').trim();
+
+                    const avatarMatch = content.match(/author_avatar:\s*["']?(.*?)["']?(?=\s*(title:|date:|type:|image:|video:|---|$))/i);
+                    if (avatarMatch && avatarMatch[1] !== "undefined" && avatarMatch[1] !== '""') authorAvatar = avatarMatch[1].replace(/["']/g, '').trim();
 
                     let cleanMarkdown = content
                         .replace(/^---[\s\S]*?---/, '')
@@ -376,6 +379,7 @@
                         .replace(/type:\s*["']?.*?["']?/gi, '')
                         .replace(/image:\s*["']?.*?["']?/gi, '')
                         .replace(/video:\s*["']?.*?["']?/gi, '')
+                        .replace(/author_avatar:\s*["']?.*?["']?/gi, '')
                         .replace(/---/g, '')
                         .trim();
 
@@ -389,6 +393,7 @@
                         date: formattedDate,
                         imageUrl: imageUrl,
                         videoUrl: videoUrl,
+                        authorAvatar: authorAvatar,
                         bodyHtml: bodyHtml
                     };
                     dynamicArticlesMap.push(articleObj);
@@ -396,13 +401,21 @@
                     // --- ROUTING BASED ON ADMIN TYPE SELECTION ---
                     if (postType === 'article') {
                         const articleCard = document.createElement('article');
-                        articleCard.className = 'bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between';
+                        articleCard.className = 'bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between relative';
 
                         let bannerHtml = '';
                         if (imageUrl) {
                             bannerHtml = `
                                 <div class="w-full bg-slate-900 flex items-center justify-center p-2 max-h-56 overflow-hidden">
                                     <img src="${imageUrl}" class="w-full h-auto max-h-56 object-contain">
+                                </div>`;
+                        }
+
+                        let avatarHtml = '';
+                        if (authorAvatar) {
+                            avatarHtml = `
+                                <div class="absolute bottom-4 right-4 w-10 h-10 rounded-full border-2 border-white shadow-md overflow-hidden bg-white shrink-0 z-10">
+                                    <img src="${authorAvatar}" class="w-full h-full object-cover" alt="Author Avatar">
                                 </div>`;
                         }
 
@@ -424,11 +437,12 @@
                                     <span>Read Article</span> &rarr;
                                 </a>
                             </div>
+                            ${avatarHtml}
                         `;
                         articlesGrid.prepend(articleCard);
                     } else {
                         const mediaCard = document.createElement('div');
-                        mediaCard.className = 'bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between cursor-pointer';
+                        mediaCard.className = 'bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between cursor-pointer relative';
                         mediaCard.onclick = () => openDynamicArticleModal(i);
 
                         let ytThumbUrl = '';
@@ -457,6 +471,14 @@
                             mediaBanner = `<div class="h-52 bg-slate-900 flex items-center justify-center text-white"><i class="fa-solid fa-scale-balanced text-3xl text-blue-300"></i></div>`;
                         }
 
+                        let avatarHtml = '';
+                        if (authorAvatar) {
+                            avatarHtml = `
+                                <div class="absolute bottom-4 right-4 w-10 h-10 rounded-full border-2 border-white shadow-md overflow-hidden bg-white shrink-0 z-10">
+                                    <img src="${authorAvatar}" class="w-full h-full object-cover" alt="Author Avatar">
+                                </div>`;
+                        }
+
                         mediaCard.innerHTML = `
                             ${mediaBanner}
                             <div class="p-6 space-y-2">
@@ -467,6 +489,7 @@
                             <div class="px-6 pb-5 pt-2 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-[#172554]">
                                 <span>Expand Full Notes &amp; Proceedings</span> &rarr;
                             </div>
+                            ${avatarHtml}
                         `;
                         mediaGrid.prepend(mediaCard);
                     }
