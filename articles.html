@@ -92,31 +92,42 @@
 
     <main class="py-16 px-6 md:px-12 max-w-7xl mx-auto space-y-16">
 
-        <!-- SECTION 1: Featured Written Articles -->
+        <!-- SECTION 1: Legal Insights & Practice Guides -->
         <div class="space-y-6">
             <h2 class="text-2xl font-extrabold text-[#0F172A] font-['Raleway'] border-b border-gray-200 pb-3">Legal Insights &amp; Practice Guides</h2>
-            
             <div id="dynamic-articles-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Dynamically populated from publishing admin -->
+                <!-- Dynamically populated -->
             </div>
         </div>
 
-        <!-- SECTION 2: Firm Meetings & Video / Media Highlights -->
-        <div class="space-y-8">
+        <!-- SECTION 2: Media Highlights -->
+        <div class="space-y-6">
             <h2 class="text-2xl font-extrabold text-[#0F172A] font-['Raleway'] border-b border-gray-200 pb-3">Media Highlights</h2>
-
             <div class="space-y-4">
                 <div class="flex items-center space-x-2 text-xs font-bold text-[#172554] tracking-wider uppercase font-['Raleway']">
                     <i class="fa-solid fa-circle-play text-blue-600"></i>
-                    <span>Chambers Proceedings &amp; Media</span>
+                    <span>Chambers Proceedings &amp; Video Recordings</span>
                 </div>
-
                 <div id="dynamic-media-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <!-- Dynamically populated from publishing admin -->
+                    <!-- Dynamically populated -->
                 </div>
             </div>
-
         </div>
+
+        <!-- SECTION 3: Photo Gallery (Bottom Section) -->
+        <div class="space-y-6 pt-4">
+            <h2 class="text-2xl font-extrabold text-[#0F172A] font-['Raleway'] border-b border-gray-200 pb-3">Photo Gallery</h2>
+            <div class="space-y-4">
+                <div class="flex items-center space-x-2 text-xs font-bold text-[#172554] tracking-wider uppercase font-['Raleway']">
+                    <i class="fa-solid fa-images text-blue-600"></i>
+                    <span>Photo Bulletins &amp; Event Summaries</span>
+                </div>
+                <div id="dynamic-gallery-grid" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Dynamically populated -->
+                </div>
+            </div>
+        </div>
+
     </main>
 
     <!-- Footer -->
@@ -168,8 +179,8 @@
             </div>
 
             <div class="p-6 overflow-y-auto space-y-6 flex-1 text-gray-700 text-xs sm:text-sm leading-relaxed">
-                <!-- Adaptive Image Wrapper -->
-                <div id="modal-media-wrapper" class="space-y-4 flex items-center justify-center bg-slate-900 rounded-xl overflow-hidden p-2"></div>
+                <!-- Gallery Grid or Featured Media Wrapper -->
+                <div id="modal-media-wrapper" class="space-y-4"></div>
 
                 <div id="modal-video-container" class="space-y-2 border-t border-gray-100 pt-4 hidden">
                     <span class="text-[11px] font-bold text-[#0F172A] uppercase tracking-wider block font-['Raleway']"><i class="fa-solid fa-circle-play text-[#172554] mr-1"></i> Video Recording</span>
@@ -232,13 +243,18 @@
             const mediaWrapper = document.getElementById('modal-media-wrapper');
             mediaWrapper.innerHTML = '';
 
-            if (article.imageUrl) {
+            if (article.gallery && article.gallery.length > 0) {
+                let gridHtml = '<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">';
+                article.gallery.forEach(img => {
+                    gridHtml += `<div class="h-36 rounded-xl overflow-hidden border border-gray-200 bg-slate-900 p-1"><img src="${img}" class="w-full h-full object-contain"></div>`;
+                });
+                gridHtml += '</div>';
+                mediaWrapper.innerHTML = gridHtml;
+            } else if (article.imageUrl) {
                 mediaWrapper.innerHTML = `
                     <div class="w-full rounded-lg overflow-hidden bg-slate-900 flex items-center justify-center p-1">
                         <img src="${article.imageUrl}" class="w-full h-auto max-h-[400px] object-contain rounded-md" />
                     </div>`;
-            } else {
-                mediaWrapper.parentElement.style.display = 'none';
             }
 
             const videoContainer = document.getElementById('modal-video-container');
@@ -319,7 +335,7 @@
         });
     </script>
 
-    <!-- Dynamic Content Loader from GitHub Admin Pipeline -->
+    <!-- Dynamic Content Loader -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
         marked.setOptions({ html: true, gfm: true });
@@ -327,7 +343,8 @@
         async function loadDynamicContent() {
             const articlesGrid = document.getElementById('dynamic-articles-grid');
             const mediaGrid = document.getElementById('dynamic-media-grid');
-            if (!articlesGrid && !mediaGrid) return;
+            const galleryGrid = document.getElementById('dynamic-gallery-grid');
+            if (!articlesGrid && !mediaGrid && !galleryGrid) return;
 
             const repoOwner = 'mordiifeanyi-git';
             const repoName = 'tawoetawosan-respo';
@@ -350,27 +367,33 @@
                     let postType = 'article'; 
                     let videoUrl = '';
                     let imageUrl = '';
-                    let authorAvatar = '';
+                    let galleryStr = '';
+                    let authorPhoto = '';
 
-                    const titleMatch = content.match(/title:\s*["']?(.*?)["']?(?=\s*(date:|type:|image:|video:|author_avatar:|---|$))/i);
+                    const titleMatch = content.match(/title:\s*["']?(.*?)["']?(?=\s*(date:|type:|image:|gallery:|video:|author_photo:|---|$))/i);
                     if (titleMatch) title = titleMatch[1].replace(/["']/g, '');
 
-                    const dateMatch = content.match(/date:\s*["']?(.*?)["']?(?=\s*(title:|type:|image:|video:|author_avatar:|---|$))/i);
+                    const dateMatch = content.match(/date:\s*["']?(.*?)["']?(?=\s*(title:|type:|image:|gallery:|video:|author_photo:|---|$))/i);
                     if (dateMatch) date = dateMatch[1].replace(/["']/g, '');
 
-                    const typeMatch = content.match(/type:\s*["']?(.*?)["']?(?=\s*(title:|date:|image:|video:|author_avatar:|---|$))/i);
+                    const typeMatch = content.match(/type:\s*["']?(.*?)["']?(?=\s*(title:|date:|image:|gallery:|video:|author_photo:|---|$))/i);
                     if (typeMatch && typeMatch[1]) {
                         postType = typeMatch[1].replace(/["']/g, '').trim();
                     }
 
-                    const videoMatch = content.match(/video:\s*["']?(.*?)["']?(?=\s*(title:|date:|type:|image:|author_avatar:|---|$))/i);
+                    const videoMatch = content.match(/video:\s*["']?(.*?)["']?(?=\s*(title:|date:|type:|image:|gallery:|author_photo:|---|$))/i);
                     if (videoMatch && videoMatch[1] !== "undefined" && videoMatch[1] !== '""') videoUrl = videoMatch[1].replace(/["']/g, '').trim();
 
-                    const imageMatch = content.match(/image:\s*["']?(.*?)["']?(?=\s*(title:|date:|type:|video:|author_avatar:|---|$))/i);
+                    const imageMatch = content.match(/image:\s*["']?(.*?)["']?(?=\s*(title:|date:|type:|gallery:|video:|author_photo:|---|$))/i);
                     if (imageMatch && imageMatch[1] !== "undefined" && imageMatch[1] !== '""') imageUrl = imageMatch[1].replace(/["']/g, '').trim();
 
-                    const avatarMatch = content.match(/author_avatar:\s*["']?(.*?)["']?(?=\s*(title:|date:|type:|image:|video:|---|$))/i);
-                    if (avatarMatch && avatarMatch[1] !== "undefined" && avatarMatch[1] !== '""') authorAvatar = avatarMatch[1].replace(/["']/g, '').trim();
+                    const galleryMatch = content.match(/gallery:\s*["']?(.*?)["']?(?=\s*(title:|date:|type:|image:|video:|author_photo:|---|$))/i);
+                    if (galleryMatch && galleryMatch[1] !== "undefined" && galleryMatch[1] !== '""') galleryStr = galleryMatch[1].replace(/["']/g, '').trim();
+
+                    const avatarMatch = content.match(/author_photo:\s*["']?(.*?)["']?(?=\s*(title:|date:|type:|image:|gallery:|video:|---|$))/i);
+                    if (avatarMatch && avatarMatch[1] !== "undefined" && avatarMatch[1] !== '""') authorPhoto = avatarMatch[1].replace(/["']/g, '').trim();
+
+                    let galleryPhotos = galleryStr ? galleryStr.split(',').map(s => s.trim()).filter(Boolean) : [];
 
                     let cleanMarkdown = content
                         .replace(/^---[\s\S]*?---/, '')
@@ -378,8 +401,9 @@
                         .replace(/date:\s*["']?.*?["']?/gi, '')
                         .replace(/type:\s*["']?.*?["']?/gi, '')
                         .replace(/image:\s*["']?.*?["']?/gi, '')
+                        .replace(/gallery:\s*["']?.*?["']?/gi, '')
                         .replace(/video:\s*["']?.*?["']?/gi, '')
-                        .replace(/author_avatar:\s*["']?.*?["']?/gi, '')
+                        .replace(/author_photo:\s*["']?.*?["']?/gi, '')
                         .replace(/---/g, '')
                         .trim();
 
@@ -392,14 +416,24 @@
                         title: title,
                         date: formattedDate,
                         imageUrl: imageUrl,
+                        gallery: galleryPhotos,
                         videoUrl: videoUrl,
-                        authorAvatar: authorAvatar,
+                        authorPhoto: authorPhoto,
                         bodyHtml: bodyHtml
                     };
                     dynamicArticlesMap.push(articleObj);
 
-                    // --- ROUTING BASED ON ADMIN TYPE SELECTION ---
+                    let avatarBadgeHtml = '';
+                    if (authorPhoto) {
+                        avatarBadgeHtml = `
+                            <div class="absolute bottom-4 right-4 w-14 h-14 rounded-xl border-2 border-white shadow-lg overflow-hidden bg-white shrink-0 z-10">
+                                <img src="${authorPhoto}" class="w-full h-full object-cover" alt="Author Photo">
+                            </div>`;
+                    }
+
+                    // --- TARGET ROUTING ---
                     if (postType === 'article') {
+                        // SECTION 1: Legal Article Card
                         const articleCard = document.createElement('article');
                         articleCard.className = 'bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between relative';
 
@@ -408,14 +442,6 @@
                             bannerHtml = `
                                 <div class="w-full bg-slate-900 flex items-center justify-center p-2 max-h-56 overflow-hidden">
                                     <img src="${imageUrl}" class="w-full h-auto max-h-56 object-contain">
-                                </div>`;
-                        }
-
-                        let avatarHtml = '';
-                        if (authorAvatar) {
-                            avatarHtml = `
-                                <div class="absolute bottom-4 right-4 w-10 h-10 rounded-full border-2 border-white shadow-md overflow-hidden bg-white shrink-0 z-10">
-                                    <img src="${authorAvatar}" class="w-full h-full object-cover" alt="Author Avatar">
                                 </div>`;
                         }
 
@@ -437,10 +463,56 @@
                                     <span>Read Article</span> &rarr;
                                 </a>
                             </div>
-                            ${avatarHtml}
+                            ${avatarBadgeHtml}
                         `;
                         articlesGrid.prepend(articleCard);
+
+                    } else if (postType === 'gallery') {
+                        // SECTION 3: Photo Gallery Card
+                        const galleryCard = document.createElement('div');
+                        galleryCard.className = 'bg-white border border-gray-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group cursor-pointer relative';
+                        galleryCard.onclick = () => openDynamicArticleModal(i);
+
+                        let photoGridHtml = '';
+                        if (galleryPhotos.length > 0) {
+                            photoGridHtml = '<div class="grid grid-cols-3 gap-2 pt-2">';
+                            galleryPhotos.slice(0, 3).forEach((p, idx) => {
+                                let extraOverlay = '';
+                                if (idx === 2 && galleryPhotos.length > 3) {
+                                    extraOverlay = `<div class="absolute inset-0 bg-slate-950/40 flex items-center justify-center text-white text-[10px] font-bold">+${galleryPhotos.length - 3} More</div>`;
+                                }
+                                photoGridHtml += `
+                                    <div class="h-24 rounded-lg overflow-hidden bg-slate-100 border border-gray-200 relative">
+                                        <img src="${p}" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
+                                        ${extraOverlay}
+                                    </div>`;
+                            });
+                            photoGridHtml += '</div>';
+                        } else if (imageUrl) {
+                            photoGridHtml = `
+                                <div class="h-36 rounded-xl overflow-hidden border border-gray-200 bg-slate-900 p-1">
+                                    <img src="${imageUrl}" class="w-full h-full object-contain">
+                                </div>`;
+                        }
+
+                        galleryCard.innerHTML = `
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between text-[10px] text-gray-500 font-semibold uppercase tracking-wider">
+                                    <span>Photo Bulletin &bull; ${formattedDate}</span>
+                                </div>
+                                <h3 class="text-lg font-bold text-[#0F172A] font-['Raleway'] group-hover:text-[#172554] transition-colors">${title}</h3>
+                                <p class="text-xs text-gray-600 leading-relaxed">${snippet}</p>
+                                ${photoGridHtml}
+                            </div>
+                            <div class="pt-5 mt-4 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-[#172554]">
+                                <span>View All Photos &amp; Event Summary</span> &rarr;
+                            </div>
+                            ${avatarBadgeHtml}
+                        `;
+                        galleryGrid.prepend(galleryCard);
+
                     } else {
+                        // SECTION 2: Media Highlight Card
                         const mediaCard = document.createElement('div');
                         mediaCard.className = 'bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between cursor-pointer relative';
                         mediaCard.onclick = () => openDynamicArticleModal(i);
@@ -471,14 +543,6 @@
                             mediaBanner = `<div class="h-52 bg-slate-900 flex items-center justify-center text-white"><i class="fa-solid fa-scale-balanced text-3xl text-blue-300"></i></div>`;
                         }
 
-                        let avatarHtml = '';
-                        if (authorAvatar) {
-                            avatarHtml = `
-                                <div class="absolute bottom-4 right-4 w-10 h-10 rounded-full border-2 border-white shadow-md overflow-hidden bg-white shrink-0 z-10">
-                                    <img src="${authorAvatar}" class="w-full h-full object-cover" alt="Author Avatar">
-                                </div>`;
-                        }
-
                         mediaCard.innerHTML = `
                             ${mediaBanner}
                             <div class="p-6 space-y-2">
@@ -489,7 +553,7 @@
                             <div class="px-6 pb-5 pt-2 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-[#172554]">
                                 <span>Expand Full Notes &amp; Proceedings</span> &rarr;
                             </div>
-                            ${avatarHtml}
+                            ${avatarBadgeHtml}
                         `;
                         mediaGrid.prepend(mediaCard);
                     }
