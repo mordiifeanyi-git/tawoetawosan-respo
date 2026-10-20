@@ -83,7 +83,7 @@
             <div class="max-w-4xl mx-auto space-y-2 relative z-10">
                 <h1 class="text-2xl sm:text-3xl font-extrabold text-white font-['Raleway']">Content Management Dashboard</h1>
                 <p class="text-xs text-gray-100 font-normal max-w-lg mx-auto leading-relaxed">
-                    Select your target section below. The workbench automatically adapts to show only the relevant fields needed for your publication.
+                    Select your target section below. The workbench preview instantly adapts to match the live website output.
                 </p>
             </div>
         </section>
@@ -199,29 +199,15 @@
                         <div class="bg-white p-6 sm:p-8 rounded-2xl border border-gray-200 shadow-sm space-y-4">
                             <div class="flex items-center justify-between border-b border-gray-100 pb-3">
                                 <h3 class="text-xs font-extrabold text-[#0F172A] uppercase tracking-wider font-['Raleway'] flex items-center">
-                                    <i class="fa-solid fa-eye text-[#172554] mr-2"></i> Live Preview Box
+                                    <i class="fa-solid fa-eye text-[#172554] mr-2"></i> Live Section Preview Box
                                 </h3>
-                                <span class="text-[10px] font-bold text-[#172554] bg-blue-50 px-2.5 py-1 rounded-full uppercase tracking-wider">Exact Match</span>
+                                <span id="preview-section-badge" class="text-[10px] font-bold text-[#172554] bg-blue-50 px-2.5 py-1 rounded-full uppercase tracking-wider">Written Article</span>
                             </div>
 
-                            <article class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between max-w-md mx-auto relative min-h-[280px]">
-                                <div class="p-6 space-y-4">
-                                    <!-- Dynamic Media Banner (Only rendered for Media and Gallery) -->
-                                    <div id="preview-card-banner" class="rounded-xl overflow-hidden bg-slate-900 flex items-center justify-center text-white relative shadow-inner p-2 hidden">
-                                        <!-- Injected Media Here -->
-                                    </div>
-                                    <div class="flex items-center justify-between text-xs text-gray-500 font-medium">
-                                        <span id="preview-card-category" class="px-3 py-1 rounded-full bg-blue-50 text-[#172554] font-semibold">Category</span>
-                                        <span id="preview-card-date">DATE</span>
-                                    </div>
-                                    <h3 id="preview-card-title" class="text-lg font-extrabold text-[#0F172A] font-['Raleway'] leading-snug">Type title...</h3>
-                                    <p id="preview-card-snippet" class="text-xs text-gray-600 line-clamp-4 leading-relaxed">Type article body...</p>
-                                </div>
-                                <!-- Square Author Photo Badge Preview -->
-                                <div id="preview-avatar-badge" class="absolute bottom-4 right-4 hidden w-14 h-14 rounded-xl border-2 border-white shadow-lg overflow-hidden bg-white shrink-0">
-                                    <img id="preview-avatar-img" src="" class="w-full h-full object-cover">
-                                </div>
-                            </article>
+                            <!-- Dynamic Live Preview Container -->
+                            <div id="live-preview-render-area">
+                                <!-- Rendered dynamically based on selected post-type -->
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -320,37 +306,35 @@
             const postType = document.querySelector('input[name="post-type"]:checked').value;
             const fieldPhotoGallery = document.getElementById('field-photo-gallery');
             const fieldVideoRecording = document.getElementById('field-video-recording');
+            const sectionBadge = document.getElementById('preview-section-badge');
 
             const labelTitle = document.getElementById('label-title');
             const labelCategory = document.getElementById('label-category');
             const labelBody = document.getElementById('label-body');
 
             if (postType === 'article') {
-                // 1. Written Article: Text only (no images or videos)
                 fieldPhotoGallery.classList.add('hidden');
                 fieldVideoRecording.classList.add('hidden');
-
                 labelTitle.innerText = 'Article Title';
                 labelCategory.innerText = 'Category / Author';
                 labelBody.innerText = 'Full Article Body';
+                sectionBadge.innerText = 'Written Article Card';
 
             } else if (postType === 'media') {
-                // 2. Video / Media Highlight: Show Video Recording Input
                 fieldPhotoGallery.classList.add('hidden');
                 fieldVideoRecording.classList.remove('hidden');
-
                 labelTitle.innerText = 'Video / Event Title';
                 labelCategory.innerText = 'Location / Session Name';
                 labelBody.innerText = 'Event Summary & Briefing Text';
+                sectionBadge.innerText = 'Media Highlight Card';
 
             } else if (postType === 'gallery') {
-                // 3. Photo Gallery: Show Multiple Photo Gallery Input
                 fieldPhotoGallery.classList.remove('hidden');
                 fieldVideoRecording.classList.add('hidden');
-
                 labelTitle.innerText = 'Gallery Bulletin Title';
                 labelCategory.innerText = 'Event Location / Date Tag';
                 labelBody.innerText = 'Event Summary & Full Proceedings';
+                sectionBadge.innerText = 'Photo Gallery Card';
             }
 
             updateLivePreview();
@@ -362,7 +346,6 @@
             const category = document.getElementById('input-category').value || 'Category';
             const body = document.getElementById('input-body').value || 'Type article body...';
             const galleryStr = document.getElementById('input-gallery').value.trim();
-            const videoUrl = document.getElementById('input-video-url').value.trim();
             const avatarUrl = document.getElementById('input-avatar-url').value.trim();
             const postType = document.querySelector('input[name="post-type"]:checked').value;
 
@@ -371,41 +354,80 @@
                 formattedDate = new Date(dateVal).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase();
             }
 
-            document.getElementById('preview-card-title').innerText = title;
-            document.getElementById('preview-card-date').innerText = formattedDate;
-            document.getElementById('preview-card-category').innerText = category.split('•')[0].trim();
-            document.getElementById('preview-card-snippet').innerText = body;
+            const cleanCategory = category.split('•')[0].trim();
+            const renderArea = document.getElementById('live-preview-render-area');
 
-            const avatarBadge = document.getElementById('preview-avatar-badge');
-            const avatarImg = document.getElementById('preview-avatar-img');
+            let avatarBadgeHtml = '';
             if (avatarUrl) {
-                avatarImg.src = avatarUrl;
-                avatarBadge.classList.remove('hidden');
-            } else {
-                avatarBadge.classList.add('hidden');
+                avatarBadgeHtml = `
+                    <div class="absolute bottom-4 right-4 w-14 h-14 rounded-xl border-2 border-white shadow-lg overflow-hidden bg-white shrink-0 z-10">
+                        <img src="${avatarUrl}" class="w-full h-full object-cover">
+                    </div>`;
             }
 
-            const bannerContainer = document.getElementById('preview-card-banner');
-
-            if (postType === 'gallery' && galleryStr) {
-                bannerContainer.classList.remove('hidden');
-                const photos = galleryStr.split(',').map(s => s.trim()).filter(Boolean);
-                let gridHtml = '<div class="grid grid-cols-3 gap-2 w-full">';
-                photos.slice(0, 3).forEach((p, idx) => {
-                    gridHtml += `<div class="h-20 rounded-lg overflow-hidden bg-slate-800 border border-white/10"><img src="${p}" class="w-full h-full object-cover"></div>`;
-                });
-                gridHtml += '</div>';
-                bannerContainer.innerHTML = gridHtml;
-            } else if (postType === 'media' && videoUrl) {
-                bannerContainer.classList.remove('hidden');
-                bannerContainer.innerHTML = `
-                    <div class="flex flex-col items-center justify-center py-4 text-white">
-                        <i class="fa-solid fa-circle-play text-3xl text-blue-400 mb-1"></i>
-                        <span class="text-[10px] uppercase font-bold tracking-widest text-slate-300">Video Attached</span>
+            if (postType === 'article') {
+                // 1. Written Article Card Preview (Words only)
+                renderArea.innerHTML = `
+                    <article class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between max-w-md mx-auto relative p-6 space-y-4 min-h-[260px]">
+                        <div class="flex items-center justify-between text-xs text-gray-500 font-medium">
+                            <span class="px-3 py-1 rounded-full bg-blue-50 text-[#172554] font-semibold">${cleanCategory}</span>
+                            <span>${formattedDate}</span>
+                        </div>
+                        <h3 class="text-lg font-extrabold text-[#0F172A] font-['Raleway'] leading-snug">${title}</h3>
+                        <p class="text-xs text-gray-600 line-clamp-4 leading-relaxed">${body}</p>
+                        <div class="pt-2 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-[#172554]">
+                            <span>Read Article</span> &rarr;
+                        </div>
+                        ${avatarBadgeHtml}
+                    </article>`;
+            } else if (postType === 'media') {
+                // 2. Media Highlight Card Preview
+                renderArea.innerHTML = `
+                    <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between max-w-md mx-auto relative cursor-pointer">
+                        <div class="h-48 bg-slate-950 overflow-hidden relative flex items-center justify-center">
+                            <div class="absolute inset-0 bg-slate-950/40 flex items-center justify-center">
+                                <div class="w-12 h-12 rounded-full bg-blue-600/90 text-white flex items-center justify-center shadow-lg">
+                                    <i class="fa-solid fa-play text-lg ml-0.5"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6 space-y-2">
+                            <div class="text-[10px] text-gray-500 font-semibold uppercase tracking-wider">Chambers Bulletin &bull; ${formattedDate}</div>
+                            <h3 class="text-base font-bold text-[#0F172A] font-['Raleway']">${title}</h3>
+                            <p class="text-xs text-gray-600 leading-relaxed line-clamp-2">${body}</p>
+                        </div>
+                        <div class="px-6 pb-5 pt-2 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-[#172554]">
+                            <span>Expand Full Notes &amp; Proceedings</span> &rarr;
+                        </div>
+                        ${avatarBadgeHtml}
                     </div>`;
-            } else {
-                bannerContainer.classList.add('hidden');
-                bannerContainer.innerHTML = '';
+            } else if (postType === 'gallery') {
+                // 3. Photo Gallery Card Preview
+                let photos = galleryStr ? galleryStr.split(',').map(s => s.trim()).filter(Boolean) : [];
+                let gridHtml = '';
+                if (photos.length > 0) {
+                    gridHtml = '<div class="grid grid-cols-3 gap-2 pt-2">';
+                    photos.slice(0, 3).forEach((p) => {
+                        gridHtml += `<div class="h-20 rounded-lg overflow-hidden bg-slate-100 border border-gray-200"><img src="${p}" class="w-full h-full object-cover"></div>`;
+                    });
+                    gridHtml += '</div>';
+                } else {
+                    gridHtml = '<div class="p-4 bg-slate-50 border border-dashed border-gray-300 rounded-xl text-center text-xs text-gray-400">Select gallery photos from device to preview here</div>';
+                }
+
+                renderArea.innerHTML = `
+                    <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between max-w-md mx-auto relative space-y-4">
+                        <div class="space-y-2">
+                            <div class="text-[10px] text-gray-500 font-semibold uppercase tracking-wider">Photo Bulletin &bull; ${formattedDate}</div>
+                            <h3 class="text-lg font-bold text-[#0F172A] font-['Raleway']">${title}</h3>
+                            <p class="text-xs text-gray-600 leading-relaxed line-clamp-2">${body}</p>
+                            ${gridHtml}
+                        </div>
+                        <div class="pt-4 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-[#172554]">
+                            <span>View All Photos &amp; Summary</span> &rarr;
+                        </div>
+                        ${avatarBadgeHtml}
+                    </div>`;
             }
         }
 
