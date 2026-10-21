@@ -9,6 +9,15 @@
         :root { --primary-royal: #172554; --primary-royal-dark: #0F172A; --bg-offwhite: #F8FAFC; --text-slate: #334155; }
         body { font-family: 'Roboto', 'Raleway', Arial, Helvetica, sans-serif; background-color: var(--bg-offwhite); color: var(--text-slate); line-height: 1.7; overflow-x: hidden; }
         h1, h2, h3, h4, h5, h6 { font-family: 'Raleway', 'Roboto', Arial, Helvetica, sans-serif; color: #0F172A; }
+
+        /* Smooth Transition Animation for Preview Switch */
+        @keyframes previewFadeIn {
+            0% { opacity: 0; transform: translateY(8px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .preview-transition {
+            animation: previewFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -74,7 +83,7 @@
             <div class="max-w-4xl mx-auto space-y-2 relative z-10">
                 <h1 class="text-2xl sm:text-3xl font-extrabold text-white font-['Raleway']">Content Management Dashboard</h1>
                 <p class="text-xs text-gray-100 font-normal max-w-lg mx-auto leading-relaxed">
-                    Select your target section below. The workbench preview instantly adapts to match the live website output.
+                    Select your target section below. The workbench preview instantly adapts to match the live website output with smooth transitions.
                 </p>
             </div>
         </section>
@@ -206,7 +215,8 @@
                                 <span id="preview-section-badge" class="text-[10px] font-bold text-[#172554] bg-blue-50 px-2.5 py-1 rounded-full uppercase tracking-wider">Written Article</span>
                             </div>
 
-                            <div id="live-preview-render-area">
+                            <!-- Preview container with smooth transition class -->
+                            <div id="live-preview-render-area" class="preview-transition">
                                 <!-- Rendered Live Preview -->
                             </div>
                         </div>
@@ -465,6 +475,12 @@
             const fieldPhotoGallery = document.getElementById('field-photo-gallery');
             const fieldVideoRecording = document.getElementById('field-video-recording');
             const sectionBadge = document.getElementById('preview-section-badge');
+            const renderArea = document.getElementById('live-preview-render-area');
+
+            // Trigger smooth transition effect on switcher change
+            renderArea.classList.remove('preview-transition');
+            void renderArea.offsetWidth; // force reflow
+            renderArea.classList.add('preview-transition');
 
             if (postType === 'article') {
                 fieldPhotoGallery.classList.add('hidden');
@@ -486,8 +502,10 @@
         function updateLivePreview() {
             const title = document.getElementById('input-title').value || 'Type title...';
             const dateVal = document.getElementById('input-date').value;
-            const body = document.getElementById('input-body').value || 'Type article body...';
+            const body = document.getElementById('input-body').value || 'Type summary or body...';
             const postType = document.querySelector('input[name="post-type"]:checked').value;
+            const galleryStr = document.getElementById('input-gallery').value || '';
+            const videoUrl = document.getElementById('input-video-url').value || '';
 
             const { pairs, namesStr } = collectAuthorData();
 
@@ -500,16 +518,16 @@
 
             let authorsHtml = '';
             if (pairs.length > 0 && pairs.some(p => p.name || p.photo)) {
-                authorsHtml = '<div class="pt-4 border-t border-gray-100 flex items-center justify-end space-x-4">';
+                authorsHtml = '<div class="pt-3 border-t border-gray-100 flex items-center justify-end space-x-3">';
                 pairs.forEach((p) => {
                     const img = p.photo || 'https://placehold.co/100x100/172554/FFFFFF?text=SAN';
                     const name = p.name || 'Tawo E. Tawo, SAN';
                     authorsHtml += `
                         <div class="flex flex-col items-center space-y-1 text-center">
-                            <div class="w-14 h-14 rounded-xl border border-gray-200 overflow-hidden bg-white shrink-0 shadow-sm">
+                            <div class="w-12 h-12 rounded-xl border border-gray-200 overflow-hidden bg-white shrink-0 shadow-sm">
                                 <img src="${img}" class="w-full h-full object-cover">
                             </div>
-                            <span class="text-[10px] font-extrabold text-[#0F172A] font-['Raleway'] max-w-[100px] leading-tight block truncate">${name}</span>
+                            <span class="text-[9px] font-extrabold text-[#0F172A] font-['Raleway'] max-w-[90px] leading-tight block truncate">${name}</span>
                         </div>`;
                 });
                 authorsHtml += '</div>';
@@ -520,15 +538,58 @@
                     </div>`;
             }
 
-            renderArea.innerHTML = `
-                <article class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm flex flex-col justify-between max-w-md mx-auto space-y-4">
-                    <div class="flex items-center justify-between text-xs text-gray-500 font-medium">
-                        <span class="px-3 py-1 rounded-full bg-blue-50 text-[#172554] font-semibold">${formattedDate} (${postType.toUpperCase()})</span>
-                    </div>
-                    <h3 class="text-lg font-extrabold text-[#0F172A] font-['Raleway'] leading-snug">${title}</h3>
-                    <p class="text-xs text-gray-600 line-clamp-3 leading-relaxed">${body}</p>
-                    ${authorsHtml}
-                </article>`;
+            // Distinct Previews for Gallery, Video, and Article Cards
+            if (postType === 'gallery') {
+                let galleryPhotos = galleryStr.split(',').map(s => s.trim()).filter(Boolean);
+                let photoGrid = '';
+                if (galleryPhotos.length > 0) {
+                    photoGrid = '<div class="grid grid-cols-3 gap-2 pt-2">';
+                    galleryPhotos.slice(0, 3).forEach((p) => {
+                        photoGrid += `<div class="h-20 rounded-lg overflow-hidden bg-slate-100 border border-gray-200"><img src="${p}" class="w-full h-full object-cover"></div>`;
+                    });
+                    photoGrid += '</div>';
+                } else {
+                    photoGrid = '<div class="p-4 bg-slate-50 border border-dashed border-gray-300 rounded-xl text-center text-[11px] text-gray-400">No gallery photos added yet</div>';
+                }
+
+                renderArea.innerHTML = `
+                    <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm flex flex-col justify-between max-w-md mx-auto space-y-3">
+                        <div class="flex items-center justify-between text-[10px] text-gray-500 font-semibold uppercase tracking-wider">
+                            <span>Photo Bulletin &bull; ${formattedDate}</span>
+                        </div>
+                        <h3 class="text-base font-bold text-[#0F172A] font-['Raleway']">${title}</h3>
+                        <p class="text-xs text-gray-600 line-clamp-2 leading-relaxed">${body}</p>
+                        ${photoGrid}
+                        ${authorsHtml}
+                    </div>`;
+            } else if (postType === 'media') {
+                renderArea.innerHTML = `
+                    <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm flex flex-col justify-between max-w-md mx-auto">
+                        <div class="h-36 bg-slate-950 flex items-center justify-center text-white relative">
+                            <i class="fa-solid fa-circle-play text-4xl text-blue-500"></i>
+                            <span class="absolute bottom-2 left-3 text-[10px] font-mono text-gray-300">${videoUrl ? 'Video Connected' : 'No Video Source'}</span>
+                        </div>
+                        <div class="p-5 space-y-2">
+                            <div class="text-[10px] text-gray-500 font-semibold uppercase tracking-wider">Chambers Bulletin &bull; ${formattedDate}</div>
+                            <h3 class="text-base font-bold text-[#0F172A] font-['Raleway']">${title}</h3>
+                            <p class="text-xs text-gray-600 line-clamp-2 leading-relaxed">${body}</p>
+                        </div>
+                        <div class="px-5 pb-4">
+                            ${authorsHtml}
+                        </div>
+                    </div>`;
+            } else {
+                renderArea.innerHTML = `
+                    <article class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm flex flex-col justify-between max-w-md mx-auto space-y-4">
+                        <div class="flex items-center justify-between text-xs text-gray-500 font-medium">
+                            <span class="px-3 py-1 rounded-full bg-blue-50 text-[#172554] font-semibold">Legal Article</span>
+                            <span>${formattedDate}</span>
+                        </div>
+                        <h3 class="text-lg font-extrabold text-[#0F172A] font-['Raleway'] leading-snug">${title}</h3>
+                        <p class="text-xs text-gray-600 line-clamp-3 leading-relaxed">${body}</p>
+                        ${authorsHtml}
+                    </article>`;
+            }
         }
 
         function generateMarkdownString() {
