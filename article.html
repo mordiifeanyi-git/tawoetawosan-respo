@@ -69,24 +69,21 @@
             <!-- Dynamically injected player or image goes here -->
         </div>
 
-        <!-- Single Glass Card Containing Both Text & Author Footer -->
-        <div class="glass-card-light rounded-3xl shadow-xl overflow-hidden border border-gray-200/80 flex flex-col">
+        <!-- ONE SINGLE UNIFIED GLASS CARD FOR BODY + AUTHOR FOOTER -->
+        <div class="glass-card-light rounded-3xl shadow-xl border border-gray-200/80 overflow-hidden flex flex-col">
             
-            <!-- Markdown Text Body (With overflow wrap protection) -->
-            <div id="article-body" class="p-8 sm:p-12 space-y-6 text-slate-700 text-sm sm:text-base leading-relaxed break-words overflow-x-auto">
+            <!-- Article Text Container (Guaranteed word wrapping) -->
+            <div id="article-body" class="p-8 sm:p-12 space-y-6 text-slate-700 text-sm sm:text-base leading-relaxed break-words [word-break:break-word] w-full">
                 <p class="text-gray-400 text-center py-12">Retrieving publication details from repository...</p>
             </div>
 
-            <!-- Integrated Author Footer at the Bottom of the Same Card -->
-            <div id="article-author-inline-section" class="border-t border-gray-200/60 bg-slate-50/60 p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 hidden">
-                <div class="space-y-1">
-                    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest block font-['Raleway']">WRITTEN BY</span>
-                    <h4 id="article-author-full-name" class="text-base sm:text-lg font-black text-[#0F172A] font-['Raleway']">Tawo E. Tawo, SAN & Co.</h4>
-                </div>
-
-                <!-- Large Author Photo Avatars (Bottom Corner) -->
-                <div id="article-author-badges" class="flex items-center -space-x-4 shrink-0 pt-2 sm:pt-0">
-                    <!-- Dynamically populated -->
+            <!-- Author Footer Inside the SAME Card at the Bottom -->
+            <div id="article-author-section" class="border-t border-gray-200/70 bg-slate-50/70 p-6 sm:p-8 flex flex-col items-end justify-end space-y-3 hidden">
+                <span class="text-[10px] font-extrabold text-gray-400 uppercase tracking-widest font-['Raleway']">PUBLISHED BY</span>
+                
+                <!-- Paired Author Card (Large Image + Name Under Image) -->
+                <div id="author-profiles-container" class="flex items-center space-x-6">
+                    <!-- Dynamically populated name + photo pairs -->
                 </div>
             </div>
         </div>
@@ -169,29 +166,31 @@
                 
                 document.getElementById('article-body').innerHTML = marked.parse(cleanMarkdown);
 
-                // Populate Author Section inside Card
+                // Populate Paired Author Section (Large Image + Name Under Image)
                 let authorPhotos = authorPhotoStr ? authorPhotoStr.split(',').map(s => s.trim()).filter(Boolean) : [];
-                const authorSection = document.getElementById('article-author-inline-section');
-                const authorBadgesContainer = document.getElementById('article-author-badges');
-                authorBadgesContainer.innerHTML = '';
+                const authorSection = document.getElementById('article-author-section');
+                const authorProfilesContainer = document.getElementById('author-profiles-container');
+                authorProfilesContainer.innerHTML = '';
 
-                if (authorName) {
-                    document.getElementById('article-author-full-name').innerText = authorName;
-                    authorSection.classList.remove('hidden');
-                }
+                const displayAuthor = authorName || "Tawo E. Tawo, SAN & Co.";
 
-                if (authorPhotos.length > 0) {
+                if (authorPhotos.length > 0 || authorName) {
                     authorSection.classList.remove('hidden');
-                    authorPhotos.slice(0, 3).forEach((av) => {
-                        authorBadgesContainer.innerHTML += `
-                            <div class="w-16 sm:w-20 h-16 sm:h-20 rounded-2xl border-2 border-white shadow-xl overflow-hidden bg-white shrink-0">
-                                <img src="${av}" class="w-full h-full object-cover" alt="Author Photo">
-                            </div>`;
-                    });
-                    if (authorPhotos.length > 3) {
-                        authorBadgesContainer.innerHTML += `
-                            <div class="w-16 sm:w-20 h-16 sm:h-20 rounded-2xl border-2 border-white shadow-xl bg-[#172554] text-white flex items-center justify-center text-sm font-bold shrink-0">
-                                +${authorPhotos.length - 3}
+
+                    if (authorPhotos.length > 0) {
+                        authorPhotos.forEach((photo) => {
+                            authorProfilesContainer.innerHTML += `
+                                <div class="flex flex-col items-center space-y-2 text-center">
+                                    <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl border-2 border-white shadow-lg overflow-hidden bg-white shrink-0">
+                                        <img src="${photo}" class="w-full h-full object-cover" alt="${displayAuthor}">
+                                    </div>
+                                    <span class="text-xs sm:text-sm font-extrabold text-[#0F172A] font-['Raleway'] max-w-[140px] leading-tight block">${displayAuthor}</span>
+                                </div>`;
+                        });
+                    } else {
+                        authorProfilesContainer.innerHTML = `
+                            <div class="text-right">
+                                <span class="text-sm font-extrabold text-[#0F172A] font-['Raleway']">${displayAuthor}</span>
                             </div>`;
                     }
                 }
