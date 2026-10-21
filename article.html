@@ -6,12 +6,7 @@
     <title>Legal Insight | TAWO E. TAWO, SAN & CO.</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        :root { 
-            --primary-royal: #172554; 
-            --primary-royal-dark: #0F172A; 
-            --bg-offwhite: #F8FAFC; 
-            --text-slate: #334155; 
-        }
+        :root { --primary-royal: #172554; --primary-royal-dark: #0F172A; --bg-offwhite: #F8FAFC; --text-slate: #334155; }
         body { font-family: 'Roboto', 'Raleway', Arial, Helvetica, sans-serif; background-color: var(--bg-offwhite); color: var(--text-slate); line-height: 1.8; overflow-x: hidden; }
         h1, h2, h3, h4, h5, h6 { font-family: 'Raleway', 'Roboto', Arial, Helvetica, sans-serif; color: #0F172A; }
         
@@ -33,10 +28,8 @@
 </head>
 <body class="antialiased bg-[#F8FAFC] min-h-screen flex flex-col relative">
 
-    <!-- Ambient Accent Glow -->
     <div class="fixed top-1/3 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-blue-100/40 rounded-full blur-[120px] pointer-events-none z-0"></div>
 
-    <!-- Navigation Header -->
     <header class="glass-nav sticky top-0 z-50 py-3 px-6 md:px-12 text-white shadow-md">
         <div class="max-w-7xl mx-auto flex items-center justify-between">
             <a href="index.html" class="flex items-center space-x-3">
@@ -51,10 +44,8 @@
         </div>
     </header>
 
-    <!-- Article Content Container -->
     <main class="max-w-4xl mx-auto px-6 py-12 space-y-6 flex-1 w-full relative z-10">
         
-        <!-- Header Info -->
         <div class="space-y-3 border-b border-gray-200 pb-6">
             <div>
                 <span id="article-date" class="px-3 py-1 rounded-full bg-blue-50 text-[#172554] border border-blue-100 shadow-xs text-xs font-bold uppercase tracking-wider inline-block">Loading...</span>
@@ -64,31 +55,26 @@
             </h1>
         </div>
 
-        <!-- Media Banner / Video / Image Player Box -->
-        <div id="article-media-container" class="rounded-2xl overflow-hidden border border-gray-200 bg-slate-950 shadow-md hidden aspect-video flex items-center justify-center">
-            <!-- Dynamically injected player or image goes here -->
-        </div>
+        <div id="article-media-container" class="rounded-2xl overflow-hidden border border-gray-200 bg-slate-950 shadow-md hidden aspect-video flex items-center justify-center"></div>
 
-        <!-- ONE SINGLE UNIFIED GLASS CARD FOR BODY + AUTHOR FOOTER -->
+        <!-- SINGLE GLASS CARD FOR TEXT & PAIRED AUTHORS -->
         <div class="glass-card-light rounded-3xl shadow-xl border border-gray-200/80 overflow-hidden flex flex-col">
             
-            <!-- Article Text Container (Guaranteed word wrapping) -->
             <div id="article-body" class="p-8 sm:p-12 space-y-6 text-slate-700 text-sm sm:text-base leading-relaxed break-words [word-break:break-word] w-full">
                 <p class="text-gray-400 text-center py-12">Retrieving publication details from repository...</p>
             </div>
 
-            <!-- Author Footer Inside the SAME Card at the Bottom -->
+            <!-- Integrated Author Footer -->
             <div id="article-author-section" class="border-t border-gray-200/70 bg-slate-50/70 p-6 sm:p-8 flex flex-col items-end justify-end space-y-3 hidden">
                 <span class="text-[10px] font-extrabold text-gray-400 uppercase tracking-widest font-['Raleway']">PUBLISHED BY</span>
                 
-                <!-- Paired Author Card (Large Image + Name Under Image) -->
-                <div id="author-profiles-container" class="flex items-center space-x-6">
-                    <!-- Dynamically populated name + photo pairs -->
+                <!-- Authors Grid: Names Sitting Directly Under Images -->
+                <div id="author-profiles-container" class="flex flex-wrap items-center justify-end gap-6">
+                    <!-- Dynamically populated author blocks -->
                 </div>
             </div>
         </div>
 
-        <!-- Back Button -->
         <div class="pt-4 text-center">
             <a href="articles.html" class="inline-flex items-center space-x-2 px-6 py-3 rounded-xl bg-[#172554] text-white font-bold text-xs uppercase tracking-wider hover:bg-blue-900 transition-all shadow-md">
                 <i class="fa-solid fa-arrow-left"></i>
@@ -98,12 +84,10 @@
 
     </main>
 
-    <!-- Footer -->
     <footer class="bg-[#172554] text-gray-300 text-xs border-t border-blue-900 py-6 px-6 text-center mt-auto relative z-10">
         <p>&copy; 2026 Tawo E. Tawo SAN & Co. All Rights Reserved.</p>
     </footer>
 
-    <!-- Markdown Parser Script -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
         marked.setOptions({ html: true, gfm: true });
@@ -128,10 +112,9 @@
 
                 const content = await res.text();
 
-                // Extract Frontmatter Metadata
                 let title = fileName.replace('.md', '');
                 let date = '';
-                let authorName = '';
+                let authorStr = '';
                 let videoUrl = '';
                 let imageUrl = '';
                 let authorPhotoStr = '';
@@ -144,7 +127,7 @@
 
                 const authorMatch = content.match(/^author:\s*["']?(.*?)["']?$/m);
                 if (authorMatch && authorMatch[1] && authorMatch[1].trim() !== "") {
-                    authorName = authorMatch[1].trim();
+                    authorStr = authorMatch[1].trim();
                 }
 
                 const videoMatch = content.match(/^video:\s*["']?(.*?)["']?$/m);
@@ -156,46 +139,40 @@
                 const avatarMatch = content.match(/^author_photo:\s*["']?(.*?)["']?$/m);
                 if (avatarMatch && avatarMatch[1] && avatarMatch[1] !== "undefined") authorPhotoStr = avatarMatch[1].trim();
 
-                // Clean Frontmatter from Markdown body
                 let cleanMarkdown = content.replace(/^---[\s\S]*?---/, '').trim();
 
-                // Populate Elements
                 document.getElementById('article-title').innerText = title;
                 document.title = `${title} | TAWO E. TAWO, SAN & CO.`;
                 document.getElementById('article-date').innerText = date ? new Date(date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }).toUpperCase() : 'RECENT PUBLICATION';
                 
                 document.getElementById('article-body').innerHTML = marked.parse(cleanMarkdown);
 
-                // Populate Paired Author Section (Large Image + Name Under Image)
-                let authorPhotos = authorPhotoStr ? authorPhotoStr.split(',').map(s => s.trim()).filter(Boolean) : [];
+                // Pair Names and Photos
+                let names = authorStr ? authorStr.split(',').map(s => s.trim()).filter(Boolean) : [];
+                let photos = authorPhotoStr ? authorPhotoStr.split(',').map(s => s.trim()).filter(Boolean) : [];
+
                 const authorSection = document.getElementById('article-author-section');
                 const authorProfilesContainer = document.getElementById('author-profiles-container');
                 authorProfilesContainer.innerHTML = '';
 
-                const displayAuthor = authorName || "Tawo E. Tawo, SAN & Co.";
-
-                if (authorPhotos.length > 0 || authorName) {
+                if (names.length > 0 || photos.length > 0) {
                     authorSection.classList.remove('hidden');
 
-                    if (authorPhotos.length > 0) {
-                        authorPhotos.forEach((photo) => {
-                            authorProfilesContainer.innerHTML += `
-                                <div class="flex flex-col items-center space-y-2 text-center">
-                                    <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl border-2 border-white shadow-lg overflow-hidden bg-white shrink-0">
-                                        <img src="${photo}" class="w-full h-full object-cover" alt="${displayAuthor}">
-                                    </div>
-                                    <span class="text-xs sm:text-sm font-extrabold text-[#0F172A] font-['Raleway'] max-w-[140px] leading-tight block">${displayAuthor}</span>
-                                </div>`;
-                        });
-                    } else {
-                        authorProfilesContainer.innerHTML = `
-                            <div class="text-right">
-                                <span class="text-sm font-extrabold text-[#0F172A] font-['Raleway']">${displayAuthor}</span>
+                    const count = Math.max(names.length, photos.length);
+                    for (let i = 0; i < count; i++) {
+                        const name = names[i] || 'Tawo E. Tawo, SAN & Co.';
+                        const photo = photos[i] || 'https://placehold.co/100x100/172554/FFFFFF?text=SAN';
+
+                        authorProfilesContainer.innerHTML += `
+                            <div class="flex flex-col items-center space-y-2 text-center">
+                                <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl border-2 border-white shadow-md overflow-hidden bg-white shrink-0">
+                                    <img src="${photo}" class="w-full h-full object-cover" alt="${name}">
+                                </div>
+                                <span class="text-xs sm:text-sm font-extrabold text-[#0F172A] font-['Raleway'] max-w-[130px] leading-tight block">${name}</span>
                             </div>`;
                     }
                 }
 
-                // Handle Media Banner
                 const mediaContainer = document.getElementById('article-media-container');
                 if (videoUrl) {
                     mediaContainer.classList.remove('hidden');
