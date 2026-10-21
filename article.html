@@ -54,7 +54,7 @@
     <!-- Article Content Container -->
     <main class="max-w-4xl mx-auto px-6 py-12 space-y-6 flex-1 w-full relative z-10">
         
-        <!-- Header Info (Clean Date Tag Only - No Chambers Publication) -->
+        <!-- Header Info -->
         <div class="space-y-3 border-b border-gray-200 pb-6">
             <div>
                 <span id="article-date" class="px-3 py-1 rounded-full bg-blue-50 text-[#172554] border border-blue-100 shadow-xs text-xs font-bold uppercase tracking-wider inline-block">Loading...</span>
@@ -69,20 +69,24 @@
             <!-- Dynamically injected player or image goes here -->
         </div>
 
-        <!-- Full Article Body -->
-        <div id="article-body" class="glass-card-light p-8 sm:p-12 rounded-3xl shadow-xl space-y-6 text-slate-700 text-sm sm:text-base leading-relaxed">
-            <p class="text-gray-400 text-center py-12">Retrieving publication details from repository...</p>
-        </div>
-
-        <!-- Compact Author Attribution Card (Smaller Container, Bigger Text & Avatars) -->
-        <div id="article-author-card" class="glass-card-light py-3.5 px-6 rounded-2xl shadow-md flex items-center justify-between gap-4 hidden">
-            <div class="space-y-0.5 min-w-0">
-                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest block font-['Raleway']">PUBLISHED BY</span>
-                <h4 id="article-author-full-name" class="text-base sm:text-lg font-black text-[#0F172A] font-['Raleway'] leading-snug truncate">Tawo E. Tawo, SAN & Co.</h4>
+        <!-- Article Container with Integrated Bottom Author Layout -->
+        <div class="glass-card-light rounded-3xl shadow-xl overflow-hidden border border-gray-200/80">
+            <!-- Markdown Text Body -->
+            <div id="article-body" class="p-8 sm:p-12 space-y-6 text-slate-700 text-sm sm:text-base leading-relaxed">
+                <p class="text-gray-400 text-center py-12">Retrieving publication details from repository...</p>
             </div>
-            <!-- Bigger, More Visible Author Photos Cluster -->
-            <div id="article-author-badges" class="flex items-center -space-x-3 shrink-0">
-                <!-- Dynamically populated -->
+
+            <!-- Integrated Author Footer inside the card -->
+            <div id="article-author-inline-section" class="border-t border-gray-200/60 bg-slate-50/50 p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 hidden">
+                <div class="space-y-1">
+                    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest block font-['Raleway']">WRITTEN BY</span>
+                    <h4 id="article-author-full-name" class="text-base sm:text-lg font-black text-[#0F172A] font-['Raleway']">Tawo E. Tawo, SAN & Co.</h4>
+                </div>
+
+                <!-- Large Author Photo Avatars (Bottom Corner) -->
+                <div id="article-author-badges" class="flex items-center -space-x-4 shrink-0 pt-2 sm:pt-0">
+                    <!-- Dynamically populated -->
+                </div>
             </div>
         </div>
 
@@ -126,7 +130,7 @@
 
                 const content = await res.text();
 
-                // Extract Frontmatter Metadata reliably
+                // Extract Frontmatter Metadata
                 let title = fileName.replace('.md', '');
                 let date = '';
                 let authorName = '';
@@ -134,7 +138,6 @@
                 let imageUrl = '';
                 let authorPhotoStr = '';
 
-                // Clean regex matches for Frontmatter
                 const titleMatch = content.match(/^title:\s*["']?(.*?)["']?$/m);
                 if (titleMatch && titleMatch[1]) title = titleMatch[1].trim();
 
@@ -155,19 +158,19 @@
                 const avatarMatch = content.match(/^author_photo:\s*["']?(.*?)["']?$/m);
                 if (avatarMatch && avatarMatch[1] && avatarMatch[1] !== "undefined") authorPhotoStr = avatarMatch[1].trim();
 
-                // Strip frontmatter cleanly from markdown body
+                // Clean Frontmatter from Markdown body
                 let cleanMarkdown = content.replace(/^---[\s\S]*?---/, '').trim();
 
-                // Populate Text & Date Elements
+                // Populate Elements
                 document.getElementById('article-title').innerText = title;
                 document.title = `${title} | TAWO E. TAWO, SAN & CO.`;
                 document.getElementById('article-date').innerText = date ? new Date(date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }).toUpperCase() : 'RECENT PUBLICATION';
                 
                 document.getElementById('article-body').innerHTML = marked.parse(cleanMarkdown);
 
-                // Populate Author Attribution Footer Card
+                // Populate Author Section inside Card
                 let authorPhotos = authorPhotoStr ? authorPhotoStr.split(',').map(s => s.trim()).filter(Boolean) : [];
-                const authorCard = document.getElementById('article-author-card');
+                const authorSection = document.getElementById('article-author-inline-section');
                 const authorBadgesContainer = document.getElementById('article-author-badges');
                 authorBadgesContainer.innerHTML = '';
 
@@ -176,26 +179,26 @@
                 }
 
                 if (authorPhotos.length > 0 || authorName) {
-                    authorCard.classList.remove('hidden');
+                    authorSection.classList.remove('hidden');
                 }
 
-                // Render Larger (w-20 h-20) Author Avatar Stack
+                // Render Large Avatars at Bottom Corner
                 if (authorPhotos.length > 0) {
                     authorPhotos.slice(0, 3).forEach((av) => {
                         authorBadgesContainer.innerHTML += `
-                            <div class="w-16 sm:w-20 h-16 sm:h-20 rounded-2xl border-2 border-white shadow-lg overflow-hidden bg-white shrink-0">
+                            <div class="w-16 sm:w-20 h-16 sm:h-20 rounded-2xl border-2 border-white shadow-xl overflow-hidden bg-white shrink-0">
                                 <img src="${av}" class="w-full h-full object-cover" alt="Author Photo">
                             </div>`;
                     });
                     if (authorPhotos.length > 3) {
                         authorBadgesContainer.innerHTML += `
-                            <div class="w-16 sm:w-20 h-16 sm:h-20 rounded-2xl border-2 border-white shadow-lg bg-[#172554] text-white flex items-center justify-center text-sm font-bold shrink-0">
+                            <div class="w-16 sm:w-20 h-16 sm:h-20 rounded-2xl border-2 border-white shadow-xl bg-[#172554] text-white flex items-center justify-center text-sm font-bold shrink-0">
                                 +${authorPhotos.length - 3}
                             </div>`;
                     }
                 }
 
-                // Handle Media (Video or Image Banner)
+                // Handle Media Banner
                 const mediaContainer = document.getElementById('article-media-container');
                 if (videoUrl) {
                     mediaContainer.classList.remove('hidden');
@@ -216,7 +219,7 @@
 
             } catch (err) {
                 console.error(err);
-                document.getElementById('article-body').innerHTML = '<p class="text-red-500 font-bold text-center py-8">Failed to load article content. Please check connection.</p>';
+                document.getElementById('article-body').innerHTML = '<p class="text-red-500 font-bold text-center py-8">Failed to load article content.</p>';
             }
         }
 
