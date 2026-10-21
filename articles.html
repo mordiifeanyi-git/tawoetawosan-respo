@@ -25,6 +25,22 @@
         
         body { font-family: 'Roboto', 'Raleway', Arial, Helvetica, sans-serif; background-color: var(--bg-offwhite); color: var(--text-slate); line-height: 1.7; overflow-x: hidden; }
         h1, h2, h3, h4, h5, h6 { font-family: 'Raleway', 'Roboto', Arial, Helvetica, sans-serif; color: #0F172A; }
+
+        /* Section Fade & Slide Reveal Animation */
+        @keyframes sectionReveal {
+            0% {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-section-reveal {
+            animation: sectionReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
     </style>
     <script>
         tailwind.config = {
@@ -92,7 +108,7 @@
 
     <main class="py-16 px-6 md:px-12 max-w-7xl mx-auto space-y-16">
 
-        <!-- SECTION 1: Legal Insights & Practice Guides -->
+        <!-- SECTION 1: Legal Insights & Practice Guides (Always visible) -->
         <div class="space-y-6">
             <h2 class="text-2xl font-extrabold text-[#0F172A] font-['Raleway'] border-b border-gray-200 pb-3">Legal Insights &amp; Practice Guides</h2>
             <div id="dynamic-articles-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -100,8 +116,8 @@
             </div>
         </div>
 
-        <!-- SECTION 2: Media Highlights -->
-        <div class="space-y-6">
+        <!-- SECTION 2: Media Highlights (Smart Conditional Visibility) -->
+        <div id="media-section-wrapper" class="space-y-6 hidden">
             <h2 class="text-2xl font-extrabold text-[#0F172A] font-['Raleway'] border-b border-gray-200 pb-3">Media Highlights</h2>
             <div class="space-y-4">
                 <div class="flex items-center space-x-2 text-xs font-bold text-[#172554] tracking-wider uppercase font-['Raleway']">
@@ -114,8 +130,8 @@
             </div>
         </div>
 
-        <!-- SECTION 3: Photo Gallery (Bottom Section) -->
-        <div class="space-y-6 pt-4">
+        <!-- SECTION 3: Photo Gallery (Smart Conditional Visibility) -->
+        <div id="gallery-section-wrapper" class="space-y-6 pt-4 hidden">
             <h2 class="text-2xl font-extrabold text-[#0F172A] font-['Raleway'] border-b border-gray-200 pb-3">Photo Gallery</h2>
             <div class="space-y-4">
                 <div class="flex items-center space-x-2 text-xs font-bold text-[#172554] tracking-wider uppercase font-['Raleway']">
@@ -344,6 +360,10 @@
             const articlesGrid = document.getElementById('dynamic-articles-grid');
             const mediaGrid = document.getElementById('dynamic-media-grid');
             const galleryGrid = document.getElementById('dynamic-gallery-grid');
+            
+            const mediaSection = document.getElementById('media-section-wrapper');
+            const gallerySection = document.getElementById('gallery-section-wrapper');
+
             if (!articlesGrid && !mediaGrid && !galleryGrid) return;
 
             const repoOwner = 'mordiifeanyi-git';
@@ -368,7 +388,7 @@
                     let videoUrl = '';
                     let imageUrl = '';
                     let galleryStr = '';
-                    let authorPhoto = '';
+                    let authorPhotoStr = '';
 
                     const titleMatch = content.match(/title:\s*["']?(.*?)["']?(?=\s*(date:|type:|image:|gallery:|video:|author_photo:|---|$))/i);
                     if (titleMatch) title = titleMatch[1].replace(/["']/g, '');
@@ -391,9 +411,10 @@
                     if (galleryMatch && galleryMatch[1] !== "undefined" && galleryMatch[1] !== '""') galleryStr = galleryMatch[1].replace(/["']/g, '').trim();
 
                     const avatarMatch = content.match(/author_photo:\s*["']?(.*?)["']?(?=\s*(title:|date:|type:|image:|gallery:|video:|---|$))/i);
-                    if (avatarMatch && avatarMatch[1] !== "undefined" && avatarMatch[1] !== '""') authorPhoto = avatarMatch[1].replace(/["']/g, '').trim();
+                    if (avatarMatch && avatarMatch[1] !== "undefined" && avatarMatch[1] !== '""') authorPhotoStr = avatarMatch[1].replace(/["']/g, '').trim();
 
                     let galleryPhotos = galleryStr ? galleryStr.split(',').map(s => s.trim()).filter(Boolean) : [];
+                    let authorPhotos = authorPhotoStr ? authorPhotoStr.split(',').map(s => s.trim()).filter(Boolean) : [];
 
                     let cleanMarkdown = content
                         .replace(/^---[\s\S]*?---/, '')
@@ -418,24 +439,35 @@
                         imageUrl: imageUrl,
                         gallery: galleryPhotos,
                         videoUrl: videoUrl,
-                        authorPhoto: authorPhoto,
+                        authorPhotos: authorPhotos,
                         bodyHtml: bodyHtml
                     };
                     dynamicArticlesMap.push(articleObj);
 
+                    // Multi-Author Overlapping Avatar Badges (Larger rounded-2xl bottom-right stack)
                     let avatarBadgeHtml = '';
-                    if (authorPhoto) {
-                        avatarBadgeHtml = `
-                            <div class="absolute bottom-4 right-4 w-14 h-14 rounded-xl border-2 border-white shadow-lg overflow-hidden bg-white shrink-0 z-10">
-                                <img src="${authorPhoto}" class="w-full h-full object-cover" alt="Author Photo">
-                            </div>`;
+                    if (authorPhotos.length > 0) {
+                        avatarBadgeHtml = '<div class="absolute bottom-4 right-4 flex items-center -space-x-3 z-10">';
+                        authorPhotos.slice(0, 3).forEach((av) => {
+                            avatarBadgeHtml += `
+                                <div class="w-14 h-14 rounded-2xl border-2 border-white shadow-lg overflow-hidden bg-white shrink-0">
+                                    <img src="${av}" class="w-full h-full object-cover" alt="Author Photo">
+                                </div>`;
+                        });
+                        if (authorPhotos.length > 3) {
+                            avatarBadgeHtml += `
+                                <div class="w-14 h-14 rounded-2xl border-2 border-white shadow-lg bg-[#172554] text-white flex items-center justify-center text-xs font-bold shrink-0">
+                                    +${authorPhotos.length - 3}
+                                </div>`;
+                        }
+                        avatarBadgeHtml += '</div>';
                     }
 
-                    // --- TARGET ROUTING ---
+                    // --- TARGET ROUTING WITH OPTION A CONDITIONAL ACTIVATION & REVEAL ANIMATIONS ---
                     if (postType === 'article') {
                         // SECTION 1: Legal Article Card
                         const articleCard = document.createElement('article');
-                        articleCard.className = 'bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between relative';
+                        articleCard.className = 'bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between relative hover:-translate-y-1';
 
                         let bannerHtml = '';
                         if (imageUrl) {
@@ -468,9 +500,14 @@
                         articlesGrid.prepend(articleCard);
 
                     } else if (postType === 'gallery') {
-                        // SECTION 3: Photo Gallery Card
+                        // SECTION 3: Photo Gallery Card (Reveal section if hidden)
+                        if (gallerySection && gallerySection.classList.contains('hidden')) {
+                            gallerySection.classList.remove('hidden');
+                            gallerySection.classList.add('animate-section-reveal');
+                        }
+
                         const galleryCard = document.createElement('div');
-                        galleryCard.className = 'bg-white border border-gray-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group cursor-pointer relative';
+                        galleryCard.className = 'bg-white border border-gray-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between group cursor-pointer relative hover:-translate-y-1';
                         galleryCard.onclick = () => openDynamicArticleModal(i);
 
                         let photoGridHtml = '';
@@ -483,7 +520,7 @@
                                 }
                                 photoGridHtml += `
                                     <div class="h-24 rounded-lg overflow-hidden bg-slate-100 border border-gray-200 relative">
-                                        <img src="${p}" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
+                                        <img src="${p}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                                         ${extraOverlay}
                                     </div>`;
                             });
@@ -512,9 +549,14 @@
                         galleryGrid.prepend(galleryCard);
 
                     } else {
-                        // SECTION 2: Media Highlight Card
+                        // SECTION 2: Media Highlight Card (Reveal section if hidden)
+                        if (mediaSection && mediaSection.classList.contains('hidden')) {
+                            mediaSection.classList.remove('hidden');
+                            mediaSection.classList.add('animate-section-reveal');
+                        }
+
                         const mediaCard = document.createElement('div');
-                        mediaCard.className = 'bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between cursor-pointer relative';
+                        mediaCard.className = 'bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between cursor-pointer relative hover:-translate-y-1';
                         mediaCard.onclick = () => openDynamicArticleModal(i);
 
                         let ytThumbUrl = '';
