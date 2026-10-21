@@ -61,7 +61,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="antialiased selection:bg-blue-500 selection:text-white">
+<body class="antialiased selection:bg-blue-500 selection:text-white min-h-screen flex flex-col">
 
     <!-- Navigation Bar -->
     <header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-transparent py-3 px-6 md:px-12">
@@ -106,7 +106,7 @@
         </div>
     </section>
 
-    <main class="py-16 px-6 md:px-12 max-w-7xl mx-auto space-y-16">
+    <main class="py-16 px-6 md:px-12 max-w-7xl mx-auto space-y-16 flex-1 w-full">
 
         <!-- SECTION 1: Legal Insights & Practice Guides (Always visible) -->
         <div class="space-y-6">
@@ -146,8 +146,8 @@
 
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-[#172554] text-gray-300 text-sm border-t border-blue-900 py-16 px-6 md:px-12">
+    <!-- Footer (Pinned to absolute bottom) -->
+    <footer class="bg-[#172554] text-gray-300 text-sm border-t border-blue-900 py-16 px-6 md:px-12 mt-auto">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center space-y-6 md:space-y-0">
             <div class="flex items-center space-x-3">
                 <div class="w-10 h-10 rounded-full overflow-hidden border border-white bg-white flex items-center justify-center p-0.5">
