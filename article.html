@@ -15,9 +15,8 @@
         body { font-family: 'Roboto', 'Raleway', Arial, Helvetica, sans-serif; background-color: var(--bg-offwhite); color: var(--text-slate); line-height: 1.8; overflow-x: hidden; }
         h1, h2, h3, h4, h5, h6 { font-family: 'Raleway', 'Roboto', Arial, Helvetica, sans-serif; color: #0F172A; }
         
-        /* Subtle Light-Mode Glassmorphism */
         .glass-card-light {
-            background: rgba(255, 255, 255, 0.75);
+            background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(226, 232, 240, 0.8);
@@ -34,7 +33,7 @@
 </head>
 <body class="antialiased bg-[#F8FAFC] min-h-screen flex flex-col relative">
 
-    <!-- Subtle Ambient Glow Light for Glass Accent -->
+    <!-- Ambient Accent Glow -->
     <div class="fixed top-1/3 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-blue-100/40 rounded-full blur-[120px] pointer-events-none z-0"></div>
 
     <!-- Navigation Header -->
@@ -71,14 +70,19 @@
             <!-- Dynamically injected player or image goes here -->
         </div>
 
-        <!-- Markdown Body Container with Soft Glassmorphism & Bottom-Right Co-Author Stack -->
-        <div class="relative">
-            <div id="article-body" class="glass-card-light p-8 sm:p-12 rounded-3xl shadow-xl space-y-6 text-slate-700 text-sm sm:text-base leading-relaxed pb-24">
-                <p class="text-gray-400 text-center py-12">Retrieving publication details from repository...</p>
-            </div>
+        <!-- Full Article Body (Unobstructed Text Area) -->
+        <div id="article-body" class="glass-card-light p-8 sm:p-12 rounded-3xl shadow-xl space-y-6 text-slate-700 text-sm sm:text-base leading-relaxed">
+            <p class="text-gray-400 text-center py-12">Retrieving publication details from repository...</p>
+        </div>
 
-            <!-- Author Photo Badges (Anchored at Bottom Right of Article Box) -->
-            <div id="article-author-badges" class="absolute bottom-6 right-6 flex items-center -space-x-3 z-10">
+        <!-- Dedicated Author Attribution Card Below Article Body -->
+        <div id="article-author-card" class="glass-card-light p-6 rounded-2xl shadow-md flex items-center justify-between gap-4 hidden">
+            <div class="space-y-0.5">
+                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block font-['Raleway']">Published By</span>
+                <h4 id="article-author-full-name" class="text-sm font-extrabold text-[#0F172A] font-['Raleway']">Tawo E. Tawo, SAN & Co. Legal Team</h4>
+            </div>
+            <!-- Author Photos Cluster -->
+            <div id="article-author-badges" class="flex items-center -space-x-3 shrink-0">
                 <!-- Dynamically populated -->
             </div>
         </div>
@@ -105,62 +109,53 @@
 
         async function loadSingleArticle() {
             const urlParams = new URLSearchParams(window.location.search);
-            const fileName = urlParams.get('file');
+            const fileNameParam = urlParams.get('file');
 
-            if (!fileName) {
-                document.getElementById('article-body').innerHTML = '<p class="text-red-500 font-bold">Error: No article specified.</p>';
+            if (!fileNameParam) {
+                document.getElementById('article-body').innerHTML = '<p class="text-red-500 font-bold text-center py-8">Error: No article specified in request.</p>';
                 return;
             }
 
+            const fileName = decodeURIComponent(fileNameParam);
             const repoOwner = 'mordiifeanyi-git';
             const repoName = 'tawoetawosan-respo';
-            const fileUrl = `https://raw.githubusercontent.com/${repoOwner}/${repoName}/main/articles/${fileName}`;
+            const fileUrl = `https://raw.githubusercontent.com/${repoOwner}/${repoName}/main/articles/${encodeURIComponent(fileName)}`;
 
             try {
                 const res = await fetch(fileUrl);
-                if (!res.ok) throw new Error('Article not found.');
+                if (!res.ok) throw new Error('Article file not found in repository.');
 
                 const content = await res.text();
 
-                // Extract Frontmatter Metadata
-                let title = 'Legal Insight';
+                // Extract Frontmatter Metadata reliably
+                let title = fileName.replace('.md', '');
                 let date = '';
                 let authorName = '';
                 let videoUrl = '';
                 let imageUrl = '';
                 let authorPhotoStr = '';
 
-                const titleMatch = content.match(/title:\s*["']?(.*?)["']?(?=\s*(date:|type:|image:|gallery:|video:|author:|author_photo:|---|$))/i);
-                if (titleMatch) title = titleMatch[1].replace(/["']/g, '');
+                // Clean regex matches for Frontmatter
+                const titleMatch = content.match(/^title:\s*["']?(.*?)["']?$/m);
+                if (titleMatch && titleMatch[1]) title = titleMatch[1].trim();
 
-                const dateMatch = content.match(/date:\s*["']?(.*?)["']?(?=\s*(title:|type:|image:|gallery:|video:|author:|author_photo:|---|$))/i);
-                if (dateMatch) date = dateMatch[1].replace(/["']/g, '');
+                const dateMatch = content.match(/^date:\s*["']?(.*?)["']?$/m);
+                if (dateMatch && dateMatch[1]) date = dateMatch[1].trim();
 
-                const authorMatch = content.match(/author:\s*["']?(.*?)["']?(?=\s*(title:|date:|type:|image:|gallery:|video:|author_photo:|---|$))/i);
-                if (authorMatch && authorMatch[1]) authorName = authorMatch[1].replace(/["']/g, '').trim();
+                const authorMatch = content.match(/^author:\s*["']?(.*?)["']?$/m);
+                if (authorMatch && authorMatch[1]) authorName = authorMatch[1].trim();
 
-                const videoMatch = content.match(/video:\s*["']?(.*?)["']?(?=\s*(title:|date:|type:|image:|gallery:|author:|author_photo:|---|$))/i);
-                if (videoMatch && videoMatch[1] !== "undefined" && videoMatch[1] !== '""') videoUrl = videoMatch[1].replace(/["']/g, '').trim();
+                const videoMatch = content.match(/^video:\s*["']?(.*?)["']?$/m);
+                if (videoMatch && videoMatch[1] && videoMatch[1] !== "undefined") videoUrl = videoMatch[1].trim();
 
-                const imageMatch = content.match(/image:\s*["']?(.*?)["']?(?=\s*(title:|date:|type:|gallery:|video:|author:|author_photo:|---|$))/i);
-                if (imageMatch && imageMatch[1] !== "undefined" && imageMatch[1] !== '""') imageUrl = imageMatch[1].replace(/["']/g, '').trim();
+                const imageMatch = content.match(/^image:\s*["']?(.*?)["']?$/m);
+                if (imageMatch && imageMatch[1] && imageMatch[1] !== "undefined") imageUrl = imageMatch[1].trim();
 
-                const avatarMatch = content.match(/author_photo:\s*["']?(.*?)["']?(?=\s*(title:|date:|type:|image:|gallery:|video:|author:|---|$))/i);
-                if (avatarMatch && avatarMatch[1] !== "undefined" && avatarMatch[1] !== '""') authorPhotoStr = avatarMatch[1].replace(/["']/g, '').trim();
+                const avatarMatch = content.match(/^author_photo:\s*["']?(.*?)["']?$/m);
+                if (avatarMatch && avatarMatch[1] && avatarMatch[1] !== "undefined") authorPhotoStr = avatarMatch[1].trim();
 
-                // Clean Markdown Body
-                let cleanMarkdown = content
-                    .replace(/^---[\s\S]*?---/, '')
-                    .replace(/title:\s*["']?.*?["']?/gi, '')
-                    .replace(/date:\s*["']?.*?["']?/gi, '')
-                    .replace(/type:\s*["']?.*?["']?/gi, '')
-                    .replace(/author:\s*["']?.*?["']?/gi, '')
-                    .replace(/image:\s*["']?.*?["']?/gi, '')
-                    .replace(/gallery:\s*["']?.*?["']?/gi, '')
-                    .replace(/video:\s*["']?.*?["']?/gi, '')
-                    .replace(/author_photo:\s*["']?.*?["']?/gi, '')
-                    .replace(/---/g, '')
-                    .trim();
+                // Strip frontmatter cleanly from markdown body
+                let cleanMarkdown = content.replace(/^---[\s\S]*?---/, '').trim();
 
                 // Populate Text & Date Elements
                 document.getElementById('article-title').innerText = title;
@@ -169,25 +164,31 @@
                 
                 if (authorName) {
                     document.getElementById('article-author-name').innerText = `• By ${authorName}`;
+                    document.getElementById('article-author-full-name').innerText = authorName;
                 }
 
                 document.getElementById('article-body').innerHTML = marked.parse(cleanMarkdown);
 
-                // Populate Bottom-Right Author Photo Badges Stack
+                // Populate Author Attribution Footer Card
                 let authorPhotos = authorPhotoStr ? authorPhotoStr.split(',').map(s => s.trim()).filter(Boolean) : [];
+                const authorCard = document.getElementById('article-author-card');
                 const authorBadgesContainer = document.getElementById('article-author-badges');
                 authorBadgesContainer.innerHTML = '';
+
+                if (authorPhotos.length > 0 || authorName) {
+                    authorCard.classList.remove('hidden');
+                }
 
                 if (authorPhotos.length > 0) {
                     authorPhotos.slice(0, 3).forEach((av) => {
                         authorBadgesContainer.innerHTML += `
-                            <div class="w-16 h-16 rounded-2xl border-2 border-white shadow-xl overflow-hidden bg-white shrink-0">
+                            <div class="w-14 h-14 rounded-2xl border-2 border-white shadow-md overflow-hidden bg-white shrink-0">
                                 <img src="${av}" class="w-full h-full object-cover" alt="Author Photo">
                             </div>`;
                     });
                     if (authorPhotos.length > 3) {
                         authorBadgesContainer.innerHTML += `
-                            <div class="w-16 h-16 rounded-2xl border-2 border-white shadow-xl bg-[#172554] text-white flex items-center justify-center text-xs font-bold shrink-0">
+                            <div class="w-14 h-14 rounded-2xl border-2 border-white shadow-md bg-[#172554] text-white flex items-center justify-center text-xs font-bold shrink-0">
                                 +${authorPhotos.length - 3}
                             </div>`;
                     }
@@ -214,7 +215,7 @@
 
             } catch (err) {
                 console.error(err);
-                document.getElementById('article-body').innerHTML = '<p class="text-red-500 font-bold">Failed to load article content.</p>';
+                document.getElementById('article-body').innerHTML = '<p class="text-red-500 font-bold text-center py-8">Failed to load article content. Please check connection.</p>';
             }
         }
 
