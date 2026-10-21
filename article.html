@@ -6,37 +6,60 @@
     <title>Legal Insight | TAWO E. TAWO, SAN & CO.</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { font-family: 'Roboto', 'Raleway', Arial, Helvetica, sans-serif; background-color: #F8FAFC; color: #334155; line-height: 1.8; }
+        :root { 
+            --primary-royal: #172554; 
+            --primary-royal-dark: #0F172A; 
+            --bg-offwhite: #F8FAFC; 
+            --text-slate: #334155; 
+        }
+        body { font-family: 'Roboto', 'Raleway', Arial, Helvetica, sans-serif; background-color: var(--bg-offwhite); color: var(--text-slate); line-height: 1.8; overflow-x: hidden; }
         h1, h2, h3, h4, h5, h6 { font-family: 'Raleway', 'Roboto', Arial, Helvetica, sans-serif; color: #0F172A; }
+        
+        /* Subtle Light-Mode Glassmorphism */
+        .glass-card-light {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+        .glass-nav {
+            background: rgba(23, 37, 84, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700;800&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="antialiased bg-[#F8FAFC]">
+<body class="antialiased bg-[#F8FAFC] min-h-screen flex flex-col relative">
 
-    <!-- Navigation -->
-    <header class="bg-[#172554] py-3 px-6 md:px-12 text-white shadow-md">
+    <!-- Subtle Ambient Glow Light for Glass Accent -->
+    <div class="fixed top-1/3 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-blue-100/40 rounded-full blur-[120px] pointer-events-none z-0"></div>
+
+    <!-- Navigation Header -->
+    <header class="glass-nav sticky top-0 z-50 py-3 px-6 md:px-12 text-white shadow-md">
         <div class="max-w-7xl mx-auto flex items-center justify-between">
             <a href="index.html" class="flex items-center space-x-3">
-                <div class="w-9 h-9 rounded-full overflow-hidden bg-white flex items-center justify-center p-0.5">
+                <div class="w-9 h-9 rounded-full overflow-hidden bg-white p-0.5 border border-white/40">
                     <img src="/WhatsApp Image 2026-10-08 at 13.10.32.jpeg" alt="Logo" class="w-full h-full object-cover rounded-full" onerror="this.src='https://placehold.co/100x100/172554/FFFFFF?text=TT';">
                 </div>
                 <span class="font-bold text-xs md:text-sm tracking-wide font-['Raleway']">TAWO E. TAWO, SAN & CO.</span>
             </a>
-            <a href="articles.html" class="text-xs font-bold bg-white/10 hover:bg-white/20 px-4 py-2 rounded-xl transition-all">
+            <a href="articles.html" class="text-xs font-bold bg-white/10 hover:bg-white/20 border border-white/20 px-4 py-2 rounded-xl transition-all shadow-sm">
                 &larr; Back to Insights &amp; Articles
             </a>
         </div>
     </header>
 
     <!-- Article Content Container -->
-    <main class="max-w-4xl mx-auto px-6 py-16 space-y-8">
+    <main class="max-w-4xl mx-auto px-6 py-16 space-y-8 flex-1 w-full relative z-10">
         
         <!-- Header Info -->
         <div class="space-y-4 border-b border-gray-200 pb-8">
             <div class="flex items-center space-x-3 text-xs text-gray-500 font-semibold uppercase tracking-wider">
-                <span id="article-date" class="px-3 py-1 rounded-full bg-blue-50 text-[#172554]">Loading...</span>
-                <span>• Chambers Publication</span>
+                <span id="article-date" class="px-3 py-1 rounded-full bg-blue-50 text-[#172554] border border-blue-100 shadow-xs">Loading...</span>
+                <span id="article-author-name" class="text-slate-600 font-bold">• Chambers Publication</span>
             </div>
             <h1 id="article-title" class="text-2xl sm:text-4xl font-extrabold text-[#0F172A] font-['Raleway'] leading-tight">
                 Loading Article...
@@ -48,20 +71,32 @@
             <!-- Dynamically injected player or image goes here -->
         </div>
 
-        <!-- Markdown Body Content -->
-        <div id="article-body" class="bg-white p-8 sm:p-12 rounded-3xl border border-gray-200 shadow-sm space-y-6 text-gray-700 text-sm sm:text-base leading-relaxed">
-            <p class="text-gray-400 text-center py-12">Retrieving publication details from repository...</p>
+        <!-- Markdown Body Container with Soft Glassmorphism & Bottom-Right Co-Author Stack -->
+        <div class="relative">
+            <div id="article-body" class="glass-card-light p-8 sm:p-12 rounded-3xl shadow-xl space-y-6 text-slate-700 text-sm sm:text-base leading-relaxed pb-24">
+                <p class="text-gray-400 text-center py-12">Retrieving publication details from repository...</p>
+            </div>
+
+            <!-- Author Photo Badges (Anchored at Bottom Right of Article Box) -->
+            <div id="article-author-badges" class="absolute bottom-6 right-6 flex items-center -space-x-3 z-10">
+                <!-- Dynamically populated -->
+            </div>
         </div>
 
         <!-- Back Button -->
         <div class="pt-6 text-center">
-            <a href="articles.html" class="inline-flex items-center space-x-2 px-6 py-3 rounded-xl bg-[#172554] text-white font-bold text-xs uppercase tracking-wider hover:bg-blue-900 transition-all shadow">
+            <a href="articles.html" class="inline-flex items-center space-x-2 px-6 py-3 rounded-xl bg-[#172554] text-white font-bold text-xs uppercase tracking-wider hover:bg-blue-900 transition-all shadow-md">
                 <i class="fa-solid fa-arrow-left"></i>
                 <span>Return to All Articles</span>
             </a>
         </div>
 
     </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#172554] text-gray-300 text-xs border-t border-blue-900 py-6 px-6 text-center mt-auto relative z-10">
+        <p>&copy; 2026 Tawo E. Tawo SAN & Co. All Rights Reserved.</p>
+    </footer>
 
     <!-- Markdown Parser Script -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -90,36 +125,73 @@
                 // Extract Frontmatter Metadata
                 let title = 'Legal Insight';
                 let date = '';
+                let authorName = '';
                 let videoUrl = '';
                 let imageUrl = '';
+                let authorPhotoStr = '';
 
-                const titleMatch = content.match(/title:\s*["']?(.*?)["']?(?=\s*(date:|image:|video:|---|$))/i);
+                const titleMatch = content.match(/title:\s*["']?(.*?)["']?(?=\s*(date:|type:|image:|gallery:|video:|author:|author_photo:|---|$))/i);
                 if (titleMatch) title = titleMatch[1].replace(/["']/g, '');
 
-                const dateMatch = content.match(/date:\s*["']?(.*?)["']?(?=\s*(title:|image:|video:|---|$))/i);
+                const dateMatch = content.match(/date:\s*["']?(.*?)["']?(?=\s*(title:|type:|image:|gallery:|video:|author:|author_photo:|---|$))/i);
                 if (dateMatch) date = dateMatch[1].replace(/["']/g, '');
 
-                const videoMatch = content.match(/video:\s*["']?(.*?)["']?(?=\s*(title:|date:|image:|---|$))/i);
+                const authorMatch = content.match(/author:\s*["']?(.*?)["']?(?=\s*(title:|date:|type:|image:|gallery:|video:|author_photo:|---|$))/i);
+                if (authorMatch && authorMatch[1]) authorName = authorMatch[1].replace(/["']/g, '').trim();
+
+                const videoMatch = content.match(/video:\s*["']?(.*?)["']?(?=\s*(title:|date:|type:|image:|gallery:|author:|author_photo:|---|$))/i);
                 if (videoMatch && videoMatch[1] !== "undefined" && videoMatch[1] !== '""') videoUrl = videoMatch[1].replace(/["']/g, '').trim();
 
-                const imageMatch = content.match(/image:\s*["']?(.*?)["']?(?=\s*(title:|date:|video:|---|$))/i);
+                const imageMatch = content.match(/image:\s*["']?(.*?)["']?(?=\s*(title:|date:|type:|gallery:|video:|author:|author_photo:|---|$))/i);
                 if (imageMatch && imageMatch[1] !== "undefined" && imageMatch[1] !== '""') imageUrl = imageMatch[1].replace(/["']/g, '').trim();
+
+                const avatarMatch = content.match(/author_photo:\s*["']?(.*?)["']?(?=\s*(title:|date:|type:|image:|gallery:|video:|author:|---|$))/i);
+                if (avatarMatch && avatarMatch[1] !== "undefined" && avatarMatch[1] !== '""') authorPhotoStr = avatarMatch[1].replace(/["']/g, '').trim();
 
                 // Clean Markdown Body
                 let cleanMarkdown = content
                     .replace(/^---[\s\S]*?---/, '')
                     .replace(/title:\s*["']?.*?["']?/gi, '')
                     .replace(/date:\s*["']?.*?["']?/gi, '')
+                    .replace(/type:\s*["']?.*?["']?/gi, '')
+                    .replace(/author:\s*["']?.*?["']?/gi, '')
                     .replace(/image:\s*["']?.*?["']?/gi, '')
+                    .replace(/gallery:\s*["']?.*?["']?/gi, '')
                     .replace(/video:\s*["']?.*?["']?/gi, '')
+                    .replace(/author_photo:\s*["']?.*?["']?/gi, '')
                     .replace(/---/g, '')
                     .trim();
 
-                // Populate Page Elements
+                // Populate Text & Date Elements
                 document.getElementById('article-title').innerText = title;
                 document.title = `${title} | TAWO E. TAWO, SAN & CO.`;
                 document.getElementById('article-date').innerText = date ? new Date(date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }).toUpperCase() : 'RECENT PUBLICATION';
+                
+                if (authorName) {
+                    document.getElementById('article-author-name').innerText = `• By ${authorName}`;
+                }
+
                 document.getElementById('article-body').innerHTML = marked.parse(cleanMarkdown);
+
+                // Populate Bottom-Right Author Photo Badges Stack
+                let authorPhotos = authorPhotoStr ? authorPhotoStr.split(',').map(s => s.trim()).filter(Boolean) : [];
+                const authorBadgesContainer = document.getElementById('article-author-badges');
+                authorBadgesContainer.innerHTML = '';
+
+                if (authorPhotos.length > 0) {
+                    authorPhotos.slice(0, 3).forEach((av) => {
+                        authorBadgesContainer.innerHTML += `
+                            <div class="w-16 h-16 rounded-2xl border-2 border-white shadow-xl overflow-hidden bg-white shrink-0">
+                                <img src="${av}" class="w-full h-full object-cover" alt="Author Photo">
+                            </div>`;
+                    });
+                    if (authorPhotos.length > 3) {
+                        authorBadgesContainer.innerHTML += `
+                            <div class="w-16 h-16 rounded-2xl border-2 border-white shadow-xl bg-[#172554] text-white flex items-center justify-center text-xs font-bold shrink-0">
+                                +${authorPhotos.length - 3}
+                            </div>`;
+                    }
+                }
 
                 // Handle Media (Video or Image Banner)
                 const mediaContainer = document.getElementById('article-media-container');
@@ -128,7 +200,7 @@
                     const ytMatch = videoUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/))([\w-]{11})/);
                     if (ytMatch && ytMatch[1]) {
                         mediaContainer.innerHTML = `
-                            <iframe class="w-full h-full aspect-video" src="https://www.youtube.com/embed/${ytMatch.id || ytMatch[1]}?rel=0" title="Video" frameborder="0" allowfullscreen></iframe>`;
+                            <iframe class="w-full h-full aspect-video" src="https://www.youtube.com/embed/${ytMatch[1]}?rel=0" title="Video" frameborder="0" allowfullscreen></iframe>`;
                     } else {
                         mediaContainer.innerHTML = `
                             <video controls class="w-full h-full object-contain">
