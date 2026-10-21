@@ -398,7 +398,7 @@
 
                     const typeMatch = content.match(/type:\s*["']?(.*?)["']?(?=\s*(title:|date:|image:|gallery:|video:|author_photo:|---|$))/i);
                     if (typeMatch && typeMatch[1]) {
-                        postType = typeMatch[1].replace(/["']/g, '').trim();
+                        postType = typeMatch[1].replace(/["']/g, '').trim().toLowerCase();
                     }
 
                     const videoMatch = content.match(/video:\s*["']?(.*?)["']?(?=\s*(title:|date:|type:|image:|gallery:|author_photo:|---|$))/i);
@@ -444,7 +444,7 @@
                     };
                     dynamicArticlesMap.push(articleObj);
 
-                    // Multi-Author Overlapping Avatar Badges (Larger rounded-2xl bottom-right stack)
+                    // Multi-Author Overlapping Avatar Badges
                     let avatarBadgeHtml = '';
                     if (authorPhotos.length > 0) {
                         avatarBadgeHtml = '<div class="absolute bottom-4 right-4 flex items-center -space-x-3 z-10">';
@@ -463,43 +463,9 @@
                         avatarBadgeHtml += '</div>';
                     }
 
-                    // --- TARGET ROUTING WITH OPTION A CONDITIONAL ACTIVATION & REVEAL ANIMATIONS ---
-                    if (postType === 'article') {
-                        // SECTION 1: Legal Article Card
-                        const articleCard = document.createElement('article');
-                        articleCard.className = 'bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between relative hover:-translate-y-1';
-
-                        let bannerHtml = '';
-                        if (imageUrl) {
-                            bannerHtml = `
-                                <div class="w-full bg-slate-900 flex items-center justify-center p-2 max-h-56 overflow-hidden">
-                                    <img src="${imageUrl}" class="w-full h-auto max-h-56 object-contain">
-                                </div>`;
-                        }
-
-                        articleCard.innerHTML = `
-                            ${bannerHtml}
-                            <div class="p-6 sm:p-8 space-y-4">
-                                <div class="flex items-center justify-between text-xs text-gray-500 font-medium">
-                                    <span class="px-3 py-1 rounded-full bg-blue-50 text-[#172554] font-semibold">Legal Article</span>
-                                    <span>${formattedDate}</span>
-                                </div>
-                                <h3 class="text-lg font-extrabold text-[#0F172A] font-['Raleway'] hover:text-[#172554] transition-colors leading-snug">
-                                    <a href="article.html?file=${file.name}">${title}</a>
-                                </h3>
-                                <p class="text-xs text-gray-600 line-clamp-3 leading-relaxed">${snippet}</p>
-                            </div>
-                            <div class="px-6 sm:px-8 pb-6 pt-2 border-t border-gray-100 flex items-center justify-between">
-                                <a href="article.html?file=${file.name}" class="text-xs font-bold text-[#172554] hover:underline flex items-center space-x-1">
-                                    <span>Read Article</span> &rarr;
-                                </a>
-                            </div>
-                            ${avatarBadgeHtml}
-                        `;
-                        articlesGrid.prepend(articleCard);
-
-                    } else if (postType === 'gallery') {
-                        // SECTION 3: Photo Gallery Card (Reveal section if hidden)
+                    // --- STRICT POST-TYPE ROUTING ---
+                    if (postType === 'gallery') {
+                        // SECTION 3: Photo Gallery Card
                         if (gallerySection && gallerySection.classList.contains('hidden')) {
                             gallerySection.classList.remove('hidden');
                             gallerySection.classList.add('animate-section-reveal');
@@ -524,31 +490,27 @@
                                     </div>`;
                             });
                             photoGridHtml += '</div>';
-                        } else if (imageUrl) {
-                            photoGridHtml = `
-                                <div class="h-36 rounded-xl overflow-hidden border border-gray-200 bg-slate-900 p-1">
-                                    <img src="${imageUrl}" class="w-full h-full object-contain">
-                                </div>`;
                         }
 
                         galleryCard.innerHTML = `
                             <div class="space-y-4">
                                 <div class="flex items-center justify-between text-[10px] text-gray-500 font-semibold uppercase tracking-wider">
-                                    <span>Photo Bulletin &bull; ${formattedDate}</span>
+                                    <span class="px-3 py-1 rounded-full bg-blue-50 text-[#172554] font-semibold">Photo Gallery</span>
+                                    <span>${formattedDate}</span>
                                 </div>
                                 <h3 class="text-lg font-bold text-[#0F172A] font-['Raleway'] group-hover:text-[#172554] transition-colors">${title}</h3>
                                 <p class="text-xs text-gray-600 leading-relaxed">${snippet}</p>
                                 ${photoGridHtml}
                             </div>
                             <div class="pt-5 mt-4 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-[#172554]">
-                                <span>View All Photos &amp; Event Summary</span> &rarr;
+                                <span>View All Photos &amp; Summary</span> &rarr;
                             </div>
                             ${avatarBadgeHtml}
                         `;
                         galleryGrid.prepend(galleryCard);
 
-                    } else {
-                        // SECTION 2: Media Highlight Card (Reveal section if hidden)
+                    } else if (postType === 'media') {
+                        // SECTION 2: Media Highlight Card
                         if (mediaSection && mediaSection.classList.contains('hidden')) {
                             mediaSection.classList.remove('hidden');
                             mediaSection.classList.add('animate-section-reveal');
@@ -565,15 +527,10 @@
                         }
 
                         let mediaBanner = '';
-                        if (imageUrl) {
-                            mediaBanner = `
-                                <div class="w-full bg-slate-900 flex items-center justify-center p-2 h-52 overflow-hidden">
-                                    <img src="${imageUrl}" class="w-full h-full object-contain">
-                                </div>`;
-                        } else if (ytThumbUrl) {
+                        if (ytThumbUrl) {
                             mediaBanner = `
                                 <div class="h-52 bg-slate-950 overflow-hidden relative group flex items-center justify-center">
-                                    <img src="${ytThumbUrl}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&q=80&w=800';" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                    <img src="${ytThumbUrl}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                                     <div class="absolute inset-0 bg-slate-950/30 flex items-center justify-center">
                                         <div class="w-12 h-12 rounded-full bg-blue-600/90 text-white flex items-center justify-center shadow-lg group-hover:bg-blue-500 transition-colors">
                                             <i class="fa-solid fa-play text-lg ml-0.5"></i>
@@ -581,22 +538,50 @@
                                     </div>
                                 </div>`;
                         } else {
-                            mediaBanner = `<div class="h-52 bg-slate-900 flex items-center justify-center text-white"><i class="fa-solid fa-scale-balanced text-3xl text-blue-300"></i></div>`;
+                            mediaBanner = `<div class="h-52 bg-slate-900 flex items-center justify-center text-white"><i class="fa-solid fa-video text-3xl text-blue-300"></i></div>`;
                         }
 
                         mediaCard.innerHTML = `
                             ${mediaBanner}
                             <div class="p-6 space-y-2">
-                                <div class="text-[10px] text-gray-500 font-semibold uppercase tracking-wider">Chambers Bulletin &bull; ${formattedDate}</div>
+                                <div class="flex items-center justify-between text-[10px] text-gray-500 font-semibold uppercase tracking-wider">
+                                    <span class="px-3 py-1 rounded-full bg-blue-50 text-[#172554] font-semibold">Media Highlight</span>
+                                    <span>${formattedDate}</span>
+                                </div>
                                 <h3 class="text-base font-bold text-[#0F172A] font-['Raleway']">${title}</h3>
                                 <p class="text-xs text-gray-600 leading-relaxed line-clamp-2">${snippet}</p>
                             </div>
                             <div class="px-6 pb-5 pt-2 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-[#172554]">
-                                <span>Expand Full Notes &amp; Proceedings</span> &rarr;
+                                <span>Play Video &amp; Proceedings</span> &rarr;
                             </div>
                             ${avatarBadgeHtml}
                         `;
                         mediaGrid.prepend(mediaCard);
+
+                    } else {
+                        // SECTION 1: Legal Article Card (Default)
+                        const articleCard = document.createElement('article');
+                        articleCard.className = 'bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between relative hover:-translate-y-1';
+
+                        articleCard.innerHTML = `
+                            <div class="p-6 sm:p-8 space-y-4">
+                                <div class="flex items-center justify-between text-xs text-gray-500 font-medium">
+                                    <span class="px-3 py-1 rounded-full bg-blue-50 text-[#172554] font-semibold">Legal Article</span>
+                                    <span>${formattedDate}</span>
+                                </div>
+                                <h3 class="text-lg font-extrabold text-[#0F172A] font-['Raleway'] hover:text-[#172554] transition-colors leading-snug">
+                                    <a href="article.html?file=${file.name}">${title}</a>
+                                </h3>
+                                <p class="text-xs text-gray-600 line-clamp-3 leading-relaxed">${snippet}</p>
+                            </div>
+                            <div class="px-6 sm:px-8 pb-6 pt-2 border-t border-gray-100 flex items-center justify-between">
+                                <a href="article.html?file=${file.name}" class="text-xs font-bold text-[#172554] hover:underline flex items-center space-x-1">
+                                    <span>Read Article</span> &rarr;
+                                </a>
+                            </div>
+                            ${avatarBadgeHtml}
+                        `;
+                        articlesGrid.prepend(articleCard);
                     }
                 }
             } catch (error) {
