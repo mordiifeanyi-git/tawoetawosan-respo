@@ -69,15 +69,16 @@
             <!-- Dynamically injected player or image goes here -->
         </div>
 
-        <!-- Article Container with Integrated Bottom Author Layout -->
-        <div class="glass-card-light rounded-3xl shadow-xl overflow-hidden border border-gray-200/80">
-            <!-- Markdown Text Body -->
-            <div id="article-body" class="p-8 sm:p-12 space-y-6 text-slate-700 text-sm sm:text-base leading-relaxed">
+        <!-- Single Glass Card Containing Both Text & Author Footer -->
+        <div class="glass-card-light rounded-3xl shadow-xl overflow-hidden border border-gray-200/80 flex flex-col">
+            
+            <!-- Markdown Text Body (With overflow wrap protection) -->
+            <div id="article-body" class="p-8 sm:p-12 space-y-6 text-slate-700 text-sm sm:text-base leading-relaxed break-words overflow-x-auto">
                 <p class="text-gray-400 text-center py-12">Retrieving publication details from repository...</p>
             </div>
 
-            <!-- Integrated Author Footer inside the card -->
-            <div id="article-author-inline-section" class="border-t border-gray-200/60 bg-slate-50/50 p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 hidden">
+            <!-- Integrated Author Footer at the Bottom of the Same Card -->
+            <div id="article-author-inline-section" class="border-t border-gray-200/60 bg-slate-50/60 p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 hidden">
                 <div class="space-y-1">
                     <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest block font-['Raleway']">WRITTEN BY</span>
                     <h4 id="article-author-full-name" class="text-base sm:text-lg font-black text-[#0F172A] font-['Raleway']">Tawo E. Tawo, SAN & Co.</h4>
@@ -144,8 +145,8 @@
                 const dateMatch = content.match(/^date:\s*["']?(.*?)["']?$/m);
                 if (dateMatch && dateMatch[1]) date = dateMatch[1].trim();
 
-                const authorMatch = content.match(/^(?:author|type):\s*["']?(.*?)["']?$/m);
-                if (authorMatch && authorMatch[1] && authorMatch[1] !== "article" && authorMatch[1] !== "media" && authorMatch[1] !== "gallery") {
+                const authorMatch = content.match(/^author:\s*["']?(.*?)["']?$/m);
+                if (authorMatch && authorMatch[1] && authorMatch[1].trim() !== "") {
                     authorName = authorMatch[1].trim();
                 }
 
@@ -176,14 +177,11 @@
 
                 if (authorName) {
                     document.getElementById('article-author-full-name').innerText = authorName;
-                }
-
-                if (authorPhotos.length > 0 || authorName) {
                     authorSection.classList.remove('hidden');
                 }
 
-                // Render Large Avatars at Bottom Corner
                 if (authorPhotos.length > 0) {
+                    authorSection.classList.remove('hidden');
                     authorPhotos.slice(0, 3).forEach((av) => {
                         authorBadgesContainer.innerHTML += `
                             <div class="w-16 sm:w-20 h-16 sm:h-20 rounded-2xl border-2 border-white shadow-xl overflow-hidden bg-white shrink-0">
