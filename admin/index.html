@@ -535,7 +535,6 @@
                     </div>`;
             }
 
-            // Distinct Previews for Gallery, Video, and Article Cards
             if (postType === 'gallery') {
                 let galleryPhotos = galleryStr.split(',').map(s => s.trim()).filter(Boolean);
                 let photoGrid = '';
@@ -552,7 +551,8 @@
                 renderArea.innerHTML = `
                     <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm flex flex-col justify-between max-w-md mx-auto space-y-3">
                         <div class="flex items-center justify-between text-[10px] text-gray-500 font-semibold uppercase tracking-wider">
-                            <span>Photo Bulletin &bull; ${formattedDate}</span>
+                            <span class="px-3 py-1 rounded-full bg-blue-50 text-[#172554] font-semibold">Photo Gallery</span>
+                            <span>${formattedDate}</span>
                         </div>
                         <h3 class="text-base font-bold text-[#0F172A] font-['Raleway']">${title}</h3>
                         <p class="text-xs text-gray-600 line-clamp-2 leading-relaxed">${body}</p>
@@ -590,16 +590,35 @@
         }
 
         function generateMarkdownString() {
-            const title = document.getElementById('input-title').value || '';
+            const titleInput = document.getElementById('input-title').value.trim();
+            const title = titleInput ? titleInput.replace(/"/g, '\\"') : 'Untitled Publication';
+            
             const date = document.getElementById('input-date').value || new Date().toISOString().split('T')[0];
-            const postType = document.querySelector('input[name="post-type"]:checked').value;
-            const gallery = document.getElementById('input-gallery').value || '';
-            const videoUrl = document.getElementById('input-video-url').value || '';
+            
+            const selectedRadio = document.querySelector('input[name="post-type"]:checked');
+            const postType = selectedRadio ? selectedRadio.value.trim().toLowerCase() : 'article';
+
+            const galleryInput = document.getElementById('input-gallery').value.trim();
+            const gallery = galleryInput ? galleryInput.replace(/"/g, '\\"') : '';
+
+            const videoInput = document.getElementById('input-video-url').value.trim();
+            const videoUrl = videoInput ? videoInput.replace(/"/g, '\\"') : '';
+
             const body = document.getElementById('input-body').value || '';
 
             const { namesStr, photosStr } = collectAuthorData();
 
-            return `---\ntitle: "${title}"\ndate: "${date}"\ntype: "${postType}"\nauthor: "${namesStr}"\nauthor_photo: "${photosStr}"\ngallery: "${gallery}"\nvideo: "${videoUrl}"\n---\n\n${body}`;
+            return `---
+title: "${title}"
+date: "${date}"
+type: "${postType}"
+author: "${namesStr}"
+author_photo: "${photosStr}"
+gallery: "${gallery}"
+video: "${videoUrl}"
+---
+
+${body}`;
         }
 
         function copyMarkdown() {
