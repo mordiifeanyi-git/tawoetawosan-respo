@@ -138,17 +138,6 @@
                                 <input type="date" id="input-date" oninput="updateLivePreview()" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#172554] text-xs font-semibold text-slate-800 bg-slate-50/50" />
                             </div>
 
-                            <!-- FEATURED BANNER IMAGE (For Article/Media) -->
-                            <div id="field-featured-image" class="space-y-1.5 pt-2 border-t border-gray-100">
-                                <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider font-['Raleway']">
-                                    <i class="fa-solid fa-image text-[#172554] mr-1"></i> Featured Cover Image (Optional)
-                                </label>
-                                <div class="space-y-2">
-                                    <input type="file" accept="image/*" onchange="handleFeaturedImageUpload(event)" class="w-full px-3 py-2 rounded-xl border border-gray-200 text-xs text-slate-600 bg-slate-50/50 file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-[10px] file:font-bold file:bg-[#172554] file:text-white cursor-pointer" />
-                                    <input type="text" id="input-image-url" placeholder="Or image URL / path..." oninput="updateLivePreview()" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-xs text-slate-800 bg-slate-50/50 focus:outline-none" />
-                                </div>
-                            </div>
-
                             <!-- UNIFIED DYNAMIC AUTHOR REPEATER SECTION -->
                             <div class="space-y-3 pt-3 border-t border-gray-200">
                                 <div class="flex items-center justify-between">
@@ -313,33 +302,6 @@
         }
 
         /* MEDIA UPLOAD HANDLERS */
-        async function handleFeaturedImageUpload(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = async function(e) {
-                const base64Content = e.target.result.split(',')[1];
-                const cleanFilename = `${Date.now()}-${file.name.toLowerCase().replace(/[^a-z0-9.]+/g, '-')}`;
-                const uploadPath = `media/${cleanFilename}`;
-
-                try {
-                    const res = await fetch('/api/upload-media', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ path: uploadPath, content: base64Content, message: `Upload cover image` })
-                    });
-                    const data = await res.json();
-                    if (res.ok) {
-                        document.getElementById('input-image-url').value = data.path;
-                        updateLivePreview();
-                        alert('✅ Cover image uploaded successfully!');
-                    }
-                } catch (err) { console.error(err); }
-            };
-            reader.readAsDataURL(file);
-        }
-
         async function handleLocalVideoUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -500,23 +462,19 @@
 
         function updateFormVisibility() {
             const postType = document.querySelector('input[name="post-type"]:checked').value;
-            const fieldFeaturedImage = document.getElementById('field-featured-image');
             const fieldPhotoGallery = document.getElementById('field-photo-gallery');
             const fieldVideoRecording = document.getElementById('field-video-recording');
             const sectionBadge = document.getElementById('preview-section-badge');
 
             if (postType === 'article') {
-                fieldFeaturedImage.classList.remove('hidden');
                 fieldPhotoGallery.classList.add('hidden');
                 fieldVideoRecording.classList.add('hidden');
                 sectionBadge.innerText = 'Written Article Card';
             } else if (postType === 'media') {
-                fieldFeaturedImage.classList.remove('hidden');
                 fieldPhotoGallery.classList.add('hidden');
                 fieldVideoRecording.classList.remove('hidden');
                 sectionBadge.innerText = 'Media Highlight Card';
             } else if (postType === 'gallery') {
-                fieldFeaturedImage.classList.remove('hidden');
                 fieldPhotoGallery.classList.remove('hidden');
                 fieldVideoRecording.classList.add('hidden');
                 sectionBadge.innerText = 'Photo Gallery Card';
@@ -562,41 +520,28 @@
                     </div>`;
             }
 
-            if (postType === 'article') {
-                renderArea.innerHTML = `
-                    <article class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm flex flex-col justify-between max-w-md mx-auto space-y-4">
-                        <div class="flex items-center justify-between text-xs text-gray-500 font-medium">
-                            <span class="px-3 py-1 rounded-full bg-blue-50 text-[#172554] font-semibold">${formattedDate}</span>
-                        </div>
-                        <h3 class="text-lg font-extrabold text-[#0F172A] font-['Raleway'] leading-snug">${title}</h3>
-                        <p class="text-xs text-gray-600 line-clamp-4 leading-relaxed">${body}</p>
-                        ${authorsHtml}
-                    </article>`;
-            } else {
-                renderArea.innerHTML = `
-                    <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm flex flex-col justify-between max-w-md mx-auto space-y-4">
-                        <div class="flex items-center justify-between text-xs text-gray-500 font-medium">
-                            <span class="px-3 py-1 rounded-full bg-blue-50 text-[#172554] font-semibold">${formattedDate} (${postType.toUpperCase()})</span>
-                        </div>
-                        <h3 class="text-lg font-extrabold text-[#0F172A] font-['Raleway'] leading-snug">${title}</h3>
-                        <p class="text-xs text-gray-600 line-clamp-3 leading-relaxed">${body}</p>
-                        ${authorsHtml}
-                    </div>`;
-            }
+            renderArea.innerHTML = `
+                <article class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm flex flex-col justify-between max-w-md mx-auto space-y-4">
+                    <div class="flex items-center justify-between text-xs text-gray-500 font-medium">
+                        <span class="px-3 py-1 rounded-full bg-blue-50 text-[#172554] font-semibold">${formattedDate} (${postType.toUpperCase()})</span>
+                    </div>
+                    <h3 class="text-lg font-extrabold text-[#0F172A] font-['Raleway'] leading-snug">${title}</h3>
+                    <p class="text-xs text-gray-600 line-clamp-3 leading-relaxed">${body}</p>
+                    ${authorsHtml}
+                </article>`;
         }
 
         function generateMarkdownString() {
             const title = document.getElementById('input-title').value || '';
             const date = document.getElementById('input-date').value || new Date().toISOString().split('T')[0];
             const postType = document.querySelector('input[name="post-type"]:checked').value;
-            const imageUrl = document.getElementById('input-image-url').value || '';
             const gallery = document.getElementById('input-gallery').value || '';
             const videoUrl = document.getElementById('input-video-url').value || '';
             const body = document.getElementById('input-body').value || '';
 
             const { namesStr, photosStr } = collectAuthorData();
 
-            return `---\ntitle: "${title}"\ndate: "${date}"\ntype: "${postType}"\nauthor: "${namesStr}"\nauthor_photo: "${photosStr}"\nimage: "${imageUrl}"\ngallery: "${gallery}"\nvideo: "${videoUrl}"\n---\n\n${body}`;
+            return `---\ntitle: "${title}"\ndate: "${date}"\ntype: "${postType}"\nauthor: "${namesStr}"\nauthor_photo: "${photosStr}"\ngallery: "${gallery}"\nvideo: "${videoUrl}"\n---\n\n${body}`;
         }
 
         function copyMarkdown() {
