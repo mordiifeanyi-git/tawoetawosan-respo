@@ -602,12 +602,13 @@
             const title = document.getElementById('input-title').value || '';
             const date = document.getElementById('input-date').value || new Date().toISOString().split('T')[0];
             const postType = document.querySelector('input[name="post-type"]:checked').value;
+            const author = document.getElementById('input-category').value || '';
             const gallery = document.getElementById('input-gallery').value || '';
             const videoUrl = document.getElementById('input-video-url').value || '';
             const authorPhoto = document.getElementById('input-avatar-url').value || '';
             const body = document.getElementById('input-body').value || '';
 
-            return `---\ntitle: "${title}"\ndate: "${date}"\ntype: "${postType}"\ngallery: "${gallery}"\nvideo: "${videoUrl}"\nauthor_photo: "${authorPhoto}"\n---\n\n${body}`;
+            return `---\ntitle: "${title}"\ndate: "${date}"\ntype: "${postType}"\nauthor: "${author}"\ngallery: "${gallery}"\nvideo: "${videoUrl}"\nauthor_photo: "${authorPhoto}"\n---\n\n${body}`;
         }
 
         function copyMarkdown() {

@@ -52,13 +52,12 @@
     </header>
 
     <!-- Article Content Container -->
-    <main class="max-w-4xl mx-auto px-6 py-16 space-y-8 flex-1 w-full relative z-10">
+    <main class="max-w-4xl mx-auto px-6 py-12 space-y-6 flex-1 w-full relative z-10">
         
-        <!-- Header Info -->
-        <div class="space-y-4 border-b border-gray-200 pb-8">
-            <div class="flex items-center space-x-3 text-xs text-gray-500 font-semibold uppercase tracking-wider">
-                <span id="article-date" class="px-3 py-1 rounded-full bg-blue-50 text-[#172554] border border-blue-100 shadow-xs">Loading...</span>
-                <span id="article-author-name" class="text-slate-600 font-bold">• Chambers Publication</span>
+        <!-- Header Info (Clean Date Tag Only - No Chambers Publication) -->
+        <div class="space-y-3 border-b border-gray-200 pb-6">
+            <div>
+                <span id="article-date" class="px-3 py-1 rounded-full bg-blue-50 text-[#172554] border border-blue-100 shadow-xs text-xs font-bold uppercase tracking-wider inline-block">Loading...</span>
             </div>
             <h1 id="article-title" class="text-2xl sm:text-4xl font-extrabold text-[#0F172A] font-['Raleway'] leading-tight">
                 Loading Article...
@@ -70,25 +69,25 @@
             <!-- Dynamically injected player or image goes here -->
         </div>
 
-        <!-- Full Article Body (Unobstructed Text Area) -->
+        <!-- Full Article Body -->
         <div id="article-body" class="glass-card-light p-8 sm:p-12 rounded-3xl shadow-xl space-y-6 text-slate-700 text-sm sm:text-base leading-relaxed">
             <p class="text-gray-400 text-center py-12">Retrieving publication details from repository...</p>
         </div>
 
-        <!-- Dedicated Author Attribution Card Below Article Body -->
-        <div id="article-author-card" class="glass-card-light p-6 rounded-2xl shadow-md flex items-center justify-between gap-4 hidden">
-            <div class="space-y-0.5">
-                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block font-['Raleway']">Published By</span>
-                <h4 id="article-author-full-name" class="text-sm font-extrabold text-[#0F172A] font-['Raleway']">Tawo E. Tawo, SAN & Co. Legal Team</h4>
+        <!-- Compact Author Attribution Card (Smaller Container, Bigger Text & Avatars) -->
+        <div id="article-author-card" class="glass-card-light py-3.5 px-6 rounded-2xl shadow-md flex items-center justify-between gap-4 hidden">
+            <div class="space-y-0.5 min-w-0">
+                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest block font-['Raleway']">PUBLISHED BY</span>
+                <h4 id="article-author-full-name" class="text-base sm:text-lg font-black text-[#0F172A] font-['Raleway'] leading-snug truncate">Tawo E. Tawo, SAN & Co.</h4>
             </div>
-            <!-- Author Photos Cluster -->
+            <!-- Bigger, More Visible Author Photos Cluster -->
             <div id="article-author-badges" class="flex items-center -space-x-3 shrink-0">
                 <!-- Dynamically populated -->
             </div>
         </div>
 
         <!-- Back Button -->
-        <div class="pt-6 text-center">
+        <div class="pt-4 text-center">
             <a href="articles.html" class="inline-flex items-center space-x-2 px-6 py-3 rounded-xl bg-[#172554] text-white font-bold text-xs uppercase tracking-wider hover:bg-blue-900 transition-all shadow-md">
                 <i class="fa-solid fa-arrow-left"></i>
                 <span>Return to All Articles</span>
@@ -142,8 +141,10 @@
                 const dateMatch = content.match(/^date:\s*["']?(.*?)["']?$/m);
                 if (dateMatch && dateMatch[1]) date = dateMatch[1].trim();
 
-                const authorMatch = content.match(/^author:\s*["']?(.*?)["']?$/m);
-                if (authorMatch && authorMatch[1]) authorName = authorMatch[1].trim();
+                const authorMatch = content.match(/^(?:author|type):\s*["']?(.*?)["']?$/m);
+                if (authorMatch && authorMatch[1] && authorMatch[1] !== "article" && authorMatch[1] !== "media" && authorMatch[1] !== "gallery") {
+                    authorName = authorMatch[1].trim();
+                }
 
                 const videoMatch = content.match(/^video:\s*["']?(.*?)["']?$/m);
                 if (videoMatch && videoMatch[1] && videoMatch[1] !== "undefined") videoUrl = videoMatch[1].trim();
@@ -162,11 +163,6 @@
                 document.title = `${title} | TAWO E. TAWO, SAN & CO.`;
                 document.getElementById('article-date').innerText = date ? new Date(date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }).toUpperCase() : 'RECENT PUBLICATION';
                 
-                if (authorName) {
-                    document.getElementById('article-author-name').innerText = `• By ${authorName}`;
-                    document.getElementById('article-author-full-name').innerText = authorName;
-                }
-
                 document.getElementById('article-body').innerHTML = marked.parse(cleanMarkdown);
 
                 // Populate Author Attribution Footer Card
@@ -175,20 +171,25 @@
                 const authorBadgesContainer = document.getElementById('article-author-badges');
                 authorBadgesContainer.innerHTML = '';
 
+                if (authorName) {
+                    document.getElementById('article-author-full-name').innerText = authorName;
+                }
+
                 if (authorPhotos.length > 0 || authorName) {
                     authorCard.classList.remove('hidden');
                 }
 
+                // Render Larger (w-20 h-20) Author Avatar Stack
                 if (authorPhotos.length > 0) {
                     authorPhotos.slice(0, 3).forEach((av) => {
                         authorBadgesContainer.innerHTML += `
-                            <div class="w-14 h-14 rounded-2xl border-2 border-white shadow-md overflow-hidden bg-white shrink-0">
+                            <div class="w-16 sm:w-20 h-16 sm:h-20 rounded-2xl border-2 border-white shadow-lg overflow-hidden bg-white shrink-0">
                                 <img src="${av}" class="w-full h-full object-cover" alt="Author Photo">
                             </div>`;
                     });
                     if (authorPhotos.length > 3) {
                         authorBadgesContainer.innerHTML += `
-                            <div class="w-14 h-14 rounded-2xl border-2 border-white shadow-md bg-[#172554] text-white flex items-center justify-center text-xs font-bold shrink-0">
+                            <div class="w-16 sm:w-20 h-16 sm:h-20 rounded-2xl border-2 border-white shadow-lg bg-[#172554] text-white flex items-center justify-center text-sm font-bold shrink-0">
                                 +${authorPhotos.length - 3}
                             </div>`;
                     }
