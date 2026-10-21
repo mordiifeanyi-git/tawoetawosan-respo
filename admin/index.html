@@ -138,6 +138,17 @@
                                 <input type="date" id="input-date" oninput="updateLivePreview()" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#172554] text-xs font-semibold text-slate-800 bg-slate-50/50" />
                             </div>
 
+                            <!-- FEATURED BANNER IMAGE (For Article/Media) -->
+                            <div id="field-featured-image" class="space-y-1.5 pt-2 border-t border-gray-100">
+                                <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider font-['Raleway']">
+                                    <i class="fa-solid fa-image text-[#172554] mr-1"></i> Featured Cover Image (Optional)
+                                </label>
+                                <div class="space-y-2">
+                                    <input type="file" accept="image/*" onchange="handleFeaturedImageUpload(event)" class="w-full px-3 py-2 rounded-xl border border-gray-200 text-xs text-slate-600 bg-slate-50/50 file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-[10px] file:font-bold file:bg-[#172554] file:text-white cursor-pointer" />
+                                    <input type="text" id="input-image-url" placeholder="Or image URL / path..." oninput="updateLivePreview()" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-xs text-slate-800 bg-slate-50/50 focus:outline-none" />
+                                </div>
+                            </div>
+
                             <!-- UNIFIED DYNAMIC AUTHOR REPEATER SECTION -->
                             <div class="space-y-3 pt-3 border-t border-gray-200">
                                 <div class="flex items-center justify-between">
@@ -149,9 +160,7 @@
                                     </button>
                                 </div>
 
-                                <!-- Dynamic Container for Author Pairs -->
                                 <div id="authors-repeater-container" class="space-y-3">
-                                    <!-- Author 1 Card (Default) -->
                                     <div class="author-row bg-slate-50 p-3.5 rounded-xl border border-gray-200 space-y-2 relative">
                                         <div class="flex items-center justify-between">
                                             <span class="text-[10px] font-extrabold text-[#172554] uppercase tracking-wider author-index-label">Author 1</span>
@@ -168,15 +177,26 @@
                                 </div>
                             </div>
 
-                            <!-- Media / Gallery Specific Hidden Fields -->
+                            <!-- SPECIFIC FIELD: Photo Gallery Upload -->
                             <div id="field-photo-gallery" class="space-y-1.5 pt-2 border-t border-gray-100 hidden">
-                                <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider font-['Raleway']">Gallery Photos</label>
-                                <input type="text" id="input-gallery" placeholder="Comma-separated image paths..." oninput="updateLivePreview()" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-xs text-slate-800 bg-slate-50/50 focus:outline-none" />
+                                <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider font-['Raleway']">
+                                    <i class="fa-solid fa-images text-[#172554] mr-1"></i> Gallery Photos (Select Multiple from Device)
+                                </label>
+                                <div class="space-y-2">
+                                    <input type="file" accept="image/*" multiple onchange="handleMultipleGalleryUpload(event)" class="w-full px-3 py-2 rounded-xl border border-gray-200 text-xs text-slate-600 bg-slate-50/50 file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-[10px] file:font-bold file:bg-[#172554] file:text-white cursor-pointer" />
+                                    <input type="text" id="input-gallery" placeholder="Comma-separated image paths..." oninput="updateLivePreview()" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-xs text-slate-800 bg-slate-50/50 focus:outline-none" />
+                                </div>
                             </div>
 
+                            <!-- SPECIFIC FIELD: Video Recording Upload -->
                             <div id="field-video-recording" class="space-y-1.5 pt-2 border-t border-gray-100 hidden">
-                                <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider font-['Raleway']">Video URL / Local Path</label>
-                                <input type="text" id="input-video-url" placeholder="YouTube URL or .mp4 path..." oninput="updateLivePreview()" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-xs text-slate-800 bg-slate-50/50 focus:outline-none" />
+                                <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider font-['Raleway']">
+                                    <i class="fa-solid fa-video text-[#172554] mr-1"></i> Video Recording (Upload Local .mp4 or YouTube Link)
+                                </label>
+                                <div class="grid grid-cols-1 gap-2">
+                                    <input type="file" accept="video/*" onchange="handleLocalVideoUpload(event)" class="w-full px-3 py-2 rounded-xl border border-gray-200 text-xs text-slate-600 bg-slate-50/50 file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-[10px] file:font-bold file:bg-[#172554] file:text-white cursor-pointer" />
+                                    <input type="text" id="input-video-url" placeholder="Or paste YouTube link / path..." oninput="updateLivePreview()" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-xs text-slate-800 bg-slate-50/50 focus:outline-none" />
+                                </div>
                             </div>
 
                             <!-- Article Body -->
@@ -292,6 +312,97 @@
             }
         }
 
+        /* MEDIA UPLOAD HANDLERS */
+        async function handleFeaturedImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = async function(e) {
+                const base64Content = e.target.result.split(',')[1];
+                const cleanFilename = `${Date.now()}-${file.name.toLowerCase().replace(/[^a-z0-9.]+/g, '-')}`;
+                const uploadPath = `media/${cleanFilename}`;
+
+                try {
+                    const res = await fetch('/api/upload-media', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ path: uploadPath, content: base64Content, message: `Upload cover image` })
+                    });
+                    const data = await res.json();
+                    if (res.ok) {
+                        document.getElementById('input-image-url').value = data.path;
+                        updateLivePreview();
+                        alert('✅ Cover image uploaded successfully!');
+                    }
+                } catch (err) { console.error(err); }
+            };
+            reader.readAsDataURL(file);
+        }
+
+        async function handleLocalVideoUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = async function(e) {
+                const base64Content = e.target.result.split(',')[1];
+                const cleanFilename = `${Date.now()}-${file.name.toLowerCase().replace(/[^a-z0-9.]+/g, '-')}`;
+                const uploadPath = `media/${cleanFilename}`;
+
+                try {
+                    const res = await fetch('/api/upload-media', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ path: uploadPath, content: base64Content, message: `Upload video recording` })
+                    });
+                    const data = await res.json();
+                    if (res.ok) {
+                        document.getElementById('input-video-url').value = data.path;
+                        updateLivePreview();
+                        alert('✅ Video uploaded successfully!');
+                    }
+                } catch (err) { console.error(err); }
+            };
+            reader.readAsDataURL(file);
+        }
+
+        async function handleMultipleGalleryUpload(event) {
+            const files = event.target.files;
+            if (!files || files.length === 0) return;
+
+            const galleryInput = document.getElementById('input-gallery');
+            let currentPaths = galleryInput.value ? galleryInput.value.split(',').map(s => s.trim()).filter(Boolean) : [];
+
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                await new Promise((resolve) => {
+                    const reader = new FileReader();
+                    reader.onload = async function(e) {
+                        const base64Content = e.target.result.split(',')[1];
+                        const cleanFilename = `${Date.now()}-${file.name.toLowerCase().replace(/[^a-z0-9.]+/g, '-')}`;
+                        const uploadPath = `media/${cleanFilename}`;
+
+                        try {
+                            const res = await fetch('/api/upload-media', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ path: uploadPath, content: base64Content, message: `Upload gallery item` })
+                            });
+                            const data = await res.json();
+                            if (res.ok) currentPaths.push(data.path);
+                        } catch (err) { console.error(err); }
+                        resolve();
+                    };
+                    reader.readAsDataURL(file);
+                });
+            }
+
+            galleryInput.value = currentPaths.join(', ');
+            updateLivePreview();
+            alert(`✅ Successfully uploaded ${files.length} gallery photo(s)!`);
+        }
+
         /* DYNAMIC AUTHOR REPEATER FUNCTIONS */
         function addAuthorRow() {
             const container = document.getElementById('authors-repeater-container');
@@ -354,22 +465,15 @@
                     const res = await fetch('/api/upload-media', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            path: uploadPath,
-                            content: base64Content,
-                            message: `Admin upload author photo: ${cleanFilename}`
-                        })
+                        body: JSON.stringify({ path: uploadPath, content: base64Content, message: `Upload author photo` })
                     });
-
                     const data = await res.json();
                     if (res.ok) {
                         photoUrlInput.value = data.path;
                         updateLivePreview();
-                        alert(`✅ Photo uploaded and attached to Author!`);
+                        alert(`✅ Author photo uploaded successfully!`);
                     }
-                } catch (err) {
-                    console.error('Author photo upload error:', err);
-                }
+                } catch (err) { console.error(err); }
             };
             reader.readAsDataURL(file);
         }
@@ -396,19 +500,23 @@
 
         function updateFormVisibility() {
             const postType = document.querySelector('input[name="post-type"]:checked').value;
+            const fieldFeaturedImage = document.getElementById('field-featured-image');
             const fieldPhotoGallery = document.getElementById('field-photo-gallery');
             const fieldVideoRecording = document.getElementById('field-video-recording');
             const sectionBadge = document.getElementById('preview-section-badge');
 
             if (postType === 'article') {
+                fieldFeaturedImage.classList.remove('hidden');
                 fieldPhotoGallery.classList.add('hidden');
                 fieldVideoRecording.classList.add('hidden');
                 sectionBadge.innerText = 'Written Article Card';
             } else if (postType === 'media') {
+                fieldFeaturedImage.classList.remove('hidden');
                 fieldPhotoGallery.classList.add('hidden');
                 fieldVideoRecording.classList.remove('hidden');
                 sectionBadge.innerText = 'Media Highlight Card';
             } else if (postType === 'gallery') {
+                fieldFeaturedImage.classList.remove('hidden');
                 fieldPhotoGallery.classList.remove('hidden');
                 fieldVideoRecording.classList.add('hidden');
                 sectionBadge.innerText = 'Photo Gallery Card';
@@ -432,7 +540,6 @@
 
             const renderArea = document.getElementById('live-preview-render-area');
 
-            // Render Author Names Directly Under Their Images
             let authorsHtml = '';
             if (pairs.length > 0 && pairs.some(p => p.name || p.photo)) {
                 authorsHtml = '<div class="pt-4 border-t border-gray-100 flex items-center justify-end space-x-4">';
@@ -465,6 +572,16 @@
                         <p class="text-xs text-gray-600 line-clamp-4 leading-relaxed">${body}</p>
                         ${authorsHtml}
                     </article>`;
+            } else {
+                renderArea.innerHTML = `
+                    <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm flex flex-col justify-between max-w-md mx-auto space-y-4">
+                        <div class="flex items-center justify-between text-xs text-gray-500 font-medium">
+                            <span class="px-3 py-1 rounded-full bg-blue-50 text-[#172554] font-semibold">${formattedDate} (${postType.toUpperCase()})</span>
+                        </div>
+                        <h3 class="text-lg font-extrabold text-[#0F172A] font-['Raleway'] leading-snug">${title}</h3>
+                        <p class="text-xs text-gray-600 line-clamp-3 leading-relaxed">${body}</p>
+                        ${authorsHtml}
+                    </div>`;
             }
         }
 
@@ -472,13 +589,14 @@
             const title = document.getElementById('input-title').value || '';
             const date = document.getElementById('input-date').value || new Date().toISOString().split('T')[0];
             const postType = document.querySelector('input[name="post-type"]:checked').value;
+            const imageUrl = document.getElementById('input-image-url').value || '';
             const gallery = document.getElementById('input-gallery').value || '';
             const videoUrl = document.getElementById('input-video-url').value || '';
             const body = document.getElementById('input-body').value || '';
 
             const { namesStr, photosStr } = collectAuthorData();
 
-            return `---\ntitle: "${title}"\ndate: "${date}"\ntype: "${postType}"\nauthor: "${namesStr}"\nauthor_photo: "${photosStr}"\ngallery: "${gallery}"\nvideo: "${videoUrl}"\n---\n\n${body}`;
+            return `---\ntitle: "${title}"\ndate: "${date}"\ntype: "${postType}"\nauthor: "${namesStr}"\nauthor_photo: "${photosStr}"\nimage: "${imageUrl}"\ngallery: "${gallery}"\nvideo: "${videoUrl}"\n---\n\n${body}`;
         }
 
         function copyMarkdown() {
