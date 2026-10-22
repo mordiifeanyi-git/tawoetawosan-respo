@@ -321,6 +321,10 @@
             const file = event.target.files[0];
             if (!file) return;
 
+            const localBlobUrl = URL.createObjectURL(file);
+            document.getElementById('input-video-url').value = localBlobUrl;
+            updateLivePreview();
+
             const reader = new FileReader();
             reader.onload = async function(e) {
                 const base64Content = e.target.result.split(',')[1];
@@ -335,9 +339,12 @@
                     });
                     const data = await res.json();
                     if (res.ok) {
-                        document.getElementById('input-video-url').value = data.path;
+                        let finalPath = data.path;
+                        if (!finalPath.startsWith('/') && !finalPath.startsWith('http')) finalPath = '/' + finalPath;
+                        
+                        document.getElementById('input-video-url').value = finalPath;
                         updateLivePreview();
-                        alert('✅ Video uploaded successfully!');
+                        alert('✅ Video uploaded successfully from device!');
                     }
                 } catch (err) { console.error(err); }
             };
@@ -353,6 +360,11 @@
 
             for (let i = 0; i < files.length; i++) {
                 const file = files[i];
+                const localBlobUrl = URL.createObjectURL(file);
+                currentPaths.push(localBlobUrl);
+                galleryInput.value = currentPaths.join(', ');
+                updateLivePreview();
+
                 await new Promise((resolve) => {
                     const reader = new FileReader();
                     reader.onload = async function(e) {
@@ -367,17 +379,21 @@
                                 body: JSON.stringify({ path: uploadPath, content: base64Content, message: `Upload gallery item` })
                             });
                             const data = await res.json();
-                            if (res.ok) currentPaths.push(data.path);
+                            if (res.ok) {
+                                let p = data.path;
+                                if (!p.startsWith('/') && !p.startsWith('http') && !p.startsWith('data:image')) p = '/' + p;
+                                const idx = currentPaths.indexOf(localBlobUrl);
+                                if (idx !== -1) currentPaths[idx] = p;
+                                galleryInput.value = currentPaths.join(', ');
+                                updateLivePreview();
+                            }
                         } catch (err) { console.error(err); }
                         resolve();
                     };
                     reader.readAsDataURL(file);
                 });
             }
-
-            galleryInput.value = currentPaths.join(', ');
-            updateLivePreview();
-            alert(`✅ Successfully uploaded ${files.length} gallery photo(s)!`);
+            alert(`✅ Successfully loaded ${files.length} gallery photo(s) from device!`);
         }
 
         function addAuthorRow() {
@@ -427,6 +443,10 @@
             const parentRow = fileInput.closest('.author-row');
             const photoUrlInput = parentRow.querySelector('.author-photo-input');
 
+            const localPreviewUrl = URL.createObjectURL(file);
+            photoUrlInput.value = localPreviewUrl;
+            updateLivePreview();
+
             const reader = new FileReader();
             reader.onload = async function(e) {
                 const base64Content = e.target.result.split(',')[1];
@@ -441,7 +461,9 @@
                     });
                     const data = await res.json();
                     if (res.ok) {
-                        photoUrlInput.value = data.path;
+                        let finalPath = data.path;
+                        if (!finalPath.startsWith('/') && !finalPath.startsWith('http')) finalPath = '/' + finalPath;
+                        photoUrlInput.value = finalPath;
                         updateLivePreview();
                     }
                 } catch (err) { console.error(err); }
@@ -454,7 +476,10 @@
             let names = [], photos = [];
             rows.forEach(row => {
                 const name = row.querySelector('.author-name-input').value.trim();
-                const photo = row.querySelector('.author-photo-input').value.trim();
+                let photo = row.querySelector('.author-photo-input').value.trim();
+                if (photo && !photo.startsWith('http') && !photo.startsWith('data:image') && !photo.startsWith('blob:') && !photo.startsWith('/')) {
+                    photo = '/' + photo;
+                }
                 if (name) names.push(name);
                 if (photo) photos.push(photo);
             });
@@ -513,7 +538,7 @@
                     authorsHtml += `
                         <div class="flex flex-col items-center space-y-1 text-center">
                             <div class="w-12 h-12 rounded-xl border border-gray-200 overflow-hidden bg-white shrink-0 shadow-sm">
-                                <img src="${img}" class="w-full h-full object-cover">
+                                <img src="${img}" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='https://placehold.co/100x100/172554/FFFFFF?text=SAN';">
                             </div>
                             <span class="text-[9px] font-extrabold text-[#0F172A] font-['Raleway'] max-w-[90px] leading-tight block truncate">${name}</span>
                         </div>`;
@@ -540,7 +565,8 @@
                 if (photos.length > 0) {
                     dynamicTopContent = '<div class="grid grid-cols-2 gap-2 mb-3">';
                     photos.slice(0, 4).forEach(p => {
-                        dynamicTopContent += `<div class="h-28 rounded-xl overflow-hidden border border-gray-200 bg-slate-100"><img src="${p}" class="w-full h-full object-cover"></div>`;
+                        const cleanPath = (p.startsWith('http') || p.startsWith('data:image') || p.startsWith('blob:') || p.startsWith('/')) ? p : `/${p}`;
+                        dynamicTopContent += `<div class="h-28 rounded-xl overflow-hidden border border-gray-200 bg-slate-100"><img src="${cleanPath}" class="w-full h-full object-cover"></div>`;
                     });
                     dynamicTopContent += '</div>';
                 } else {
@@ -548,7 +574,8 @@
                 }
             } else if (postType === 'media') {
                 if (videoUrl) {
-                    dynamicTopContent = `<div class="h-36 rounded-xl bg-slate-950 flex items-center justify-center text-white text-xs mb-3 shadow-inner"><i class="fa-solid fa-circle-play text-2xl text-blue-500 mr-2"></i> Video Preview Active</div>`;
+                    const cleanVideoPath = (videoUrl.startsWith('http') || videoUrl.startsWith('blob:') || videoUrl.startsWith('/')) ? videoUrl : `/${videoUrl}`;
+                    dynamicTopContent = `<div class="h-36 rounded-xl bg-slate-950 overflow-hidden flex items-center justify-center text-white text-xs mb-3 shadow-inner"><video src="${cleanVideoPath}" controls class="w-full h-full object-cover"></video></div>`;
                 } else {
                     dynamicTopContent = '<div class="h-32 rounded-xl border-2 border-dashed border-gray-200 flex items-center justify-center text-xs text-gray-400 mb-3 bg-slate-50"><i class="fa-solid fa-video mr-2"></i> Video Player Preview Area</div>';
                 }
@@ -573,8 +600,18 @@
             const category = (document.getElementById('input-category').value.trim() || 'Legal Article').replace(/"/g, '\\"');
             const date = document.getElementById('input-date').value || new Date().toISOString().split('T')[0];
             const postType = document.querySelector('input[name="post-type"]:checked').value;
-            const gallery = (document.getElementById('input-gallery').value.trim()).replace(/"/g, '\\"');
-            const videoUrl = (document.getElementById('input-video-url').value.trim()).replace(/"/g, '\\"');
+            let gallery = (document.getElementById('input-gallery').value.trim());
+            if (gallery) {
+                gallery = gallery.split(',').map(s => {
+                    let p = s.trim();
+                    if (p && !p.startsWith('http') && !p.startsWith('data:image') && !p.startsWith('blob:') && !p.startsWith('/')) p = '/' + p;
+                    return p;
+                }).join(', ');
+            }
+            let videoUrl = (document.getElementById('input-video-url').value.trim());
+            if (videoUrl && !videoUrl.startsWith('http') && !videoUrl.startsWith('blob:') && !videoUrl.startsWith('/')) {
+                videoUrl = '/' + videoUrl;
+            }
             const body = document.getElementById('input-body').value || '';
             const references = document.getElementById('input-references').value || '';
             const { namesStr, photosStr } = collectAuthorData();
