@@ -246,7 +246,7 @@
     window.onclick = function(event) { if (event.target === document.getElementById('legal-modal')) closeLegalModal(); }
 </script>
 
-    <!-- Clean Modal Structure with Top-Right Author Image & Name/Firm Underneath -->
+    <!-- Clean Modal Structure with Right-Aligned Author Details -->
     <div id="blog-details-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md hidden p-4 sm:p-6 overflow-y-auto">
         <div class="bg-white rounded-3xl shadow-2xl border border-gray-100 max-w-3xl w-full my-auto overflow-hidden relative transform transition-all scale-95 opacity-0 duration-300 max-h-[90vh] flex flex-col" id="modal-container-box">
             
@@ -262,12 +262,8 @@
 
             <div class="p-6 sm:p-8 overflow-y-auto space-y-6 flex-1 text-gray-700 text-xs sm:text-sm leading-relaxed">
                 
-                <!-- AUTHOR SECTION: REMOVED OUTER BOX. IMAGE AT TOP RIGHT WITH NAME & FIRM UNDERNEATH -->
-                <div class="flex items-start justify-between border-b border-gray-100 pb-5 w-full">
-                    <div class="space-y-1">
-                        <span class="text-[10px] font-extrabold uppercase tracking-widest text-[#172554] font-['Raleway'] block">Written &amp; Published By</span>
-                    </div>
-                    
+                <!-- AUTHOR SECTION: ENTIRELY RIGHT-ALIGNED WITH WRITTEN & PUBLISHED BY HEADER -->
+                <div class="flex justify-end border-b border-gray-100 pb-5 w-full">
                     <div id="modal-author-profiles-grid" class="flex flex-col items-end gap-6 w-full max-w-xs">
                         <!-- Populated dynamically -->
                     </div>
@@ -328,7 +324,7 @@
             // Set dynamic category heading right above the body text
             document.getElementById('modal-dynamic-category-heading').innerText = article.category;
             
-            // Populate Author Cards with image at TOP RIGHT, name & firm underneath
+            // Populate Author Cards with header and right alignment
             const gridContainer = document.getElementById('modal-author-profiles-grid');
             gridContainer.innerHTML = '';
 
@@ -337,12 +333,14 @@
 
             const count = Math.max(names.length, photos.length);
 
+            let authorHtml = `<span class="text-[10px] font-extrabold uppercase tracking-widest text-[#172554] font-['Raleway'] block w-full text-right mb-2">Written &amp; Published By</span>`;
+
             if (count > 0) {
                 for (let i = 0; i < count; i++) {
                     const name = names[i] || 'Tawo E. Tawo, SAN & Co.';
                     const photo = photos[i] || '/WhatsApp Image 2026-10-08 at 13.10.32.jpeg';
 
-                    gridContainer.innerHTML += `
+                    authorHtml += `
                         <div class="flex flex-col items-end text-right w-full space-y-2">
                             <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-xl border-2 border-white shadow-md overflow-hidden bg-slate-900 shrink-0">
                                 <img src="${photo}" class="w-full h-full object-cover" alt="${name}" onerror="this.onerror=null; this.src='https://placehold.co/150x150/172554/FFFFFF?text=SAN';">
@@ -354,7 +352,7 @@
                         </div>`;
                 }
             } else {
-                gridContainer.innerHTML = `
+                authorHtml += `
                     <div class="flex flex-col items-end text-right w-full space-y-2">
                         <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-xl border-2 border-white shadow-md overflow-hidden bg-white shrink-0">
                             <img src="/WhatsApp Image 2026-10-08 at 13.10.32.jpeg" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='https://placehold.co/150x150/172554/FFFFFF?text=SAN';">
@@ -365,6 +363,8 @@
                         </div>
                     </div>`;
             }
+
+            gridContainer.innerHTML = authorHtml;
 
             // Parse and format footnote markers (^1 -> superscript link)
             let formattedBody = article.bodyHtml.replace(/\^(\d+)/g, '<sup><a href="#ref-$1" class="text-blue-600 font-bold hover:underline">[$1]</a></sup>');
