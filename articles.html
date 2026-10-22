@@ -246,7 +246,7 @@
     window.onclick = function(event) { if (event.target === document.getElementById('legal-modal')) closeLegalModal(); }
 </script>
 
-    <!-- Clean Non-overlapping Modal Structure with Prominent Author Showcase -->
+    <!-- Clean Non-overlapping Modal Structure with MASSIVE Author Showcase -->
     <div id="blog-details-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md hidden p-4 sm:p-6 overflow-y-auto">
         <div class="bg-white rounded-3xl shadow-2xl border border-gray-100 max-w-3xl w-full my-auto overflow-hidden relative transform transition-all scale-95 opacity-0 duration-300 max-h-[90vh] flex flex-col" id="modal-container-box">
             
@@ -260,15 +260,15 @@
                 </button>
             </div>
 
-            <div class="p-6 overflow-y-auto space-y-6 flex-1 text-gray-700 text-xs sm:text-sm leading-relaxed">
+            <div class="p-6 sm:p-8 overflow-y-auto space-y-6 flex-1 text-gray-700 text-xs sm:text-sm leading-relaxed">
                 
-                <!-- PROMINENT HIGH-VISIBILITY AUTHOR SHOWCASE BOX -->
-                <div id="modal-author-header" class="bg-gradient-to-br from-blue-50/80 to-slate-50 border border-blue-200/80 rounded-2xl p-5 shadow-sm space-y-3">
-                    <div class="flex items-center space-x-2 border-l-4 border-[#172554] pl-2.5">
-                        <span class="text-[11px] font-extrabold uppercase tracking-widest text-[#172554] font-['Raleway']">Written &amp; Published By</span>
+                <!-- MASSIVE HIGH-VISIBILITY AUTHOR SHOWCASE BOX -->
+                <div id="modal-author-header" class="bg-gradient-to-br from-blue-50/90 to-slate-50 border-2 border-blue-200 rounded-3xl p-6 sm:p-8 shadow-md space-y-4">
+                    <div class="flex items-center space-x-2 border-l-4 border-[#172554] pl-3">
+                        <span class="text-xs font-extrabold uppercase tracking-widest text-[#172554] font-['Raleway']">Written &amp; Published By</span>
                     </div>
-                    <div id="modal-author-profiles-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <!-- Populated dynamically with large cards -->
+                    <div id="modal-author-profiles-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <!-- Populated dynamically with large executive cards -->
                     </div>
                 </div>
 
@@ -324,7 +324,7 @@
             document.getElementById('modal-title').innerText = article.title;
             document.getElementById('modal-meta').innerText = `PUBLISHED • ${article.date}`;
             
-            // Populate Large High-Visibility Author Cards Inside Modal
+            // Populate MASSIVE High-Visibility Author Cards Inside Modal
             const gridContainer = document.getElementById('modal-author-profiles-grid');
             gridContainer.innerHTML = '';
 
@@ -339,26 +339,26 @@
                     const photo = photos[i] || '/WhatsApp Image 2026-10-08 at 13.10.32.jpeg';
 
                     gridContainer.innerHTML += `
-                        <div class="bg-white border border-blue-200/80 rounded-xl p-3.5 sm:p-4 shadow-sm flex items-center space-x-4">
-                            <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-xl border-2 border-white shadow-md overflow-hidden bg-slate-900 shrink-0">
-                                <img src="${photo}" class="w-full h-full object-cover" alt="${name}" onerror="this.onerror=null; this.src='https://placehold.co/150x150/172554/FFFFFF?text=SAN';">
+                        <div class="bg-white border-2 border-blue-200 rounded-2xl p-5 shadow-md flex items-center space-x-5">
+                            <div class="w-28 h-28 sm:w-32 sm:h-32 rounded-2xl border-4 border-white shadow-xl overflow-hidden bg-slate-900 shrink-0">
+                                <img src="${photo}" class="w-full h-full object-cover" alt="${name}" onerror="this.onerror=null; this.src='https://placehold.co/200x200/172554/FFFFFF?text=SAN';">
                             </div>
-                            <div class="space-y-0.5 min-w-0">
-                                <span class="text-[9px] uppercase tracking-widest text-blue-600 font-extrabold block">Legal Counsel</span>
-                                <h4 class="text-xs sm:text-sm font-extrabold text-[#0F172A] font-['Raleway'] leading-snug truncate">${name}</h4>
-                                <span class="text-[10px] text-gray-500 block truncate">Tawo E. Tawo, SAN &amp; Co.</span>
+                            <div class="space-y-1.5 min-w-0">
+                                <span class="text-[10px] uppercase tracking-widest text-blue-600 font-extrabold block">Legal Counsel</span>
+                                <h4 class="text-sm sm:text-base font-extrabold text-[#0F172A] font-['Raleway'] leading-snug">${name}</h4>
+                                <span class="text-[11px] text-gray-500 block">Tawo E. Tawo, SAN &amp; Co.</span>
                             </div>
                         </div>`;
                 }
             } else {
                 gridContainer.innerHTML = `
-                    <div class="bg-white border border-blue-200/80 rounded-xl p-3.5 shadow-sm flex items-center space-x-3.5">
-                        <div class="w-16 h-16 rounded-xl border-2 border-white shadow-md overflow-hidden bg-white shrink-0">
-                            <img src="/WhatsApp Image 2026-10-08 at 13.10.32.jpeg" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='https://placehold.co/150x150/172554/FFFFFF?text=SAN';">
+                    <div class="bg-white border-2 border-blue-200 rounded-2xl p-5 shadow-md flex items-center space-x-5">
+                        <div class="w-28 h-28 sm:w-32 sm:h-32 rounded-2xl border-4 border-white shadow-xl overflow-hidden bg-white shrink-0">
+                            <img src="/WhatsApp Image 2026-10-08 at 13.10.32.jpeg" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='https://placehold.co/200x200/172554/FFFFFF?text=SAN';">
                         </div>
-                        <div>
-                            <span class="text-[9px] uppercase tracking-widest text-blue-600 font-extrabold block">Legal Counsel</span>
-                            <h4 class="text-xs sm:text-sm font-extrabold text-[#0F172A] font-['Raleway']">Tawo E. Tawo, SAN &amp; Co.</h4>
+                        <div class="space-y-1.5">
+                            <span class="text-[10px] uppercase tracking-widest text-blue-600 font-extrabold block">Legal Counsel</span>
+                            <h4 class="text-sm sm:text-base font-extrabold text-[#0F172A] font-['Raleway']">Tawo E. Tawo, SAN &amp; Co.</h4>
                         </div>
                     </div>`;
             }
