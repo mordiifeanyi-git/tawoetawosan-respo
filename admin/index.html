@@ -328,16 +328,30 @@
             }
         }
 
-        function handleFeaturedImageUpload(event) {
+        // FIXED FEATURED IMAGE UPLOAD HANDLER
+        async function handleFeaturedImageUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
 
             const reader = new FileReader();
-            reader.onload = function(e) {
-                const dataUrl = e.target.result;
-                document.getElementById('input-image').value = dataUrl;
-                updateLivePreview();
-                alert('✅ Featured image has been uploaded successfully!');
+            reader.onload = async function(e) {
+                const base64Content = e.target.result.split(',')[1];
+                const cleanFilename = `${Date.now()}-${file.name.toLowerCase().replace(/[^a-z0-9.]+/g, '-')}`;
+                const uploadPath = `media/${cleanFilename}`;
+
+                try {
+                    const res = await fetch('/api/upload-media', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ path: uploadPath, content: base64Content, message: `Upload featured image` })
+                    });
+                    const data = await res.json();
+                    if (res.ok) {
+                        document.getElementById('input-image').value = data.path;
+                        updateLivePreview();
+                        alert('✅ Featured image has been uploaded successfully!');
+                    }
+                } catch (err) { console.error(err); }
             };
             reader.readAsDataURL(file);
         }
