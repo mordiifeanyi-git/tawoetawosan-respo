@@ -29,18 +29,34 @@
 
         /* Section Fade & Slide Reveal Animation */
         @keyframes sectionReveal {
-            0% {
-                opacity: 0;
-                transform: translateY(24px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            0% { opacity: 0; transform: translateY(24px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
 
         .animate-section-reveal {
             animation: sectionReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* Styling for footnotes / references in dynamic modal */
+        .article-footnote-list {
+            border-top: 1px solid #e2e8f0;
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+        }
+        .article-footnote-list h4 {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #0F172A;
+            margin-bottom: 0.5rem;
+            font-family: 'Raleway', sans-serif;
+            font-weight: 800;
+        }
+        .article-footnote-list ol {
+            font-size: 11px;
+            color: #475569;
+            padding-left: 1.2rem;
+            space-y: 0.3rem;
         }
     </style>
     <script>
@@ -147,11 +163,10 @@
 
     </main>
 
-<!-- Sleek & Compact Micro-Footer with Boxed General Contacts & Full Legal Modals -->
+<!-- Sleek & Compact Micro-Footer -->
 <footer class="bg-[#172554] text-gray-300 text-xs border-t border-blue-900 py-8 px-6 md:px-12 mt-auto">
     <div class="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between items-center gap-6">
         
-        <!-- Logo & Brand -->
         <div class="flex items-center space-x-2.5 shrink-0">
             <div class="w-7 h-7 rounded-full overflow-hidden border border-white bg-white flex items-center justify-center p-0.5">
                 <img src="/WhatsApp Image 2026-10-08 at 13.10.32.jpeg" alt="Logo" class="w-full h-full object-cover rounded-full" onerror="this.onerror=null; this.src='https://placehold.co/100x100/172554/FFFFFF?text=TT';">
@@ -159,7 +174,6 @@
             <span class="font-bold text-white text-xs font-['Raleway'] tracking-wide">TAWO E. TAWO, SAN & CO.</span>
         </div>
 
-        <!-- General Contacts Summary Hub (Original Boxed Style) -->
         <div class="bg-blue-950/60 border border-blue-900/80 rounded-xl px-5 py-2.5 text-center text-xs space-y-1 shadow-inner">
             <p class="font-bold text-blue-200 uppercase tracking-wider text-[10px] font-['Raleway']">General Enquiries &amp; Communications</p>
             <div class="flex flex-wrap justify-center items-center gap-x-4 gap-y-0.5 text-gray-200">
@@ -171,7 +185,6 @@
             </div>
         </div>
 
-        <!-- Social Icons -->
         <div class="flex items-center space-x-2 shrink-0">
             <a href="https://www.linkedin.com/company/tawo-e-tawo-san-co" target="_blank" rel="noopener noreferrer" class="w-7 h-7 rounded-full bg-blue-950 flex items-center justify-center text-white hover:bg-white hover:text-[#172554] transition-all" aria-label="LinkedIn">
                 <svg class="w-3 h-3 fill-current" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
@@ -186,7 +199,6 @@
 
     </div>
     
-    <!-- Copyright & Interactive Legal Links Row (Includes Cookies) -->
     <div class="max-w-7xl mx-auto mt-4 pt-3 border-t border-blue-900/60 text-center text-[10px] text-blue-200 flex flex-col sm:flex-row items-center justify-between gap-2">
         <span>&copy; 2026 Tawo E. Tawo SAN & Co. All Rights Reserved.</span>
         <div class="flex flex-wrap justify-center items-center gap-x-2 text-[10px] text-gray-300">
@@ -207,75 +219,30 @@
         <button onclick="closeLegalModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 text-lg font-bold w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center transition-colors">
             <i class="fa-solid fa-xmark"></i>
         </button>
-        <div id="modal-content" class="space-y-4 pt-2">
-            <!-- Content injected dynamically via script -->
-        </div>
+        <div id="modal-content" class="space-y-4 pt-2"></div>
         <div class="pt-4 border-t border-gray-100 text-right">
             <button onclick="closeLegalModal()" class="px-5 py-2 rounded-lg bg-[#172554] text-white text-xs font-bold hover:bg-blue-900 transition-colors">Close</button>
         </div>
     </div>
 </div>
 
-<!-- Modal Script Logic -->
 <script>
     const legalTexts = {
-        privacy: {
-            title: "Privacy Policy",
-            content: `At Tawo E. Tawo, SAN & Co., we are committed to safeguarding the privacy and confidentiality of personal data entrusted to us by our clients, website visitors, and stakeholders. This policy outlines our practices in compliance with the Nigeria Data Protection Act (NDPA) and applicable regulations.<br><br>
-            <strong>1. Information Collection:</strong> We collect personal information (such as names, corporate emails, phone numbers, and transactional details) when voluntarily provided through consultation forms, direct communications, or professional engagements.<br><br>
-            <strong>2. Use of Information:</strong> Data collected is utilized strictly for the provision of legal services, corporate advisory, conflict checks, billing, regulatory compliance, and communication regarding legal updates.<br><br>
-            <strong>3. Data Security & Protection:</strong> We implement stringent administrative, technical, and physical security measures to protect personal data against unauthorized access, disclosure, alteration, or destruction.<br><br>
-            <strong>4. Third-Party Sharing:</strong> We do not trade, sell, or rent personal data. Information is only shared with authorized regulatory bodies, courts, or expert co-counsel where strictly required for the execution of our professional duties.`
-        },
-        terms: {
-            title: "Terms of Use",
-            content: `Welcome to the official website of Tawo E. Tawo, SAN & Co. By accessing or using this website, you agree to comply with and be bound by the following terms and conditions:<br><br>
-            <strong>1. No Legal Advice:</strong> The materials, articles, and insights published on this website are for general informational purposes only and do not constitute formal legal advice or opinion.<br><br>
-            <strong>2. Attorney-Client Relationship:</strong> Viewing this website, submitting an inquiry via our contact form, or emailing our partners does not establish an attorney-client relationship. A formal relationship is created only after an express retainer agreement has been executed by the firm.<br><br>
-            <strong>3. Intellectual Property:</strong> All content, logos, branding, graphics, and publications on this site are the intellectual property of Tawo E. Tawo, SAN & Co. Unauthorized reproduction, distribution, or commercial exploitation is strictly prohibited.`
-        },
-        cookies: {
-            title: "Cookies Policy",
-            content: `This website uses cookies and similar tracking technologies to enhance user experience, analyze site traffic, and understand how visitors interact with our platform.<br><br>
-            <strong>1. What Are Cookies:</strong> Cookies are small data files stored on your browser or device when you visit a website. They help the site remember your preferences and improve performance.<br><br>
-            <strong>2. How We Use Them:</strong> We utilize essential cookies required for core site functionality (such as navigation and responsive layouts) as well as analytical cookies to monitor aggregate traffic patterns.<br><br>
-            <strong>3. Managing Cookies:</strong> You can choose to accept or decline cookies through your web browser settings. Disabling certain cookies may impact the full functionality of specific interactive features on the site.`
-        },
-        disclaimer: {
-            title: "Legal Disclaimer",
-            content: `The information contained on this website is provided by Tawo E. Tawo, SAN & Co. for general informational guidance only.<br><br>
-            <strong>1. Limitation of Liability:</strong> The firm expressly disclaims all liability in respect to actions taken or not taken based on any or all of the contents of this website. Users should seek specialized professional legal counsel for specific legal issues.<br><br>
-            <strong>2. Jurisdictional Scope:</strong> Tawo E. Tawo, SAN & Co. is regulated to practice law within the Federal Republic of Nigeria, maintaining offices across Abuja, Lagos, Calabar, and Yenagoa, alongside international correspondence.<br><br>
-            <strong>3. External Links:</strong> Links to third-party websites or resources are provided for convenience only and do not constitute an endorsement or verification of their content.`
-        }
+        privacy: { title: "Privacy Policy", content: `At Tawo E. Tawo, SAN & Co., we are committed to safeguarding personal data...` },
+        terms: { title: "Terms of Use", content: `Welcome to the official website of Tawo E. Tawo, SAN & Co...` },
+        cookies: { title: "Cookies Policy", content: `This website uses cookies and similar tracking technologies...` },
+        disclaimer: { title: "Legal Disclaimer", content: `The information contained on this website is provided for general informational guidance only...` }
     };
-
     function openLegalModal(type) {
         const modal = document.getElementById('legal-modal');
         const contentDiv = document.getElementById('modal-content');
         const data = legalTexts[type];
-        
-        contentDiv.innerHTML = `
-            <h3 class="text-xl font-extrabold text-[#0F172A] font-['Raleway']">${data.title}</h3>
-            <div class="text-xs sm:text-sm text-gray-600 leading-relaxed space-y-3">${data.content}</div>
-        `;
+        contentDiv.innerHTML = `<h3 class="text-xl font-extrabold text-[#0F172A] font-['Raleway']">${data.title}</h3><div class="text-xs sm:text-sm text-gray-600 leading-relaxed space-y-3">${data.content}</div>`;
         modal.classList.remove('hidden');
     }
-
-    function closeLegalModal() {
-        document.getElementById('legal-modal').classList.add('hidden');
-    }
-
-    // Close modal when clicking outside content box
-    window.onclick = function(event) {
-        const modal = document.getElementById('legal-modal');
-        if (event.target === modal) {
-            closeLegalModal();
-        }
-    }
+    function closeLegalModal() { document.getElementById('legal-modal').classList.add('hidden'); }
+    window.onclick = function(event) { if (event.target === document.getElementById('legal-modal')) closeLegalModal(); }
 </script>
-
-
 
     <!-- Clean Non-overlapping Modal Structure -->
     <div id="blog-details-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md hidden p-4 sm:p-6 overflow-y-auto">
@@ -292,7 +259,6 @@
             </div>
 
             <div class="p-6 overflow-y-auto space-y-6 flex-1 text-gray-700 text-xs sm:text-sm leading-relaxed">
-                <!-- Gallery Grid or Featured Media Wrapper -->
                 <div id="modal-media-wrapper" class="space-y-4"></div>
 
                 <div id="modal-video-container" class="space-y-2 border-t border-gray-100 pt-4 hidden">
@@ -315,7 +281,7 @@
         </div>
     </div>
 
-    <!-- UI Interaction Scripts -->
+    <!-- UI Interaction & Footnote Parser Scripts -->
     <script>
         let dynamicArticlesMap = [];
 
@@ -328,14 +294,7 @@
             if (ytMatch && ytMatch[1]) {
                 const videoId = ytMatch[1];
                 container.innerHTML = `
-                    <iframe 
-                        class="w-full h-full aspect-video" 
-                        src="https://www.youtube.com/embed/${videoId}?rel=0" 
-                        title="YouTube video player" 
-                        frameborder="0" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                        allowfullscreen>
-                    </iframe>`;
+                    <iframe class="w-full h-full aspect-video" src="https://www.youtube.com/embed/${videoId}?rel=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
             } else {
                 container.innerHTML = `
                     <video controls class="w-full h-full object-cover">
@@ -351,7 +310,23 @@
 
             document.getElementById('modal-title').innerText = article.title;
             document.getElementById('modal-meta').innerText = `PUBLISHED • ${article.date}`;
-            document.getElementById('modal-body-text').innerHTML = article.bodyHtml;
+            
+            // Parse and format footnote markers (^1 -> superscript link)
+            let formattedBody = article.bodyHtml.replace(/\^(\d+)/g, '<sup><a href="#ref-$1" class="text-blue-600 font-bold hover:underline">[$1]</a></sup>');
+            
+            let finalHtmlContent = formattedBody;
+            if (article.references && article.references.length > 0) {
+                finalHtmlContent += `
+                    <div class="article-footnote-list">
+                        <h4>References &amp; Footnotes</h4>
+                        <ol>`;
+                article.references.forEach((refLine, idx) => {
+                    finalHtmlContent += `<li id="ref-${idx+1}">${refLine}</li>`;
+                });
+                finalHtmlContent += `</ol></div>`;
+            }
+
+            document.getElementById('modal-body-text').innerHTML = finalHtmlContent;
 
             const mediaWrapper = document.getElementById('modal-media-wrapper');
             mediaWrapper.innerHTML = '';
@@ -359,18 +334,12 @@
             if (article.gallery && article.gallery.length > 0) {
                 let gridHtml = '<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">';
                 article.gallery.forEach(img => {
-                    gridHtml += `
-                        <div class="h-48 sm:h-56 rounded-2xl overflow-hidden border border-gray-200 shadow-sm bg-slate-100">
-                            <img src="${img}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
-                        </div>`;
+                    gridHtml += `<div class="h-48 sm:h-56 rounded-2xl overflow-hidden border border-gray-200 shadow-sm bg-slate-100"><img src="${img}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300" /></div>`;
                 });
                 gridHtml += '</div>';
                 mediaWrapper.innerHTML = gridHtml;
             } else if (article.imageUrl) {
-                mediaWrapper.innerHTML = `
-                    <div class="w-full h-64 sm:h-80 rounded-2xl overflow-hidden border border-gray-200 shadow-sm bg-slate-100">
-                        <img src="${article.imageUrl}" class="w-full h-full object-cover" />
-                    </div>`;
+                mediaWrapper.innerHTML = `<div class="w-full h-64 sm:h-80 rounded-2xl overflow-hidden border border-gray-200 shadow-sm bg-slate-100"><img src="${article.imageUrl}" class="w-full h-full object-cover" /></div>`;
             }
 
             const videoContainer = document.getElementById('modal-video-container');
@@ -405,53 +374,10 @@
             setTimeout(() => { modal.classList.add('hidden'); }, 300);
         }
 
-        function toggleMobileMenu() { 
-            document.getElementById('mobile-menu').classList.toggle('hidden'); 
-        }
-
-        window.addEventListener('scroll', function() {
-            const navbar = document.getElementById('navbar');
-            const brandTitle = document.getElementById('nav-brand-title');
-            const navLinks = document.querySelectorAll('.nav-link');
-            const mobileBtn = document.getElementById('mobile-menu-btn');
-
-            if (window.scrollY > 30) {
-                navbar.classList.remove('bg-transparent', 'py-3');
-                navbar.classList.add('bg-white/95', 'backdrop-blur-md', 'border-b', 'border-gray-200/80', 'py-2', 'shadow-sm');
-                
-                brandTitle.classList.remove('text-white');
-                brandTitle.classList.add('text-[#0F172A]');
-
-                mobileBtn.classList.remove('text-white');
-                mobileBtn.classList.add('text-[#0F172A]');
-
-                navLinks.forEach(link => {
-                    if (!link.classList.contains('text-blue-200')) {
-                        link.classList.remove('text-gray-200', 'hover:text-white');
-                        link.classList.add('text-gray-700', 'hover:text-[#172554]');
-                    }
-                });
-            } else {
-                navbar.classList.remove('bg-white/95', 'backdrop-blur-md', 'border-b', 'border-gray-200/80', 'py-2', 'shadow-sm');
-                navbar.classList.add('bg-transparent', 'py-3');
-
-                brandTitle.classList.remove('text-[#0F172A]');
-                brandTitle.classList.add('text-white');
-
-                mobileBtn.classList.remove('text-[#0F172A]');
-                mobileBtn.classList.add('text-white');
-
-                navLinks.forEach(link => {
-                    if (!link.classList.contains('text-blue-200')) {
-                        link.classList.remove('text-gray-700', 'hover:text-[#172554]');
-                        link.classList.add('text-gray-200', 'hover:text-white');
-                    }
-                });
-            }
-        });
+        function toggleMobileMenu() { document.getElementById('mobile-menu').classList.toggle('hidden'); }
     </script>
 
-    <!-- Dynamic Content Loader -->
+    <!-- Dynamic Content Loader with Reference Extraction -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
         marked.setOptions({ html: true, gfm: true });
@@ -515,6 +441,14 @@
 
                     let cleanMarkdown = content.replace(/^---[\s\S]*?---/, '').trim();
 
+                    // Extract References & Footnotes section if generated by the admin tool
+                    let referenceList = [];
+                    const refSplit = cleanMarkdown.split(/### References & Footnotes/i);
+                    if (refSplit.length > 1) {
+                        cleanMarkdown = refSplit[0].trim();
+                        referenceList = refSplit[1].trim().split('\n').map(l => l.replace(/^\d+\.\s*/, '').trim()).filter(Boolean);
+                    }
+
                     const bodyHtml = marked.parse(cleanMarkdown);
                     const snippet = cleanMarkdown.replace(/[#*`_]/g, '').substring(0, 110) + '...';
                     const formattedDate = date ? new Date(date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }).toUpperCase() : 'RECENT PUBLICATION';
@@ -527,7 +461,8 @@
                         gallery: galleryPhotos,
                         videoUrl: videoUrl,
                         authorPhotos: authorPhotos,
-                        bodyHtml: bodyHtml
+                        bodyHtml: bodyHtml,
+                        references: referenceList
                     };
                     dynamicArticlesMap.push(articleObj);
 
@@ -535,17 +470,8 @@
                     if (authorPhotos.length > 0) {
                         avatarBadgeHtml = '<div class="absolute bottom-4 right-4 flex items-center -space-x-3 z-10">';
                         authorPhotos.slice(0, 3).forEach((av) => {
-                            avatarBadgeHtml += `
-                                <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl border-2 border-white shadow-lg overflow-hidden bg-white shrink-0">
-                                    <img src="${av}" class="w-full h-full object-cover" alt="Author Photo">
-                                </div>`;
+                            avatarBadgeHtml += `<div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl border-2 border-white shadow-lg overflow-hidden bg-white shrink-0"><img src="${av}" class="w-full h-full object-cover" alt="Author Photo"></div>`;
                         });
-                        if (authorPhotos.length > 3) {
-                            avatarBadgeHtml += `
-                                <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl border-2 border-white shadow-lg bg-[#172554] text-white flex items-center justify-center text-xs font-bold shrink-0">
-                                    +${authorPhotos.length - 3}
-                                </div>`;
-                        }
                         avatarBadgeHtml += '</div>';
                     }
 
@@ -559,32 +485,14 @@
                         galleryCard.className = 'bg-white border border-gray-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between group cursor-pointer relative hover:-translate-y-1';
                         galleryCard.onclick = () => openDynamicArticleModal(i);
 
-                        let photoGridHtml = '';
-                        if (galleryPhotos.length > 0) {
-                            photoGridHtml = '<div class="grid grid-cols-3 gap-2 pt-2">';
-                            galleryPhotos.slice(0, 3).forEach((p, idx) => {
-                                let extraOverlay = '';
-                                if (idx === 2 && galleryPhotos.length > 3) {
-                                    extraOverlay = `<div class="absolute inset-0 bg-slate-950/40 flex items-center justify-center text-white text-[10px] font-bold">+${galleryPhotos.length - 3} More</div>`;
-                                }
-                                photoGridHtml += `
-                                    <div class="h-24 rounded-lg overflow-hidden bg-slate-100 border border-gray-200 relative">
-                                        <img src="${p}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-                                        ${extraOverlay}
-                                    </div>`;
-                            });
-                            photoGridHtml += '</div>';
-                        }
-
                         galleryCard.innerHTML = `
                             <div class="space-y-4">
                                 <div class="flex items-center justify-between text-[10px] text-gray-500 font-semibold uppercase tracking-wider">
                                     <span class="px-3 py-1 rounded-full bg-blue-50 text-[#172554] font-semibold">Photo Gallery</span>
                                     <span>${formattedDate}</span>
                                 </div>
-                                <h3 class="text-lg font-bold text-[#0F172A] font-['Raleway'] group-hover:text-[#172554] transition-colors">${title}</h3>
+                                <h3 class="text-lg font-bold text-[#0F172A] font-['Raleway']">${title}</h3>
                                 <p class="text-xs text-gray-600 leading-relaxed">${snippet}</p>
-                                ${photoGridHtml}
                             </div>
                             <div class="pt-5 mt-4 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-[#172554]">
                                 <span>View All Photos &amp; Summary</span> &rarr;
@@ -605,27 +513,15 @@
 
                         let ytThumbUrl = '';
                         const ytMatch = videoUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/))([\w-]{11})/);
-                        if (ytMatch && ytMatch[1]) {
-                            ytThumbUrl = `https://i.ytimg.com/vi/${ytMatch[1]}/hqdefault.jpg`;
-                        }
-
-                        let mediaBanner = '';
-                        if (ytThumbUrl) {
-                            mediaBanner = `
-                                <div class="h-52 bg-slate-950 overflow-hidden relative group flex items-center justify-center">
-                                    <img src="${ytThumbUrl}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-                                    <div class="absolute inset-0 bg-slate-950/30 flex items-center justify-center">
-                                        <div class="w-12 h-12 rounded-full bg-blue-600/90 text-white flex items-center justify-center shadow-lg group-hover:bg-blue-500 transition-colors">
-                                            <i class="fa-solid fa-play text-lg ml-0.5"></i>
-                                        </div>
-                                    </div>
-                                </div>`;
-                        } else {
-                            mediaBanner = `<div class="h-52 bg-slate-900 flex items-center justify-center text-white"><i class="fa-solid fa-video text-3xl text-blue-300"></i></div>`;
-                        }
+                        if (ytMatch && ytMatch[1]) ytThumbUrl = `https://i.ytimg.com/vi/${ytMatch[1]}/hqdefault.jpg`;
 
                         mediaCard.innerHTML = `
-                            ${mediaBanner}
+                            <div class="h-52 bg-slate-950 overflow-hidden relative group flex items-center justify-center">
+                                <img src="${ytThumbUrl || 'https://placehold.co/600x400/0F172A/FFFFFF?text=Video'}" class="w-full h-full object-cover">
+                                <div class="absolute inset-0 bg-slate-950/30 flex items-center justify-center">
+                                    <div class="w-12 h-12 rounded-full bg-blue-600/90 text-white flex items-center justify-center shadow-lg"><i class="fa-solid fa-play text-lg ml-0.5"></i></div>
+                                </div>
+                            </div>
                             <div class="p-6 space-y-2">
                                 <div class="flex items-center justify-between text-[10px] text-gray-500 font-semibold uppercase tracking-wider">
                                     <span class="px-3 py-1 rounded-full bg-blue-50 text-[#172554] font-semibold">Media Highlight</span>
@@ -643,7 +539,8 @@
 
                     } else {
                         const articleCard = document.createElement('article');
-                        articleCard.className = 'bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between relative hover:-translate-y-1';
+                        articleCard.className = 'bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between relative hover:-translate-y-1 cursor-pointer';
+                        articleCard.onclick = () => openDynamicArticleModal(i);
 
                         articleCard.innerHTML = `
                             <div class="p-6 sm:p-8 space-y-4">
@@ -651,15 +548,13 @@
                                     <span class="px-3 py-1 rounded-full bg-blue-50 text-[#172554] font-semibold">Legal Article</span>
                                     <span>${formattedDate}</span>
                                 </div>
-                                <h3 class="text-lg font-extrabold text-[#0F172A] font-['Raleway'] hover:text-[#172554] transition-colors leading-snug">
-                                    <a href="article.html?file=${file.name}">${title}</a>
-                                </h3>
+                                <h3 class="text-lg font-extrabold text-[#0F172A] font-['Raleway'] hover:text-[#172554] transition-colors leading-snug">${title}</h3>
                                 <p class="text-xs text-gray-600 line-clamp-3 leading-relaxed">${snippet}</p>
                             </div>
                             <div class="px-6 sm:px-8 pb-6 pt-2 border-t border-gray-100 flex items-center justify-between">
-                                <a href="article.html?file=${file.name}" class="text-xs font-bold text-[#172554] hover:underline flex items-center space-x-1">
-                                    <span>Read Article</span> &rarr;
-                                </a>
+                                <span class="text-xs font-bold text-[#172554] hover:underline flex items-center space-x-1">
+                                    <span>Read Article &amp; Footnotes</span> &rarr;
+                                </span>
                             </div>
                             ${avatarBadgeHtml}
                         `;
