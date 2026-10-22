@@ -4,8 +4,7 @@ category: "Labour and Employment Law"
 date: "2026-10-22"
 type: "article"
 author: "Great Izibebonze Johnson"
-author_photo: "great.jpeg"
-image: ""
+author_photo: "/media/1792699864791-great.jpeg"
 gallery: ""
 video: ""
 ---
@@ -25,7 +24,6 @@ None of this leaves an employer without recourse. Discipline remains available t
 A word on scope is also necessary. The Act's definition of "worker" excludes certain categories of person, including those exercising administrative, executive, technical or professional functions. Whether the protections discussed above apply will therefore depend on the worker's actual role, and that question should be considered carefully in any particular case.
 
 This article is for general information and does not constitute legal advice.
-
 
 ### References & Footnotes
 	•	Labour Act (Cap. L1, Laws of the Federation of Nigeria 2004)
