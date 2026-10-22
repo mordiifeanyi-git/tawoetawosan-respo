@@ -26,22 +26,9 @@
         body { font-family: 'Roboto', 'Raleway', Arial, Helvetica, sans-serif; background-color: var(--bg-offwhite); color: var(--text-slate); line-height: 1.7; overflow-x: hidden; }
         h1, h2, h3, h4, h5, h6 { font-family: 'Raleway', 'Roboto', Arial, Helvetica, sans-serif; color: #0F172A; }
 
-        /* Hide Scrollbars */
+        /* Hide Scrollbars cleanly */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
-        /* Hardware Accelerated 3D Coverflow Card Transitions */
-        .coverflow-card {
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            transform: scale(0.85);
-            opacity: 0.45;
-            will-change: transform, opacity;
-        }
-        .coverflow-card.active-focus {
-            transform: scale(1.02);
-            opacity: 1;
-            z-index: 10;
-        }
     </style>
     <script>
         tailwind.config = {
@@ -206,16 +193,17 @@
         </div>
     </section>
 
-    <!-- 3D COVERFLOW CAROUSEL WITH AUTO-SCROLL: Case Results Section -->
+    <!-- CLEAN HORIZONTAL SNAP CAROUSEL: Case Results Section -->
     <section class="py-16 px-6 md:px-12 max-w-7xl mx-auto space-y-8 border-t border-gray-200 overflow-hidden">
         <div class="text-center max-w-3xl mx-auto space-y-2">
             <h2 class="text-2xl sm:text-3xl font-extrabold text-[#0F172A] font-['Raleway']">Real Results. Real Victories.</h2>
         </div>
 
-        <div id="cases-track" class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-6 py-8 px-[20vw] sm:px-[32vw]">
+        <!-- Horizontal Snap Container with exact fixed card widths to prevent overlap -->
+        <div class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-6 py-6 px-4 md:px-12">
             
             <!-- Card 1 -->
-            <div class="coverflow-card bg-[#172554] text-white rounded-2xl p-8 shadow-xl flex flex-col justify-between border border-blue-900/30 w-[280px] sm:w-[320px] snap-center shrink-0">
+            <div class="bg-[#172554] text-white rounded-2xl p-8 shadow-xl flex flex-col justify-between border border-blue-900/30 min-w-[320px] max-w-[320px] snap-center shrink-0">
                 <div>
                     <div class="text-blue-300 text-xs font-bold tracking-widest uppercase mb-2">Intellectual Property</div>
                     <div class="text-2xl sm:text-3xl font-extrabold text-white mb-4 font-['Raleway']">₦45 Million</div>
@@ -225,7 +213,7 @@
             </div>
 
             <!-- Card 2 -->
-            <div class="coverflow-card bg-[#172554] text-white rounded-2xl p-8 shadow-xl flex flex-col justify-between border border-blue-900/30 w-[280px] sm:w-[320px] snap-center shrink-0">
+            <div class="bg-[#172554] text-white rounded-2xl p-8 shadow-xl flex flex-col justify-between border border-blue-900/30 min-w-[320px] max-w-[320px] snap-center shrink-0">
                 <div>
                     <div class="text-blue-300 text-xs font-bold tracking-widest uppercase mb-2">White-Collar Defense</div>
                     <div class="text-2xl sm:text-3xl font-extrabold text-white mb-4 font-['Raleway']">Full Acquittal</div>
@@ -235,7 +223,7 @@
             </div>
 
             <!-- Card 3 -->
-            <div class="coverflow-card bg-[#172554] text-white rounded-2xl p-8 shadow-xl flex flex-col justify-between border border-blue-900/30 w-[280px] sm:w-[320px] snap-center shrink-0">
+            <div class="bg-[#172554] text-white rounded-2xl p-8 shadow-xl flex flex-col justify-between border border-blue-900/30 min-w-[320px] max-w-[320px] snap-center shrink-0">
                 <div>
                     <div class="text-blue-300 text-xs font-bold tracking-widest uppercase mb-2">Corporate Mergers</div>
                     <div class="text-2xl sm:text-3xl font-extrabold text-white mb-4 font-['Raleway']">₦120 Million</div>
@@ -245,7 +233,7 @@
             </div>
 
             <!-- Card 4 -->
-            <div class="coverflow-card bg-[#172554] text-white rounded-2xl p-8 shadow-xl flex flex-col justify-between border border-blue-900/30 w-[280px] sm:w-[320px] snap-center shrink-0">
+            <div class="bg-[#172554] text-white rounded-2xl p-8 shadow-xl flex flex-col justify-between border border-blue-900/30 min-w-[320px] max-w-[320px] snap-center shrink-0">
                 <div>
                     <div class="text-blue-300 text-xs font-bold tracking-widest uppercase mb-2">Supreme Court Precedent</div>
                     <div class="text-2xl sm:text-3xl font-extrabold text-white mb-4 font-['Raleway']">Landmark Ruling</div>
@@ -255,7 +243,7 @@
             </div>
 
             <!-- Card 5 -->
-            <div class="coverflow-card bg-[#172554] text-white rounded-2xl p-8 shadow-xl flex flex-col justify-between border border-blue-900/30 w-[280px] sm:w-[320px] snap-center shrink-0">
+            <div class="bg-[#172554] text-white rounded-2xl p-8 shadow-xl flex flex-col justify-between border border-blue-900/30 min-w-[320px] max-w-[320px] snap-center shrink-0">
                 <div>
                     <div class="text-blue-300 text-xs font-bold tracking-widest uppercase mb-2">Arbitration &amp; Maritime</div>
                     <div class="text-2xl sm:text-3xl font-extrabold text-white mb-4 font-['Raleway']">$15 Million</div>
@@ -266,11 +254,11 @@
 
         </div>
 
-        <!-- 3D COVERFLOW CAROUSEL WITH AUTO-SCROLL: Testimonials Section -->
-        <div id="testimonials-track" class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-6 py-6 px-[12vw] sm:px-[25vw] max-w-5xl mx-auto">
+        <!-- TESTIMONIALS SNAP CAROUSEL -->
+        <div class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-6 py-6 px-4 md:px-12 max-w-4xl mx-auto">
             
             <!-- Testimonial 1 -->
-            <div class="coverflow-card bg-white border border-blue-200/60 rounded-3xl p-8 sm:p-10 shadow-md w-[80vw] sm:w-[550px] snap-center shrink-0 flex flex-col justify-between space-y-6">
+            <div class="bg-white border border-blue-200/60 rounded-3xl p-8 sm:p-10 shadow-md min-w-[320px] sm:min-w-[550px] max-w-[550px] snap-center shrink-0 flex flex-col justify-between space-y-6">
                 <p class="text-sm sm:text-base italic text-[#0F172A] font-['Raleway'] leading-relaxed">
                     "Tawo E. Tawo, SAN & Co. is distinguished not only by its competence in litigation but also by its considerable expertise in Alternative Dispute Resolution (ADR). The firm has consistently demonstrated commendable legal acumen, strategic insight, and proficiency in resolving complex disputes through appropriate dispute resolution mechanisms. Its professional legal services and effective dispute resolution interventions have been invaluable to the Nigerian Law Reform Commission on several occasions."
                 </p>
@@ -281,7 +269,7 @@
             </div>
 
             <!-- Testimonial 2 -->
-            <div class="coverflow-card bg-white border border-blue-200/60 rounded-3xl p-8 sm:p-10 shadow-md w-[80vw] sm:w-[550px] snap-center shrink-0 flex flex-col justify-between space-y-6">
+            <div class="bg-white border border-blue-200/60 rounded-3xl p-8 sm:p-10 shadow-md min-w-[320px] sm:min-w-[550px] max-w-[550px] snap-center shrink-0 flex flex-col justify-between space-y-6">
                 <p class="text-sm sm:text-base italic text-[#0F172A] font-['Raleway'] leading-relaxed">
                     "The depth of corporate advisory and prompt responsiveness provided by Tawo E. Tawo, SAN & Co. during our restructuring phase was exemplary. Their rigorous intellect and meticulous attention to regulatory compliance safeguarded our enterprise against potential liabilities. They remain our trusted counsel for high-stakes matters."
                 </p>
@@ -325,7 +313,7 @@
                     <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
                 </a>
                 <a href="https://www.instagram.com/tawoetawosan.co?stkn=enA1ems2cHdoaXcx" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-full bg-blue-950 flex items-center justify-center text-white hover:bg-white hover:text-[#172554] transition-all shadow-xs" aria-label="Instagram">
-                    <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.163 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                    <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
                 </a>
                 <a href="https://www.facebook.com/61594079804654/" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-full bg-blue-950 flex items-center justify-center text-white hover:bg-white hover:text-[#172554] transition-all shadow-xs" aria-label="Facebook">
                     <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg>
@@ -338,74 +326,11 @@
         </div>
     </footer>
 
-    <!-- Hybrid 3D Cover Flow + Lag-Free Auto-Scroll Engine -->
+    <!-- Interactive Script for Mobile Menu -->
     <script>
         function toggleMobileMenu() { 
             document.getElementById('mobile-menu').classList.toggle('hidden'); 
         }
-
-        function initCoverflow(trackId, intervalMs = 4500) {
-            const track = document.getElementById(trackId);
-            if (!track) return;
-
-            const cards = track.querySelectorAll('.coverflow-card');
-            let timer = null;
-            let userHovering = false;
-
-            // 1. Hardware Accelerated Center Focus Observer
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('active-focus');
-                    } else {
-                        entry.target.classList.remove('active-focus');
-                    }
-                });
-            }, {
-                root: track,
-                threshold: 0.65 // Card becomes highlighted when 65% centered
-            });
-
-            cards.forEach(card => observer.observe(card));
-
-            // 2. Smooth Auto-Advance Timer Logic
-            function autoAdvance() {
-                if (userHovering) return;
-
-                const cardWidth = cards[0].offsetWidth + 24; // Card width + gap
-                const maxScrollLeft = track.scrollWidth - track.clientWidth;
-
-                if (track.scrollLeft >= maxScrollLeft - 10) {
-                    track.scrollTo({ left: 0, behavior: 'smooth' });
-                } else {
-                    track.scrollBy({ left: cardWidth, behavior: 'smooth' });
-                }
-            }
-
-            function startTimer() {
-                stopTimer();
-                timer = setInterval(autoAdvance, intervalMs);
-            }
-
-            function stopTimer() {
-                if (timer) clearInterval(timer);
-            }
-
-            // 3. Pause Auto-Scroll during trackpad swipe or touch interaction
-            track.addEventListener('mouseenter', () => { userHovering = true; });
-            track.addEventListener('mouseleave', () => { userHovering = false; });
-            track.addEventListener('touchstart', () => { userHovering = true; }, { passive: true });
-            track.addEventListener('touchend', () => {
-                setTimeout(() => { userHovering = false; }, 3000);
-            }, { passive: true });
-
-            startTimer();
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            initCoverflow('cases-track', 4500);        // Auto-scrolls Case Wins every 4.5 seconds
-            initCoverflow('testimonials-track', 6500); // Auto-scrolls Testimonials every 6.5 seconds
-        });
 
         // Navbar Scroll Handler
         window.addEventListener('scroll', function() {
