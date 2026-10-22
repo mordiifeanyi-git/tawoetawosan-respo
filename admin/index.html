@@ -148,14 +148,14 @@
                                 <input type="date" id="input-date" oninput="updateLivePreview()" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#172554] text-xs font-semibold text-slate-800 bg-slate-50/50" />
                             </div>
 
-                            <!-- FEATURED / COVER IMAGE UPLOAD FIELD (BULLETPROOF LOCAL READER) -->
+                            <!-- FEATURED / COVER IMAGE UPLOAD (SIMPLE & INSTANT) -->
                             <div class="space-y-1.5 pt-2 border-t border-gray-100">
                                 <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider font-['Raleway']">
                                     <i class="fa-solid fa-image text-[#172554] mr-1"></i> Featured / Cover Image
                                 </label>
                                 <div class="space-y-2">
                                     <input type="file" accept="image/*" onchange="handleFeaturedImageUpload(event)" class="w-full px-3 py-2 rounded-xl border border-gray-200 text-xs text-slate-600 bg-slate-50/50 file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-[10px] file:font-bold file:bg-[#172554] file:text-white cursor-pointer" />
-                                    <input type="text" id="input-image" placeholder="Image URL / data path..." oninput="updateLivePreview()" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-xs text-slate-800 bg-slate-50/50 focus:outline-none" />
+                                    <input type="text" id="input-image" placeholder="Or type image filename (e.g. great.jpeg)" oninput="updateLivePreview()" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-xs text-slate-800 bg-slate-50/50 focus:outline-none" />
                                 </div>
                             </div>
 
@@ -181,7 +181,7 @@
                                         <input type="text" placeholder="Author Name (e.g. Chief Tawo E. Tawo, SAN)" oninput="updateLivePreview()" class="author-name-input w-full px-3 py-2 rounded-lg border border-gray-200 text-xs font-semibold bg-white focus:outline-none focus:ring-1 focus:ring-[#172554]" />
                                         <div class="flex items-center gap-2">
                                             <input type="file" accept="image/*" onchange="handleSingleAuthorFileUpload(event, this)" class="w-1/2 text-[10px] text-slate-500 file:mr-1 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-[9px] file:font-bold file:bg-[#172554] file:text-white cursor-pointer" />
-                                            <input type="text" placeholder="Image URL / Path" oninput="updateLivePreview()" class="author-photo-input w-1/2 px-2.5 py-1.5 rounded-lg border border-gray-200 text-[10px] bg-white focus:outline-none" />
+                                            <input type="text" placeholder="Image filename or path" oninput="updateLivePreview()" class="author-photo-input w-1/2 px-2.5 py-1.5 rounded-lg border border-gray-200 text-[10px] bg-white focus:outline-none" />
                                         </div>
                                     </div>
                                 </div>
@@ -194,7 +194,7 @@
                                 </label>
                                 <div class="space-y-2">
                                     <input type="file" accept="image/*" multiple onchange="handleMultipleGalleryUpload(event)" class="w-full px-3 py-2 rounded-xl border border-gray-200 text-xs text-slate-600 bg-slate-50/50 file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-[10px] file:font-bold file:bg-[#172554] file:text-white cursor-pointer" />
-                                    <input type="text" id="input-gallery" placeholder="Comma-separated image paths..." oninput="updateLivePreview()" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-xs text-slate-800 bg-slate-50/50 focus:outline-none" />
+                                    <input type="text" id="input-gallery" placeholder="Comma-separated image filenames..." oninput="updateLivePreview()" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-xs text-slate-800 bg-slate-50/50 focus:outline-none" />
                                 </div>
                             </div>
 
@@ -204,8 +204,7 @@
                                     <i class="fa-solid fa-video text-[#172554] mr-1"></i> Video Recording
                                 </label>
                                 <div class="grid grid-cols-1 gap-2">
-                                    <input type="file" accept="video/*" onchange="handleLocalVideoUpload(event)" class="w-full px-3 py-2 rounded-xl border border-gray-200 text-xs text-slate-600 bg-slate-50/50 file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-[10px] file:font-bold file:bg-[#172554] file:text-white cursor-pointer" />
-                                    <input type="text" id="input-video-url" placeholder="Or paste YouTube link / path..." oninput="updateLivePreview()" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-xs text-slate-800 bg-slate-50/50 focus:outline-none" />
+                                    <input type="text" id="input-video-url" placeholder="Paste YouTube link or video filename..." oninput="updateLivePreview()" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-xs text-slate-800 bg-slate-50/50 focus:outline-none" />
                                 </div>
                             </div>
 
@@ -328,7 +327,7 @@
             }
         }
 
-        // FULLY FIXED LOCAL FILEREADER FOR FEATURED IMAGE (NO API DEPENDENCY)
+        // INSTANT LOCAL PREVIEW (WORKS EVERY TIME ON PHONE OR LAPTOP)
         function handleFeaturedImageUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -337,72 +336,35 @@
             reader.onload = function(e) {
                 document.getElementById('input-image').value = e.target.result;
                 updateLivePreview();
-                alert('✅ Featured image loaded successfully!');
             };
             reader.readAsDataURL(file);
         }
 
-        async function handleLocalVideoUpload(event) {
+        function handleSingleAuthorFileUpload(event, fileInput) {
             const file = event.target.files[0];
             if (!file) return;
 
-            const reader = new FileReader();
-            reader.onload = async function(e) {
-                const base64Content = e.target.result.split(',')[1];
-                const cleanFilename = `${Date.now()}-${file.name.toLowerCase().replace(/[^a-z0-9.]+/g, '-')}`;
-                const uploadPath = `media/${cleanFilename}`;
+            const parentRow = fileInput.closest('.author-row');
+            const photoUrlInput = parentRow.querySelector('.author-photo-input');
 
-                try {
-                    const res = await fetch('/api/upload-media', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ path: uploadPath, content: base64Content, message: `Upload video recording` })
-                    });
-                    const data = await res.json();
-                    if (res.ok) {
-                        document.getElementById('input-video-url').value = data.path;
-                        updateLivePreview();
-                        alert('✅ Video uploaded successfully!');
-                    }
-                } catch (err) { console.error(err); }
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                photoUrlInput.value = e.target.result;
+                updateLivePreview();
             };
             reader.readAsDataURL(file);
         }
 
-        async function handleMultipleGalleryUpload(event) {
+        function handleMultipleGalleryUpload(event) {
             const files = event.target.files;
             if (!files || files.length === 0) return;
-
             const galleryInput = document.getElementById('input-gallery');
-            let currentPaths = galleryInput.value ? galleryInput.value.split(',').map(s => s.trim()).filter(Boolean) : [];
-
+            let paths = [];
             for (let i = 0; i < files.length; i++) {
-                const file = files[i];
-                await new Promise((resolve) => {
-                    const reader = new FileReader();
-                    reader.onload = async function(e) {
-                        const base64Content = e.target.result.split(',')[1];
-                        const cleanFilename = `${Date.now()}-${file.name.toLowerCase().replace(/[^a-z0-9.]+/g, '-')}`;
-                        const uploadPath = `media/${cleanFilename}`;
-
-                        try {
-                            const res = await fetch('/api/upload-media', {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({ path: uploadPath, content: base64Content, message: `Upload gallery item` })
-                            });
-                            const data = await res.json();
-                            if (res.ok) currentPaths.push(data.path);
-                        } catch (err) { console.error(err); }
-                        resolve();
-                    };
-                    reader.readAsDataURL(file);
-                });
+                paths.push(files[i].name);
             }
-
-            galleryInput.value = currentPaths.join(', ');
+            galleryInput.value = paths.join(', ');
             updateLivePreview();
-            alert(`✅ Successfully uploaded ${files.length} gallery photo(s)!`);
         }
 
         function addAuthorRow() {
@@ -421,7 +383,7 @@
                 <input type="text" placeholder="Author Name" oninput="updateLivePreview()" class="author-name-input w-full px-3 py-2 rounded-lg border border-gray-200 text-xs font-semibold bg-white focus:outline-none focus:ring-1 focus:ring-[#172554]" />
                 <div class="flex items-center gap-2">
                     <input type="file" accept="image/*" onchange="handleSingleAuthorFileUpload(event, this)" class="w-1/2 text-[10px] text-slate-500 file:mr-1 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-[9px] file:font-bold file:bg-[#172554] file:text-white cursor-pointer" />
-                    <input type="text" placeholder="Image URL / Path" oninput="updateLivePreview()" class="author-photo-input w-1/2 px-2.5 py-1.5 rounded-lg border border-gray-200 text-[10px] bg-white focus:outline-none" />
+                    <input type="text" placeholder="Image filename or path" oninput="updateLivePreview()" class="author-photo-input w-1/2 px-2.5 py-1.5 rounded-lg border border-gray-200 text-[10px] bg-white focus:outline-none" />
                 </div>
             `;
             container.appendChild(row);
@@ -443,22 +405,6 @@
                 if (rows.length === 1) removeBtn.classList.add('hidden');
                 else removeBtn.classList.remove('hidden');
             });
-        }
-
-        // FULLY FIXED LOCAL FILEREADER FOR AUTHOR PHOTO (NO API DEPENDENCY)
-        function handleSingleAuthorFileUpload(event, fileInput) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const parentRow = fileInput.closest('.author-row');
-            const photoUrlInput = parentRow.querySelector('.author-photo-input');
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                photoUrlInput.value = e.target.result;
-                updateLivePreview();
-            };
-            reader.readAsDataURL(file);
         }
 
         function collectAuthorData() {
@@ -556,7 +502,7 @@
                     </div>
                     <h3 class="text-lg font-extrabold text-[#0F172A] font-['Raleway'] leading-snug">${title}</h3>
                     ${imageHtml}
-                    <div class="text-xs text-gray-600 leading-relaxed space-y-2">${body.replace(/\n/g, '<br>')}</div>
+                    <div class="text-xs text-gray-600 leading-relaxed space-y-2">${body.parse ? body : body.replace(/\n/g, '<br>')}</div>
                     ${refsHtml}
                     ${authorsHtml}
                 </article>`;
@@ -612,7 +558,7 @@ ${fullBody}`;
                     body: JSON.stringify({ title, body })
                 });
                 if (res.ok) {
-                    alert('🎉 Article published successfully with category and references!');
+                    alert('🎉 Article published successfully!');
                     loadAdminArticlesList();
                 } else { alert('Error publishing.'); }
             } catch (err) { alert('Failed to connect.'); }
