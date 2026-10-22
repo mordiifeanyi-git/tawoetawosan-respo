@@ -24,7 +24,7 @@
             --text-slate: #334155; 
         }
         
-        body { font-family: 'Roboto', 'Raleway', Arial, Helvetica, sans-serif; background-color: var(--bg-offwhite); color: var(--text-slate); line-height: 1.7; overflow-x: hidden; }
+        body { font-family: 'Roboto', 'Raleway', Arial, Helvetica, sans-serif; background-color: var(--bg-offwhite); color: var(--text-slate); line-height: 1.6; overflow-x: hidden; }
         h1, h2, h3, h4, h5, h6 { font-family: 'Raleway', 'Roboto', Arial, Helvetica, sans-serif; color: #0F172A; }
 
         /* Section Fade & Slide Reveal Animation */
@@ -40,15 +40,15 @@
         /* Styling for footnotes / references in dynamic modal */
         .article-footnote-list {
             border-top: 1px solid #e2e8f0;
-            margin-top: 1.5rem;
-            padding-top: 1rem;
+            margin-top: 1rem;
+            padding-top: 0.75rem;
         }
         .article-footnote-list h4 {
             font-size: 11px;
             text-transform: uppercase;
             letter-spacing: 0.05em;
             color: #0F172A;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.3rem;
             font-family: 'Raleway', sans-serif;
             font-weight: 800;
         }
@@ -58,7 +58,7 @@
             padding-left: 1.2rem;
         }
         .article-footnote-list li {
-            margin-bottom: 0.3rem;
+            margin-bottom: 0.2rem;
         }
     </style>
     <script>
@@ -246,47 +246,48 @@
     window.onclick = function(event) { if (event.target === document.getElementById('legal-modal')) closeLegalModal(); }
 </script>
 
-    <!-- Clean Modal Structure with Right-Aligned Author Details -->
+    <!-- Clean Modal Structure with Compact Spacing, Bottom Authors, and "Close Article" -->
     <div id="blog-details-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md hidden p-4 sm:p-6 overflow-y-auto">
         <div class="bg-white rounded-3xl shadow-2xl border border-gray-100 max-w-3xl w-full my-auto overflow-hidden relative transform transition-all scale-95 opacity-0 duration-300 max-h-[90vh] flex flex-col" id="modal-container-box">
             
-            <div class="bg-[#172554] text-white p-6 flex items-start justify-between shrink-0">
-                <div class="space-y-1 pr-6">
+            <div class="bg-[#172554] text-white px-6 py-4 flex items-start justify-between shrink-0">
+                <div class="space-y-0.5 pr-6">
                     <span id="modal-meta" class="text-[10px] font-bold text-blue-300 uppercase tracking-wider block">Location &bull; Date</span>
-                    <h3 id="modal-title" class="text-xl font-extrabold text-white font-['Raleway'] leading-tight">Event Title</h3>
+                    <h3 id="modal-title" class="text-lg sm:text-xl font-extrabold text-white font-['Raleway'] leading-tight">Event Title</h3>
                 </div>
-                <button onclick="closeBlogModal()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/25 text-white flex items-center justify-center transition-colors shrink-0 cursor-pointer">
-                    <i class="fa-solid fa-xmark text-base"></i>
+                <button onclick="closeBlogModal()" class="w-7 h-7 rounded-full bg-white/10 hover:bg-white/25 text-white flex items-center justify-center transition-colors shrink-0 cursor-pointer">
+                    <i class="fa-solid fa-xmark text-sm"></i>
                 </button>
             </div>
 
-            <div class="p-6 sm:p-8 overflow-y-auto space-y-6 flex-1 text-gray-700 text-xs sm:text-sm leading-relaxed">
+            <div class="p-6 sm:p-8 overflow-y-auto space-y-4 flex-1 text-gray-700 text-xs sm:text-sm leading-relaxed">
                 
-                <!-- AUTHOR SECTION -->
-                <div class="flex justify-end border-b border-gray-100 pb-5 w-full">
-                    <div id="modal-author-profiles-grid" class="flex flex-col items-end gap-6 w-full max-w-xs">
-                        <!-- Populated dynamically -->
-                    </div>
+                <!-- DYNAMIC TYPE OF LAW / CATEGORY HEADING DIRECTLY AT TOP -->
+                <div class="space-y-2">
+                    <h4 id="modal-dynamic-category-heading" class="text-[11px] font-extrabold text-[#0F172A] uppercase tracking-wider font-['Raleway']">Legal Category</h4>
+                    <div id="modal-body-text" class="space-y-2.5 text-gray-600 leading-relaxed font-sans"></div>
                 </div>
 
-                <div id="modal-media-wrapper" class="space-y-4"></div>
+                <div id="modal-media-wrapper" class="space-y-3 pt-2"></div>
 
-                <div id="modal-video-container" class="space-y-2 border-t border-gray-100 pt-4 hidden">
+                <div id="modal-video-container" class="space-y-2 border-t border-gray-100 pt-3 hidden">
                     <span class="text-[11px] font-bold text-[#0F172A] uppercase tracking-wider block font-['Raleway']"><i class="fa-solid fa-circle-play text-[#172554] mr-1"></i> Video Recording</span>
                     <div id="modal-video-player-box" class="rounded-xl overflow-hidden border border-gray-200 bg-slate-950 aspect-video shadow-md flex items-center justify-center">
                     </div>
                 </div>
 
-                <!-- DYNAMIC TYPE OF LAW / CATEGORY HEADING -->
-                <div class="space-y-2 pt-2">
-                    <h4 id="modal-dynamic-category-heading" class="text-xs font-extrabold text-[#0F172A] uppercase tracking-wider font-['Raleway']">Legal Category</h4>
-                    <div id="modal-body-text" class="space-y-3 text-gray-600 leading-relaxed font-sans"></div>
+                <!-- AUTHOR SECTION: MOVED TO THE BOTTOM, RIGHT-ALIGNED WITH WRITTEN & PUBLISHED BY HEADER -->
+                <div class="flex justify-end border-t border-gray-100 pt-4 mt-4 w-full">
+                    <div id="modal-author-profiles-grid" class="flex flex-col items-end gap-4 w-full max-w-xs">
+                        <!-- Populated dynamically -->
+                    </div>
                 </div>
+
             </div>
 
-            <div class="p-4 bg-slate-50 border-t border-gray-100 text-right shrink-0">
-                <button onclick="closeBlogModal()" class="px-5 py-2 rounded-xl bg-[#172554] hover:bg-blue-900 text-white font-bold text-xs transition-all shadow cursor-pointer">
-                    Close Proceedings
+            <div class="px-6 py-3 bg-slate-50 border-t border-gray-100 text-right shrink-0">
+                <button onclick="closeBlogModal()" class="px-4 py-2 rounded-xl bg-[#172554] hover:bg-blue-900 text-white font-bold text-xs transition-all shadow cursor-pointer">
+                    Close Article
                 </button>
             </div>
         </div>
@@ -322,51 +323,9 @@
             document.getElementById('modal-title').innerText = article.title;
             document.getElementById('modal-meta').innerText = `${article.category.toUpperCase()} • ${article.date}`;
             
-            // Set dynamic category heading matching the admin page input
+            // Set dynamic category heading directly above the text flow
             document.getElementById('modal-dynamic-category-heading').innerText = article.category;
             
-            // Populate Author Cards
-            const gridContainer = document.getElementById('modal-author-profiles-grid');
-            gridContainer.innerHTML = '';
-
-            let names = article.authorNames ? article.authorNames.split(',').map(s => s.trim()).filter(Boolean) : [];
-            let photos = article.authorPhotos || [];
-
-            const count = Math.max(names.length, photos.length);
-
-            let authorHtml = `<span class="text-[10px] font-extrabold uppercase tracking-widest text-[#172554] font-['Raleway'] block w-full text-right mb-2">Written &amp; Published By</span>`;
-
-            if (count > 0) {
-                for (let i = 0; i < count; i++) {
-                    const name = names[i] || 'Tawo E. Tawo, SAN & Co.';
-                    const photo = photos[i] || '/WhatsApp Image 2026-10-08 at 13.10.32.jpeg';
-
-                    authorHtml += `
-                        <div class="flex flex-col items-end text-right w-full space-y-2">
-                            <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-xl border-2 border-white shadow-md overflow-hidden bg-slate-900 shrink-0">
-                                <img src="${photo}" class="w-full h-full object-cover" alt="${name}" onerror="this.onerror=null; this.src='https://placehold.co/150x150/172554/FFFFFF?text=SAN';">
-                            </div>
-                            <div class="space-y-0.5">
-                                <h4 class="text-sm sm:text-base font-extrabold text-[#0F172A] font-['Raleway'] leading-snug tracking-tight">${name}</h4>
-                                <p class="text-xs text-gray-500 font-semibold leading-relaxed">Tawo E. Tawo, SAN &amp; Co.</p>
-                            </div>
-                        </div>`;
-                }
-            } else {
-                authorHtml += `
-                    <div class="flex flex-col items-end text-right w-full space-y-2">
-                        <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-xl border-2 border-white shadow-md overflow-hidden bg-white shrink-0">
-                            <img src="/WhatsApp Image 2026-10-08 at 13.10.32.jpeg" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='https://placehold.co/150x150/172554/FFFFFF?text=SAN';">
-                        </div>
-                        <div class="space-y-0.5">
-                            <h4 class="text-sm sm:text-base font-extrabold text-[#0F172A] font-['Raleway']">Tawo E. Tawo, SAN &amp; Co.</h4>
-                            <p class="text-xs text-gray-500 font-semibold leading-relaxed">Legal Practitioners, Notary Public &amp; Arbitrators</p>
-                        </div>
-                    </div>`;
-            }
-
-            gridContainer.innerHTML = authorHtml;
-
             // Parse and format footnote markers
             let formattedBody = article.bodyHtml.replace(/\^(\d+)/g, '<sup><a href="#ref-$1" class="text-blue-600 font-bold hover:underline">[$1]</a></sup>');
             
@@ -384,18 +343,60 @@
 
             document.getElementById('modal-body-text').innerHTML = finalHtmlContent;
 
+            // Populate Author Cards at the bottom with right alignment
+            const gridContainer = document.getElementById('modal-author-profiles-grid');
+            gridContainer.innerHTML = '';
+
+            let names = article.authorNames ? article.authorNames.split(',').map(s => s.trim()).filter(Boolean) : [];
+            let photos = article.authorPhotos || [];
+
+            const count = Math.max(names.length, photos.length);
+
+            let authorHtml = `<span class="text-[10px] font-extrabold uppercase tracking-widest text-[#172554] font-['Raleway'] block w-full text-right mb-1">Written &amp; Published By</span>`;
+
+            if (count > 0) {
+                for (let i = 0; i < count; i++) {
+                    const name = names[i] || 'Tawo E. Tawo, SAN & Co.';
+                    const photo = photos[i] || '/WhatsApp Image 2026-10-08 at 13.10.32.jpeg';
+
+                    authorHtml += `
+                        <div class="flex flex-col items-end text-right w-full space-y-1.5">
+                            <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-xl border-2 border-white shadow-md overflow-hidden bg-slate-900 shrink-0">
+                                <img src="${photo}" class="w-full h-full object-cover" alt="${name}" onerror="this.onerror=null; this.src='https://placehold.co/150x150/172554/FFFFFF?text=SAN';">
+                            </div>
+                            <div class="space-y-0">
+                                <h4 class="text-xs sm:text-sm font-extrabold text-[#0F172A] font-['Raleway'] leading-snug tracking-tight">${name}</h4>
+                                <p class="text-[10px] text-gray-500 font-semibold leading-relaxed">Tawo E. Tawo, SAN &amp; Co.</p>
+                            </div>
+                        </div>`;
+                }
+            } else {
+                authorHtml += `
+                    <div class="flex flex-col items-end text-right w-full space-y-1.5">
+                        <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-xl border-2 border-white shadow-md overflow-hidden bg-white shrink-0">
+                            <img src="/WhatsApp Image 2026-10-08 at 13.10.32.jpeg" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='https://placehold.co/150x150/172554/FFFFFF?text=SAN';">
+                        </div>
+                        <div class="space-y-0">
+                            <h4 class="text-xs sm:text-sm font-extrabold text-[#0F172A] font-['Raleway']">Tawo E. Tawo, SAN &amp; Co.</h4>
+                            <p class="text-[10px] text-gray-500 font-semibold leading-relaxed">Legal Practitioners, Notary Public &amp; Arbitrators</p>
+                        </div>
+                    </div>`;
+            }
+
+            gridContainer.innerHTML = authorHtml;
+
             const mediaWrapper = document.getElementById('modal-media-wrapper');
             mediaWrapper.innerHTML = '';
 
             if (article.gallery && article.gallery.length > 0) {
                 let gridHtml = '<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">';
                 article.gallery.forEach(img => {
-                    gridHtml += `<div class="h-48 sm:h-56 rounded-2xl overflow-hidden border border-gray-200 shadow-sm bg-slate-100"><img src="${img}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300" /></div>`;
+                    gridHtml += `<div class="h-44 sm:h-52 rounded-2xl overflow-hidden border border-gray-200 shadow-sm bg-slate-100"><img src="${img}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300" /></div>`;
                 });
                 gridHtml += '</div>';
                 mediaWrapper.innerHTML = gridHtml;
             } else if (article.imageUrl) {
-                mediaWrapper.innerHTML = `<div class="w-full h-64 sm:h-80 rounded-2xl overflow-hidden border border-gray-200 shadow-sm bg-slate-100"><img src="${article.imageUrl}" class="w-full h-full object-cover" /></div>`;
+                mediaWrapper.innerHTML = `<div class="w-full h-56 sm:h-72 rounded-2xl overflow-hidden border border-gray-200 shadow-sm bg-slate-100"><img src="${article.imageUrl}" class="w-full h-full object-cover" /></div>`;
             }
 
             const videoContainer = document.getElementById('modal-video-container');
@@ -433,7 +434,7 @@
         function toggleMobileMenu() { document.getElementById('mobile-menu').classList.toggle('hidden'); }
     </script>
 
-    <!-- Dynamic Content Loader reading frontmatter keys -->
+    <!-- Dynamic Content Loader -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
         marked.setOptions({ html: true, gfm: true });
@@ -484,7 +485,6 @@
                                 const val = line.substring(colonIndex + 1).trim().replace(/^["']|["']$/g, '');
 
                                 if (key === 'title') title = val;
-                                // Directly parses the category key saved by your admin page
                                 else if (key === 'category') {
                                     if (val) category = val;
                                 }
@@ -499,7 +499,6 @@
                         });
                     }
 
-                    // Fallback if category is empty
                     if (!category) category = 'Legal Practice';
 
                     let galleryPhotos = galleryStr ? galleryStr.split(',').map(s => s.trim()).filter(s => s && s !== 'undefined') : [];
