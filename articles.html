@@ -246,7 +246,7 @@
     window.onclick = function(event) { if (event.target === document.getElementById('legal-modal')) closeLegalModal(); }
 </script>
 
-    <!-- Clean Non-overlapping Modal Structure with MASSIVE Author Showcase -->
+    <!-- Clean Non-overlapping Modal Structure with STRETCHED FULL-WIDTH Author Showcase -->
     <div id="blog-details-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md hidden p-4 sm:p-6 overflow-y-auto">
         <div class="bg-white rounded-3xl shadow-2xl border border-gray-100 max-w-3xl w-full my-auto overflow-hidden relative transform transition-all scale-95 opacity-0 duration-300 max-h-[90vh] flex flex-col" id="modal-container-box">
             
@@ -262,13 +262,13 @@
 
             <div class="p-6 sm:p-8 overflow-y-auto space-y-6 flex-1 text-gray-700 text-xs sm:text-sm leading-relaxed">
                 
-                <!-- MASSIVE HIGH-VISIBILITY AUTHOR SHOWCASE BOX -->
-                <div id="modal-author-header" class="bg-gradient-to-br from-blue-50/90 to-slate-50 border-2 border-blue-200 rounded-3xl p-6 sm:p-8 shadow-md space-y-4">
+                <!-- STRETCHED HIGH-VISIBILITY AUTHOR SHOWCASE BOX -->
+                <div id="modal-author-header" class="bg-gradient-to-br from-blue-50/90 via-slate-50 to-blue-50/50 border-2 border-blue-200/90 rounded-3xl p-6 sm:p-8 shadow-md space-y-4 w-full">
                     <div class="flex items-center space-x-2 border-l-4 border-[#172554] pl-3">
                         <span class="text-xs font-extrabold uppercase tracking-widest text-[#172554] font-['Raleway']">Written &amp; Published By</span>
                     </div>
-                    <div id="modal-author-profiles-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        <!-- Populated dynamically with large executive cards -->
+                    <div id="modal-author-profiles-grid" class="flex flex-col gap-6 w-full">
+                        <!-- Populated dynamically with spacious executive cards -->
                     </div>
                 </div>
 
@@ -324,7 +324,7 @@
             document.getElementById('modal-title').innerText = article.title;
             document.getElementById('modal-meta').innerText = `PUBLISHED • ${article.date}`;
             
-            // Populate MASSIVE High-Visibility Author Cards Inside Modal
+            // Populate SPACIOUS UN-CRAMPED Author Cards Inside Modal
             const gridContainer = document.getElementById('modal-author-profiles-grid');
             gridContainer.innerHTML = '';
 
@@ -339,26 +339,25 @@
                     const photo = photos[i] || '/WhatsApp Image 2026-10-08 at 13.10.32.jpeg';
 
                     gridContainer.innerHTML += `
-                        <div class="bg-white border-2 border-blue-200 rounded-2xl p-5 shadow-md flex items-center space-x-5">
-                            <div class="w-28 h-28 sm:w-32 sm:h-32 rounded-2xl border-4 border-white shadow-xl overflow-hidden bg-slate-900 shrink-0">
-                                <img src="${photo}" class="w-full h-full object-cover" alt="${name}" onerror="this.onerror=null; this.src='https://placehold.co/200x200/172554/FFFFFF?text=SAN';">
+                        <div class="bg-white border-2 border-blue-200/90 rounded-2xl p-6 shadow-md flex flex-col sm:flex-row items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-8 w-full">
+                            <div class="w-36 h-36 sm:w-44 sm:h-44 rounded-2xl border-4 border-white shadow-xl overflow-hidden bg-slate-900 shrink-0">
+                                <img src="${photo}" class="w-full h-full object-cover" alt="${name}" onerror="this.onerror=null; this.src='https://placehold.co/250x250/172554/FFFFFF?text=SAN';">
                             </div>
-                            <div class="space-y-1.5 min-w-0">
-                                <span class="text-[10px] uppercase tracking-widest text-blue-600 font-extrabold block">Legal Counsel</span>
-                                <h4 class="text-sm sm:text-base font-extrabold text-[#0F172A] font-['Raleway'] leading-snug">${name}</h4>
-                                <span class="text-[11px] text-gray-500 block">Tawo E. Tawo, SAN &amp; Co.</span>
+                            <div class="space-y-2 text-center sm:text-left flex-1 min-w-0 pt-2 sm:pt-4">
+                                <h4 class="text-lg sm:text-xl font-extrabold text-[#0F172A] font-['Raleway'] leading-snug tracking-tight">${name}</h4>
+                                <p class="text-sm text-gray-600 font-semibold leading-relaxed">Tawo E. Tawo, SAN &amp; Co.</p>
                             </div>
                         </div>`;
                 }
             } else {
                 gridContainer.innerHTML = `
-                    <div class="bg-white border-2 border-blue-200 rounded-2xl p-5 shadow-md flex items-center space-x-5">
-                        <div class="w-28 h-28 sm:w-32 sm:h-32 rounded-2xl border-4 border-white shadow-xl overflow-hidden bg-white shrink-0">
-                            <img src="/WhatsApp Image 2026-10-08 at 13.10.32.jpeg" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='https://placehold.co/200x200/172554/FFFFFF?text=SAN';">
+                    <div class="bg-white border-2 border-blue-200/90 rounded-2xl p-6 shadow-md flex flex-col sm:flex-row items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-8 w-full">
+                        <div class="w-36 h-36 sm:w-44 sm:h-44 rounded-2xl border-4 border-white shadow-xl overflow-hidden bg-white shrink-0">
+                            <img src="/WhatsApp Image 2026-10-08 at 13.10.32.jpeg" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='https://placehold.co/250x250/172554/FFFFFF?text=SAN';">
                         </div>
-                        <div class="space-y-1.5">
-                            <span class="text-[10px] uppercase tracking-widest text-blue-600 font-extrabold block">Legal Counsel</span>
-                            <h4 class="text-sm sm:text-base font-extrabold text-[#0F172A] font-['Raleway']">Tawo E. Tawo, SAN &amp; Co.</h4>
+                        <div class="space-y-2 text-center sm:text-left flex-1 min-w-0 pt-2 sm:pt-4">
+                            <h4 class="text-lg sm:text-xl font-extrabold text-[#0F172A] font-['Raleway']">Tawo E. Tawo, SAN &amp; Co.</h4>
+                            <p class="text-sm text-gray-600 font-semibold leading-relaxed">Legal Practitioners, Notary Public &amp; Arbitrators</p>
                         </div>
                     </div>`;
             }
