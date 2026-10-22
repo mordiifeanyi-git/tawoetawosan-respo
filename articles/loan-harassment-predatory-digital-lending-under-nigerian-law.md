@@ -2,8 +2,8 @@
 title: "Loan Harassment & Predatory Digital Lending Under Nigerian Law"
 date: "2026-10-21"
 type: "article"
-author: "JOHNSON GREAT"
-author_photo: "/media/1792627523769-great.jpeg"
+author: "JOHNSON GREAT, KING NASIR"
+author_photo: "/media/1792627523769-great.jpeg, /media/1792627798016-nasir.jpeg"
 gallery: ""
 video: ""
 ---
