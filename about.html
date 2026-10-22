@@ -26,6 +26,16 @@
         /* Typography font stack: Roboto, Raleway, Arial, Helvetica, sans-serif */
         body { font-family: 'Roboto', 'Raleway', Arial, Helvetica, sans-serif; background-color: var(--bg-offwhite); color: var(--text-slate); line-height: 1.7; overflow-x: hidden; }
         h1, h2, h3, h4, h5, h6 { font-family: 'Raleway', 'Roboto', Arial, Helvetica, sans-serif; color: #0F172A; }
+
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .no-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
     </style>
     <script>
         tailwind.config = {
@@ -94,14 +104,13 @@
 
     <!-- Full Page Centered Main About Section -->
     <section class="py-20 px-6 md:px-16 w-full bg-white border-b border-gray-200">
-            <div class="space-y-6 text-base sm:text-lg text-black leading-relaxed max-w-5xl mx-auto">
-                <p>
-                    Tawo E. Tawo, SAN &amp; Co., is a premier firm of Legal Practitioners, consultants, Notary Public and Arbitrators incorporated on the 13th of April, 1989 under the Laws of the Federal Republic of Nigeria. Driven by an unwavering commitment to optimum professionalism and strict ethical standards, our operations fully accord with international best practices.
-                </p>
-                <p>
-                    Our practice covers a robust spectrum of law, including legal drafting, litigation, alternative dispute resolution (arbitration), energy, oil and gas, construction documentation, debt recovery, criminal laws, capital markets, and tax laws.
-                </p>
-            </div>
+        <div class="space-y-6 text-base sm:text-lg text-black leading-relaxed max-w-5xl mx-auto">
+            <p>
+                Tawo E. Tawo, SAN &amp; Co., is a premier firm of Legal Practitioners, consultants, Notary Public and Arbitrators incorporated on the 13th of April, 1989 under the Laws of the Federal Republic of Nigeria. Driven by an unwavering commitment to optimum professionalism and strict ethical standards, our operations fully accord with international best practices.
+            </p>
+            <p>
+                Our practice covers a robust spectrum of law, including legal drafting, litigation, alternative dispute resolution (arbitration), energy, oil and gas, construction documentation, debt recovery, criminal laws, capital markets, and tax laws.
+            </p>
         </div>
     </section>
 
@@ -198,14 +207,18 @@
         </div>
     </section>
 
-    <!-- Integrated Case Results Portfolio Section -->
-    <section class="py-16 px-6 md:px-12 max-w-7xl mx-auto space-y-16 border-t border-gray-200">
+    <!-- Integrated Case Results Swipeable Carousel Section -->
+    <section class="py-16 px-6 md:px-12 max-w-7xl mx-auto space-y-10 border-t border-gray-200 overflow-hidden">
         <div class="text-center max-w-3xl mx-auto space-y-4">
             <h2 class="text-2xl sm:text-3xl font-extrabold text-[#0F172A] font-['Raleway']">Real Results. Real Victories.</h2>
+            <p class="text-xs text-gray-500 uppercase tracking-widest font-semibold">Swipe or scroll horizontally to explore victories &amp; awards</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="bg-[#172554] text-white rounded-2xl p-8 shadow-xl flex flex-col justify-between border border-blue-900/30">
+        <!-- Horizontal Swipeable Track Container -->
+        <div class="flex overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar gap-6 pb-6 px-2">
+            
+            <!-- Card 1 -->
+            <div class="bg-[#172554] text-white rounded-2xl p-8 shadow-xl flex flex-col justify-between border border-blue-900/30 min-w-[300px] sm:min-w-[360px] md:min-w-[380px] snap-start shrink-0">
                 <div>
                     <div class="text-blue-300 text-xs font-bold tracking-widest uppercase mb-2">Intellectual Property</div>
                     <div class="text-2xl sm:text-3xl font-extrabold text-white mb-4 font-['Raleway']">₦45 Million</div>
@@ -213,7 +226,9 @@
                 </div>
                 <div class="pt-6 mt-6 border-t border-white/10 text-xs text-gray-200"><i class="fa-solid fa-circle-check text-blue-300 mr-1"></i> Multi-Year Federal Trial Win</div>
             </div>
-            <div class="bg-[#172554] text-white rounded-2xl p-8 shadow-xl flex flex-col justify-between border border-blue-900/30">
+
+            <!-- Card 2 -->
+            <div class="bg-[#172554] text-white rounded-2xl p-8 shadow-xl flex flex-col justify-between border border-blue-900/30 min-w-[300px] sm:min-w-[360px] md:min-w-[380px] snap-start shrink-0">
                 <div>
                     <div class="text-blue-300 text-xs font-bold tracking-widest uppercase mb-2">White-Collar Defense</div>
                     <div class="text-2xl sm:text-3xl font-extrabold text-white mb-4 font-['Raleway']">Full Acquittal</div>
@@ -221,7 +236,9 @@
                 </div>
                 <div class="pt-6 mt-6 border-t border-white/10 text-xs text-gray-200"><i class="fa-solid fa-circle-check text-blue-300 mr-1"></i> Dismissal of All Charges</div>
             </div>
-            <div class="bg-[#172554] text-white rounded-2xl p-8 shadow-xl flex flex-col justify-between border border-blue-900/30">
+
+            <!-- Card 3 -->
+            <div class="bg-[#172554] text-white rounded-2xl p-8 shadow-xl flex flex-col justify-between border border-blue-900/30 min-w-[300px] sm:min-w-[360px] md:min-w-[380px] snap-start shrink-0">
                 <div>
                     <div class="text-blue-300 text-xs font-bold tracking-widest uppercase mb-2">Corporate Mergers</div>
                     <div class="text-2xl sm:text-3xl font-extrabold text-white mb-4 font-['Raleway']">₦120 Million</div>
@@ -229,20 +246,59 @@
                 </div>
                 <div class="pt-6 mt-6 border-t border-white/10 text-xs text-gray-200"><i class="fa-solid fa-circle-check text-blue-300 mr-1"></i> Zero Regulatory Friction</div>
             </div>
+
+            <!-- Card 4 (Additional Placeholder for Swiping) -->
+            <div class="bg-[#172554] text-white rounded-2xl p-8 shadow-xl flex flex-col justify-between border border-blue-900/30 min-w-[300px] sm:min-w-[360px] md:min-w-[380px] snap-start shrink-0">
+                <div>
+                    <div class="text-blue-300 text-xs font-bold tracking-widest uppercase mb-2">Supreme Court Precedent</div>
+                    <div class="text-2xl sm:text-3xl font-extrabold text-white mb-4 font-['Raleway']">Landmark Ruling</div>
+                    <p class="text-xs text-gray-200 leading-relaxed">Successfully set a national legal precedent in constitutional interpretation and commercial dispute resolution.</p>
+                </div>
+                <div class="pt-6 mt-6 border-t border-white/10 text-xs text-gray-200"><i class="fa-solid fa-circle-check text-blue-300 mr-1"></i> Unanimous Apex Court Victory</div>
+            </div>
+
+            <!-- Card 5 (Additional Placeholder for Swiping) -->
+            <div class="bg-[#172554] text-white rounded-2xl p-8 shadow-xl flex flex-col justify-between border border-blue-900/30 min-w-[300px] sm:min-w-[360px] md:min-w-[380px] snap-start shrink-0">
+                <div>
+                    <div class="text-blue-300 text-xs font-bold tracking-widest uppercase mb-2">Arbitration &amp; Maritime</div>
+                    <div class="text-2xl sm:text-3xl font-extrabold text-white mb-4 font-['Raleway']">$15 Million</div>
+                    <p class="text-xs text-gray-200 leading-relaxed">Resolved an international maritime dispute via confidential arbitral proceedings with complete client satisfaction.</p>
+                </div>
+                <div class="pt-6 mt-6 border-t border-white/10 text-xs text-gray-200"><i class="fa-solid fa-circle-check text-blue-300 mr-1"></i> Expedited Settlement</div>
+            </div>
+
         </div>
 
-        <div class="bg-white border border-blue-200/60 rounded-3xl p-8 sm:p-12 shadow-md max-w-4xl mx-auto relative">
-            <div class="space-y-6 text-center">
-                <p class="text-base sm:text-lg italic text-[#0F172A] font-['Raleway'] leading-relaxed">
-                    "Tawo E. Tawo, SAN & Co. is distinguished not only by its competence in litigation but also by its considerable expertise in Alternative Dispute Resolution (ADR).
+        <!-- Swipeable Testimonials Carousel Section -->
+        <div class="max-w-4xl mx-auto pt-6">
+            <div id="testimonial-slider-container" class="bg-white border border-blue-200/60 rounded-3xl p-8 sm:p-12 shadow-md relative transition-all duration-500">
+                
+                <!-- Slide 1 -->
+                <div class="testimonial-slide space-y-6 text-center">
+                    <p class="text-base sm:text-lg italic text-[#0F172A] font-['Raleway'] leading-relaxed">
+                        "Tawo E. Tawo, SAN & Co. is distinguished not only by its competence in litigation but also by its considerable expertise in Alternative Dispute Resolution (ADR). The firm has consistently demonstrated commendable legal acumen, strategic insight, and proficiency in resolving complex disputes through appropriate dispute resolution mechanisms. Its professional legal services and effective dispute resolution interventions have been invaluable to the Nigerian Law Reform Commission on several occasions. I confidently acknowledge the firm’s professionalism, legal competence, and commitment to achieving effective and pragmatic resolutions to disputes."
+                    </p>
+                    <div>
+                        <h4 class="font-bold text-[#0F172A] font-['Raleway'] text-sm">Joy Omena Akpojiyovwi Esq.</h4>
+                        <p class="text-[10px] text-[#172554] uppercase tracking-wider font-semibold">Head of Protocol, Nigerian Law Reform Commission.</p>
+                    </div>
+                </div>
 
-                    The firm has consistently demonstrated commendable legal acumen, strategic insight, and proficiency in resolving complex disputes through appropriate dispute resolution mechanisms. Its professional legal services and effective dispute resolution interventions have been invaluable to the Nigerian Law Reform Commission on several occasions.
-                   
-                   I confidently acknowledge the firm’s professionalism, legal competence, and commitment to achieving effective and pragmatic resolutions to disputes."
-                </p>
-                <div>
-                    <h4 class="font-bold text-[#0F172A] font-['Raleway'] text-sm"> Joy Omena Akpojiyovwi Esq.</h4>
-                    <p class="text-[10px] text-[#172554] uppercase tracking-wider font-semibold">Head of Protocol, Nigerian Law Reform Commission.</p>
+                <!-- Slide 2 (Additional Testimonial Placeholder) -->
+                <div class="testimonial-slide space-y-6 text-center hidden">
+                    <p class="text-base sm:text-lg italic text-[#0F172A] font-['Raleway'] leading-relaxed">
+                        "The depth of corporate advisory and prompt responsiveness provided by Tawo E. Tawo, SAN & Co. during our restructuring phase was exemplary. Their rigorous intellect and meticulous attention to regulatory compliance safeguarded our enterprise against potential liabilities. They remain our trusted counsel for high-stakes matters."
+                    </p>
+                    <div>
+                        <h4 class="font-bold text-[#0F172A] font-['Raleway'] text-sm">Managing Director</h4>
+                        <p class="text-[10px] text-[#172554] uppercase tracking-wider font-semibold">Premier Energy &amp; Industrial Conglomerate.</p>
+                    </div>
+                </div>
+
+                <!-- Carousel Dot Navigation Indicators -->
+                <div class="flex items-center justify-center space-x-2 pt-6">
+                    <button onclick="switchTestimonial(0)" class="w-3 h-3 rounded-full bg-[#172554] transition-all dot-indicator" aria-label="Slide 1"></button>
+                    <button onclick="switchTestimonial(1)" class="w-3 h-3 rounded-full bg-gray-300 hover:bg-gray-400 transition-all dot-indicator" aria-label="Slide 2"></button>
                 </div>
             </div>
         </div>
@@ -287,15 +343,39 @@
             </div>
         </div>
         <div class="max-w-7xl mx-auto mt-8 pt-6 border-t border-blue-900 text-center text-xs text-blue-200">
-            <p>&copy; 2026 Tawo E. Tawo, SAN & Co.</p>
+            <p>&copy; 2026 Tawo E. Tawo SAN & Co.</p>
             <p> All Rights Reserved.</p>
         </div>
     </footer>
 
-    <!-- Interactive Scripts for Mobile Menu & Scroll Header Effect -->
+    <!-- Interactive Scripts for Mobile Menu, Scroll Header Effect & Testimonial Switcher -->
     <script>
         function toggleMobileMenu() { 
             document.getElementById('mobile-menu').classList.toggle('hidden'); 
+        }
+
+        // Testimonial Carousel Switcher Logic
+        function switchTestimonial(index) {
+            const slides = document.querySelectorAll('.testimonial-slide');
+            const dots = document.querySelectorAll('.dot-indicator');
+
+            slides.forEach((slide, idx) => {
+                if (idx === index) {
+                    slide.classList.remove('hidden');
+                } else {
+                    slide.classList.add('hidden');
+                }
+            });
+
+            dots.forEach((dot, idx) => {
+                if (idx === index) {
+                    dot.classList.remove('bg-gray-300', 'hover:bg-gray-400');
+                    dot.classList.add('bg-[#172554]');
+                } else {
+                    dot.classList.remove('bg-[#172554]');
+                    dot.classList.add('bg-gray-300', 'hover:bg-gray-400');
+                }
+            });
         }
 
         // Navbar Scroll Effect: Transparent at top -> Solid white with shadow on scroll
