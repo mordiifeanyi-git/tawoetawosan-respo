@@ -264,8 +264,8 @@
         const repoOwner = 'mordiifeanyi-git';
         const repoName = 'tawoetawosan-respo';
 
-        // Memory cache to keep local device blobs/previews active permanently in the UI
-        const localPreviewCache = {};
+        // Memory cache object to keep blob previews persistent in the UI
+        const localPreviewCache = { gallery: [], authors: {}, video: '' };
 
         document.addEventListener('DOMContentLoaded', () => {
             if (sessionStorage.getItem('firm_admin_auth') === 'true') {
@@ -320,15 +320,21 @@
             }
         }
 
-        async function handleLocalVideoUpload(event) {
+        async function handleSingleAuthorFileUpload(event, fileInput) {
             const file = event.target.files[0];
             if (!file) return;
 
+            const parentRow = fileInput.closest('.author-row');
+            const photoUrlInput = parentRow.querySelector('.author-photo-input');
+            const rowIndex = Array.from(document.querySelectorAll('.author-row')).indexOf(parentRow);
+
+            // Set persistent blob for UI preview
             const localBlobUrl = URL.createObjectURL(file);
-            localPreviewCache['video'] = localBlobUrl;
-            document.getElementById('input-video-url').value = localBlobUrl;
+            localPreviewCache.authors[rowIndex] = localBlobUrl;
+            photoUrlInput.value = localBlobUrl;
             updateLivePreview();
 
+            // Background upload
             const reader = new FileReader();
             reader.onload = async function(e) {
                 const base64Content = e.target.result.split(',')[1];
@@ -339,15 +345,14 @@
                     const res = await fetch('/api/upload-media', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ path: uploadPath, content: base64Content, message: `Upload video recording` })
+                        body: JSON.stringify({ path: uploadPath, content: base64Content, message: `Upload author photo` })
                     });
                     const data = await res.json();
                     if (res.ok) {
                         let finalPath = data.path;
                         if (!finalPath.startsWith('/') && !finalPath.startsWith('http')) finalPath = '/' + finalPath;
-                        
-                        // Keep input pointing to the server path for the markdown, but maintain the blob in cache so preview never blinks out
-                        document.getElementById('input-video-url').value = finalPath;
+                        // Store server path in data attribute so frontmatter uses it without breaking local preview
+                        photoUrlInput.setAttribute('data-server-path', finalPath);
                     }
                 } catch (err) { console.error(err); }
             };
@@ -361,12 +366,11 @@
             const galleryInput = document.getElementById('input-gallery');
             let currentPaths = galleryInput.value ? galleryInput.value.split(',').map(s => s.trim()).filter(Boolean) : [];
 
-            if (!localPreviewCache['gallery']) localPreviewCache['gallery'] = [];
-
             for (let i = 0; i < files.length; i++) {
                 const file = files[i];
                 const localBlobUrl = URL.createObjectURL(file);
-                localPreviewCache['gallery'].push(localBlobUrl);
+                
+                localPreviewCache.gallery.push(localBlobUrl);
                 currentPaths.push(localBlobUrl);
                 galleryInput.value = currentPaths.join(', ');
                 updateLivePreview();
@@ -387,10 +391,13 @@
                             const data = await res.json();
                             if (res.ok) {
                                 let p = data.path;
-                                if (!p.startsWith('/') && !p.startsWith('http') && !p.startsWith('data:image')) p = '/' + p;
-                                const idx = currentPaths.indexOf(localBlobUrl);
-                                if (idx !== -1) currentPaths[idx] = p;
-                                galleryInput.value = currentPaths.join(', ');
+                                if (!p.startsWith('/') && !p.startsWith('http')) p = '/' + p;
+                                // Store clean server path for final markdown generation
+                                if (!galleryInput.hasAttribute('data-server-paths')) {
+                                    galleryInput.setAttribute('data-server-paths', p);
+                                } else {
+                                    galleryInput.setAttribute('data-server-paths', galleryInput.getAttribute('data-server-paths') + ', ' + p);
+                                }
                             }
                         } catch (err) { console.error(err); }
                         resolve();
@@ -398,6 +405,39 @@
                     reader.readAsDataURL(file);
                 });
             }
+        }
+
+        async function handleLocalVideoUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const localBlobUrl = URL.createObjectURL(file);
+            localPreviewCache.video = localBlobUrl;
+            const videoInput = document.getElementById('input-video-url');
+            videoInput.value = localBlobUrl;
+            updateLivePreview();
+
+            const reader = new FileReader();
+            reader.onload = async function(e) {
+                const base64Content = e.target.result.split(',')[1];
+                const cleanFilename = `${Date.now()}-${file.name.toLowerCase().replace(/[^a-z0-9.]+/g, '-')}`;
+                const uploadPath = `media/${cleanFilename}`;
+
+                try {
+                    const res = await fetch('/api/upload-media', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ path: uploadPath, content: base64Content, message: `Upload video recording` })
+                    });
+                    const data = await res.json();
+                    if (res.ok) {
+                        let finalPath = data.path;
+                        if (!finalPath.startsWith('/') && !finalPath.startsWith('http')) finalPath = '/' + finalPath;
+                        videoInput.setAttribute('data-server-path', finalPath);
+                    }
+                } catch (err) { console.error(err); }
+            };
+            reader.readAsDataURL(file);
         }
 
         function addAuthorRow() {
@@ -440,47 +480,15 @@
             });
         }
 
-        async function handleSingleAuthorFileUpload(event, fileInput) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const parentRow = fileInput.closest('.author-row');
-            const photoUrlInput = parentRow.querySelector('.author-photo-input');
-
-            const localPreviewUrl = URL.createObjectURL(file);
-            photoUrlInput.value = localPreviewUrl;
-            updateLivePreview();
-
-            const reader = new FileReader();
-            reader.onload = async function(e) {
-                const base64Content = e.target.result.split(',')[1];
-                const cleanFilename = `${Date.now()}-${file.name.toLowerCase().replace(/[^a-z0-9.]+/g, '-')}`;
-                const uploadPath = `media/${cleanFilename}`;
-
-                try {
-                    const res = await fetch('/api/upload-media', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ path: uploadPath, content: base64Content, message: `Upload author photo` })
-                    });
-                    const data = await res.json();
-                    if (res.ok) {
-                        let finalPath = data.path;
-                        if (!finalPath.startsWith('/') && !finalPath.startsWith('http')) finalPath = '/' + finalPath;
-                        photoUrlInput.value = finalPath;
-                    }
-                } catch (err) { console.error(err); }
-            };
-            reader.readAsDataURL(file);
-        }
-
         function collectAuthorData() {
             const rows = document.querySelectorAll('.author-row');
             let names = [], photos = [];
-            rows.forEach(row => {
+            rows.forEach((row, idx) => {
                 const name = row.querySelector('.author-name-input').value.trim();
-                let photo = row.querySelector('.author-photo-input').value.trim();
-                if (photo && !photo.startsWith('http') && !photo.startsWith('data:image') && !photo.startsWith('blob:') && !photo.startsWith('/')) {
+                const photoInput = row.querySelector('.author-photo-input');
+                let photo = localPreviewCache.authors[idx] || photoInput.value.trim();
+                
+                if (photo && !photo.startsWith('http') && !photo.startsWith('blob:') && !photo.startsWith('/')) {
                     photo = '/' + photo;
                 }
                 if (name) names.push(name);
@@ -520,8 +528,6 @@
             const title = document.getElementById('input-title').value || 'Type title...';
             const category = document.getElementById('input-category').value || 'Legal Article';
             const dateVal = document.getElementById('input-date').value;
-            const galleryStr = document.getElementById('input-gallery') ? document.getElementById('input-gallery').value.trim() : '';
-            const videoUrl = document.getElementById('input-video-url') ? document.getElementById('input-video-url').value.trim() : '';
             let body = document.getElementById('input-body').value || 'Type summary or body...';
             const references = document.getElementById('input-references').value.trim();
             const { pairs, namesStr } = collectAuthorData();
@@ -534,7 +540,7 @@
 
             let authorsHtml = '';
             if (pairs.length > 0 && pairs.some(p => p.name || p.photo)) {
-                authorsHtml = '<div class="pt-3 border-t border-gray-100 flex items-center justify-end space-x-3">';
+                authorsHtml = '<div class="pt-3 border-t border-gray-100 flex items-center justify-end flex-wrap gap-3">';
                 pairs.forEach((p) => {
                     const img = p.photo || 'https://placehold.co/100x100/172554/FFFFFF?text=SAN';
                     const name = p.name || 'Tawo E. Tawo, SAN';
@@ -564,31 +570,20 @@
             let dynamicTopContent = '';
 
             if (postType === 'gallery') {
-                let photos = galleryStr ? galleryStr.split(',').map(s => s.trim()).filter(Boolean) : [];
-                // Fall back to cached local blobs if input paths got overwritten by server response
-                if (photos.length === 0 && localPreviewCache['gallery'] && localPreviewCache['gallery'].length > 0) {
-                    photos = localPreviewCache['gallery'];
-                }
-                
+                let photos = localPreviewCache.gallery.length > 0 ? localPreviewCache.gallery : [];
                 if (photos.length > 0) {
                     dynamicTopContent = '<div class="grid grid-cols-2 gap-2 mb-3">';
                     photos.slice(0, 4).forEach(p => {
-                        const cleanPath = (p.startsWith('http') || p.startsWith('data:image') || p.startsWith('blob:') || p.startsWith('/')) ? p : `/${p}`;
-                        dynamicTopContent += `<div class="h-28 rounded-xl overflow-hidden border border-gray-200 bg-slate-100"><img src="${cleanPath}" class="w-full h-full object-cover"></div>`;
+                        dynamicTopContent += `<div class="h-28 rounded-xl overflow-hidden border border-gray-200 bg-slate-100"><img src="${p}" class="w-full h-full object-cover"></div>`;
                     });
                     dynamicTopContent += '</div>';
                 } else {
                     dynamicTopContent = '<div class="h-32 rounded-xl border-2 border-dashed border-gray-200 flex items-center justify-center text-xs text-gray-400 mb-3 bg-slate-50"><i class="fa-solid fa-images mr-2"></i> Gallery Photos Preview Area</div>';
                 }
             } else if (postType === 'media') {
-                let activeVideo = videoUrl;
-                if (!activeVideo && localPreviewCache['video']) {
-                    activeVideo = localPreviewCache['video'];
-                }
-
+                let activeVideo = localPreviewCache.video;
                 if (activeVideo) {
-                    const cleanVideoPath = (activeVideo.startsWith('http') || activeVideo.startsWith('blob:') || activeVideo.startsWith('/')) ? activeVideo : `/${activeVideo}`;
-                    dynamicTopContent = `<div class="h-36 rounded-xl bg-slate-950 overflow-hidden flex items-center justify-center text-white text-xs mb-3 shadow-inner"><video src="${cleanVideoPath}" controls class="w-full h-full object-cover"></video></div>`;
+                    dynamicTopContent = `<div class="h-36 rounded-xl bg-slate-950 overflow-hidden flex items-center justify-center text-white text-xs mb-3 shadow-inner"><video src="${activeVideo}" controls class="w-full h-full object-cover"></video></div>`;
                 } else {
                     dynamicTopContent = '<div class="h-32 rounded-xl border-2 border-dashed border-gray-200 flex items-center justify-center text-xs text-gray-400 mb-3 bg-slate-50"><i class="fa-solid fa-video mr-2"></i> Video Player Preview Area</div>';
                 }
@@ -613,24 +608,32 @@
             const category = (document.getElementById('input-category').value.trim() || 'Legal Article').replace(/"/g, '\\"');
             const date = document.getElementById('input-date').value || new Date().toISOString().split('T')[0];
             const postType = document.querySelector('input[name="post-type"]:checked').value;
-            let gallery = (document.getElementById('input-gallery').value.trim());
-            if (gallery) {
-                gallery = gallery.split(',').map(s => {
-                    let p = s.trim();
-                    // Strip out blob URLs in the final markdown, keeping only proper file paths or http URLs
-                    if (p.startsWith('blob:')) return '';
-                    if (p && !p.startsWith('http') && !p.startsWith('data:image') && !p.startsWith('/')) p = '/' + p;
-                    return p;
-                }).filter(Boolean).join(', ');
-            }
-            let videoUrl = (document.getElementById('input-video-url').value.trim());
+            
+            // Clean author server paths for frontmatter
+            const authorRows = document.querySelectorAll('.author-row');
+            let names = [], photos = [];
+            authorRows.forEach((row) => {
+                const name = row.querySelector('.author-name-input').value.trim();
+                const photoInput = row.querySelector('.author-photo-input');
+                let photo = photoInput.getAttribute('data-server-path') || photoInput.value.trim();
+                
+                // Exclude raw local blob links from final markdown frontmatter
+                if (photo.startsWith('blob:')) photo = '';
+                
+                if (name) names.push(name);
+                if (photo) photos.push(photo);
+            });
+
+            const galleryInput = document.getElementById('input-gallery');
+            let gallery = galleryInput.getAttribute('data-server-paths') || galleryInput.value.trim();
+            if (gallery.startsWith('blob:')) gallery = '';
+
+            let videoEl = document.getElementById('input-video-url');
+            let videoUrl = videoEl ? (videoEl.getAttribute('data-server-path') || videoEl.value.trim()) : '';
             if (videoUrl.startsWith('blob:')) videoUrl = '';
-            if (videoUrl && !videoUrl.startsWith('http') && !videoUrl.startsWith('/')) {
-                videoUrl = '/' + videoUrl;
-            }
+
             const body = document.getElementById('input-body').value || '';
             const references = document.getElementById('input-references').value || '';
-            const { namesStr, photosStr } = collectAuthorData();
 
             let fullBody = body;
             if (references.trim()) {
@@ -642,8 +645,8 @@ title: "${title}"
 category: "${category}"
 date: "${date}"
 type: "${postType}"
-author: "${namesStr}"
-author_photo: "${photosStr}"
+author: "${names.join(', ')}"
+author_photo: "${photos.join(', ')}"
 gallery: "${gallery}"
 video: "${videoUrl}"
 ---
