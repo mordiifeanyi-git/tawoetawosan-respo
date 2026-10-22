@@ -24,7 +24,7 @@
             --text-slate: #334155; 
         }
         
-        body { font-family: 'Roboto', 'Raleway', Arial, Helvetica, sans-serif; background-color: var(--bg-offwhite); color: var(--text-slate); line-height: 1.6; overflow-x: hidden; }
+        body { font-family: 'Roboto', 'Raleway', Arial, Helvetica, sans-serif; background-color: var(--bg-offwhite); color: var(--text-slate); line-height: 1.6; }
         h1, h2, h3, h4, h5, h6 { font-family: 'Raleway', 'Roboto', Arial, Helvetica, sans-serif; color: #0F172A; }
 
         /* Section Fade & Slide Reveal Animation */
@@ -103,7 +103,7 @@
                 <a href="contact.html" class="nav-link text-sm text-gray-200 hover:text-white transition-colors font-medium">Contact</a>
             </nav>
 
-            <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="lg:hidden text-white focus:outline-none p-2">
+            <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="lg:hidden text-white focus:outline-none p-2 cursor-pointer">
                 <i class="fa-solid fa-bars text-xl"></i>
             </button>
         </div>
@@ -218,12 +218,12 @@
 <!-- Legal Modal Overlay System -->
 <div id="legal-modal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white text-slate-800 rounded-2xl max-w-2xl w-full max-h-[85vh] overflow-y-auto p-6 sm:p-8 shadow-2xl relative space-y-4">
-        <button onclick="closeLegalModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 text-lg font-bold w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center transition-colors">
+        <button onclick="closeLegalModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 text-lg font-bold w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center transition-colors cursor-pointer">
             <i class="fa-solid fa-xmark"></i>
         </button>
         <div id="modal-content" class="space-y-4 pt-2"></div>
         <div class="pt-4 border-t border-gray-100 text-right">
-            <button onclick="closeLegalModal()" class="px-5 py-2 rounded-lg bg-[#172554] text-white text-xs font-bold hover:bg-blue-900 transition-colors">Close</button>
+            <button onclick="closeLegalModal()" class="px-5 py-2 rounded-lg bg-[#172554] text-white text-xs font-bold hover:bg-blue-900 transition-colors cursor-pointer">Close</button>
         </div>
     </div>
 </div>
@@ -325,7 +325,6 @@
             document.getElementById('modal-meta').innerText = article.date;
             document.getElementById('modal-dynamic-category-heading').innerText = article.category;
             
-            // Parse and format footnote markers
             let formattedBody = article.bodyHtml.replace(/\^(\d+)/g, '<sup><a href="#ref-$1" class="text-blue-600 font-bold hover:underline">[$1]</a></sup>');
             
             let finalHtmlContent = formattedBody;
@@ -335,14 +334,13 @@
                         <h4>References &amp; Footnotes</h4>
                         <ol>`;
                 article.references.forEach((refLine, idx) => {
-                    finalHtmlContent += `<li id="ref-$` + `{(idx+1)}">${refLine}</li>`;
+                    finalHtmlContent += `<li id="ref-${idx+1}">${refLine}</li>`;
                 });
                 finalHtmlContent += `</ol></div>`;
             }
 
             document.getElementById('modal-body-text').innerHTML = finalHtmlContent;
 
-            // Populate Author Cards at the bottom with right alignment
             const gridContainer = document.getElementById('modal-author-profiles-grid');
             gridContainer.innerHTML = '';
 
@@ -350,7 +348,6 @@
             let photos = article.authorPhotos || [];
 
             const count = Math.max(names.length, photos.length);
-
             let authorHtml = `<span class="text-[10px] font-extrabold uppercase tracking-widest text-[#172554] font-['Raleway'] block w-full text-right mb-1">Written &amp; Published By</span>`;
 
             if (count > 0) {
@@ -550,13 +547,20 @@
                         galleryCard.className = 'bg-white border border-gray-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between group cursor-pointer relative hover:-translate-y-1';
                         galleryCard.onclick = () => openDynamicArticleModal(i);
 
+                        // Thumbnail preview for gallery
+                        let galleryThumbHtml = '';
+                        if (galleryPhotos.length > 0) {
+                            galleryThumbHtml = `<div class="h-36 rounded-xl overflow-hidden border border-gray-100 mb-3 bg-slate-100"><img src="${galleryPhotos[0]}" class="w-full h-full object-cover"></div>`;
+                        }
+
                         galleryCard.innerHTML = `
-                            <div class="space-y-4">
+                            <div class="space-y-3">
                                 <div class="flex items-center justify-between text-[10px] text-gray-500 font-semibold uppercase tracking-wider">
                                     <span class="px-3 py-1 rounded-full bg-blue-50 text-[#172554] font-semibold">${category}</span>
                                     <span>${formattedDate}</span>
                                 </div>
                                 <h3 class="text-lg font-bold text-[#0F172A] font-['Raleway']">${title}</h3>
+                                ${galleryThumbHtml}
                                 <p class="text-xs text-gray-600 leading-relaxed">${snippet}</p>
                             </div>
                             <div class="pt-5 mt-4 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-[#172554]">
@@ -578,7 +582,11 @@
 
                         let ytThumbUrl = '';
                         const ytMatch = videoUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/))([\w-]{11})/);
-                        if (ytMatch && ytMatch[1]) ytThumbUrl = `https://i.ytimg.com/vi/${ytMatch[1]}/hqdefault.jpg`;
+                        if (ytMatch && ytMatch[1]) {
+                            ytThumbUrl = `https://i.ytimg.com/vi/${ytMatch[1]}/hqdefault.jpg`;
+                        } else if (videoUrl && !videoUrl.startsWith('data:video')) {
+                            ytThumbUrl = 'https://placehold.co/600x400/0F172A/FFFFFF?text=Video+Recording';
+                        }
 
                         mediaCard.innerHTML = `
                             <div class="h-52 bg-slate-950 overflow-hidden relative group flex items-center justify-center">
