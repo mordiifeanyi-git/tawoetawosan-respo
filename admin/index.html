@@ -335,9 +335,12 @@
                     });
                     const data = await res.json();
                     if (res.ok) {
-                        document.getElementById('input-video-url').value = data.path;
+                        let finalPath = data.path;
+                        if (!finalPath.startsWith('/') && !finalPath.startsWith('http')) finalPath = '/' + finalPath;
+                        
+                        document.getElementById('input-video-url').value = finalPath;
                         updateLivePreview();
-                        alert('✅ Video uploaded successfully!');
+                        alert('✅ Video uploaded successfully from device!');
                     }
                 } catch (err) { console.error(err); }
             };
@@ -367,7 +370,11 @@
                                 body: JSON.stringify({ path: uploadPath, content: base64Content, message: `Upload gallery item` })
                             });
                             const data = await res.json();
-                            if (res.ok) currentPaths.push(data.path);
+                            if (res.ok) {
+                                let p = data.path;
+                                if (!p.startsWith('/') && !p.startsWith('http') && !p.startsWith('data:image')) p = '/' + p;
+                                currentPaths.push(p);
+                            }
                         } catch (err) { console.error(err); }
                         resolve();
                     };
@@ -377,7 +384,7 @@
 
             galleryInput.value = currentPaths.join(', ');
             updateLivePreview();
-            alert(`✅ Successfully uploaded ${files.length} gallery photo(s)!`);
+            alert(`✅ Successfully uploaded ${files.length} gallery photo(s) from device!`);
         }
 
         function addAuthorRow() {
