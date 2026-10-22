@@ -264,6 +264,9 @@
         const repoOwner = 'mordiifeanyi-git';
         const repoName = 'tawoetawosan-respo';
 
+        // Memory cache to keep local device blobs/previews active permanently in the UI
+        const localPreviewCache = {};
+
         document.addEventListener('DOMContentLoaded', () => {
             if (sessionStorage.getItem('firm_admin_auth') === 'true') {
                 unlockDashboard();
@@ -322,6 +325,7 @@
             if (!file) return;
 
             const localBlobUrl = URL.createObjectURL(file);
+            localPreviewCache['video'] = localBlobUrl;
             document.getElementById('input-video-url').value = localBlobUrl;
             updateLivePreview();
 
@@ -342,9 +346,8 @@
                         let finalPath = data.path;
                         if (!finalPath.startsWith('/') && !finalPath.startsWith('http')) finalPath = '/' + finalPath;
                         
+                        // Keep input pointing to the server path for the markdown, but maintain the blob in cache so preview never blinks out
                         document.getElementById('input-video-url').value = finalPath;
-                        updateLivePreview();
-                        alert('✅ Video uploaded successfully from device!');
                     }
                 } catch (err) { console.error(err); }
             };
@@ -358,9 +361,12 @@
             const galleryInput = document.getElementById('input-gallery');
             let currentPaths = galleryInput.value ? galleryInput.value.split(',').map(s => s.trim()).filter(Boolean) : [];
 
+            if (!localPreviewCache['gallery']) localPreviewCache['gallery'] = [];
+
             for (let i = 0; i < files.length; i++) {
                 const file = files[i];
                 const localBlobUrl = URL.createObjectURL(file);
+                localPreviewCache['gallery'].push(localBlobUrl);
                 currentPaths.push(localBlobUrl);
                 galleryInput.value = currentPaths.join(', ');
                 updateLivePreview();
@@ -385,7 +391,6 @@
                                 const idx = currentPaths.indexOf(localBlobUrl);
                                 if (idx !== -1) currentPaths[idx] = p;
                                 galleryInput.value = currentPaths.join(', ');
-                                updateLivePreview();
                             }
                         } catch (err) { console.error(err); }
                         resolve();
@@ -393,7 +398,6 @@
                     reader.readAsDataURL(file);
                 });
             }
-            alert(`✅ Successfully loaded ${files.length} gallery photo(s) from device!`);
         }
 
         function addAuthorRow() {
@@ -464,7 +468,6 @@
                         let finalPath = data.path;
                         if (!finalPath.startsWith('/') && !finalPath.startsWith('http')) finalPath = '/' + finalPath;
                         photoUrlInput.value = finalPath;
-                        updateLivePreview();
                     }
                 } catch (err) { console.error(err); }
             };
@@ -538,7 +541,7 @@
                     authorsHtml += `
                         <div class="flex flex-col items-center space-y-1 text-center">
                             <div class="w-12 h-12 rounded-xl border border-gray-200 overflow-hidden bg-white shrink-0 shadow-sm">
-                                <img src="${img}" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='https://placehold.co/100x100/172554/FFFFFF?text=SAN';">
+                                <img src="${img}" class="w-full h-full object-cover">
                             </div>
                             <span class="text-[9px] font-extrabold text-[#0F172A] font-['Raleway'] max-w-[90px] leading-tight block truncate">${name}</span>
                         </div>`;
@@ -562,6 +565,11 @@
 
             if (postType === 'gallery') {
                 let photos = galleryStr ? galleryStr.split(',').map(s => s.trim()).filter(Boolean) : [];
+                // Fall back to cached local blobs if input paths got overwritten by server response
+                if (photos.length === 0 && localPreviewCache['gallery'] && localPreviewCache['gallery'].length > 0) {
+                    photos = localPreviewCache['gallery'];
+                }
+                
                 if (photos.length > 0) {
                     dynamicTopContent = '<div class="grid grid-cols-2 gap-2 mb-3">';
                     photos.slice(0, 4).forEach(p => {
@@ -573,8 +581,13 @@
                     dynamicTopContent = '<div class="h-32 rounded-xl border-2 border-dashed border-gray-200 flex items-center justify-center text-xs text-gray-400 mb-3 bg-slate-50"><i class="fa-solid fa-images mr-2"></i> Gallery Photos Preview Area</div>';
                 }
             } else if (postType === 'media') {
-                if (videoUrl) {
-                    const cleanVideoPath = (videoUrl.startsWith('http') || videoUrl.startsWith('blob:') || videoUrl.startsWith('/')) ? videoUrl : `/${videoUrl}`;
+                let activeVideo = videoUrl;
+                if (!activeVideo && localPreviewCache['video']) {
+                    activeVideo = localPreviewCache['video'];
+                }
+
+                if (activeVideo) {
+                    const cleanVideoPath = (activeVideo.startsWith('http') || activeVideo.startsWith('blob:') || activeVideo.startsWith('/')) ? activeVideo : `/${activeVideo}`;
                     dynamicTopContent = `<div class="h-36 rounded-xl bg-slate-950 overflow-hidden flex items-center justify-center text-white text-xs mb-3 shadow-inner"><video src="${cleanVideoPath}" controls class="w-full h-full object-cover"></video></div>`;
                 } else {
                     dynamicTopContent = '<div class="h-32 rounded-xl border-2 border-dashed border-gray-200 flex items-center justify-center text-xs text-gray-400 mb-3 bg-slate-50"><i class="fa-solid fa-video mr-2"></i> Video Player Preview Area</div>';
@@ -604,12 +617,15 @@
             if (gallery) {
                 gallery = gallery.split(',').map(s => {
                     let p = s.trim();
-                    if (p && !p.startsWith('http') && !p.startsWith('data:image') && !p.startsWith('blob:') && !p.startsWith('/')) p = '/' + p;
+                    // Strip out blob URLs in the final markdown, keeping only proper file paths or http URLs
+                    if (p.startsWith('blob:')) return '';
+                    if (p && !p.startsWith('http') && !p.startsWith('data:image') && !p.startsWith('/')) p = '/' + p;
                     return p;
-                }).join(', ');
+                }).filter(Boolean).join(', ');
             }
             let videoUrl = (document.getElementById('input-video-url').value.trim());
-            if (videoUrl && !videoUrl.startsWith('http') && !videoUrl.startsWith('blob:') && !videoUrl.startsWith('/')) {
+            if (videoUrl.startsWith('blob:')) videoUrl = '';
+            if (videoUrl && !videoUrl.startsWith('http') && !videoUrl.startsWith('/')) {
                 videoUrl = '/' + videoUrl;
             }
             const body = document.getElementById('input-body').value || '';
