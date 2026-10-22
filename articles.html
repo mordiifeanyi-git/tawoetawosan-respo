@@ -82,7 +82,7 @@
 </head>
 <body class="antialiased selection:bg-blue-500 selection:text-white min-h-screen flex flex-col">
 
-    <!-- Navigation Bar with Scroll Fade Effect -->
+    <!-- Navigation Bar -->
     <header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-transparent py-3 px-6 md:px-12">
         <div class="max-w-7xl mx-auto flex items-center justify-between">
             <a href="index.html" class="flex items-center space-x-3 group">
@@ -266,11 +266,10 @@
                     <div id="modal-meta" class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Date</div>
                 </div>
 
-                <!-- FEATURED COVER IMAGE BANNER -->
-                <div id="modal-media-wrapper" class="space-y-3 pt-1"></div>
-
                 <!-- WRITE-UP BODY -->
                 <div id="modal-body-text" class="space-y-2.5 text-gray-600 leading-relaxed font-sans pt-1"></div>
+
+                <div id="modal-media-wrapper" class="space-y-3 pt-2"></div>
 
                 <div id="modal-video-container" class="space-y-2 border-t border-gray-100 pt-3 hidden">
                     <span class="text-[11px] font-bold text-[#0F172A] uppercase tracking-wider block font-['Raleway']"><i class="fa-solid fa-circle-play text-[#172554] mr-1"></i> Video Recording</span>
@@ -299,21 +298,6 @@
     <script>
         let dynamicArticlesMap = [];
 
-        // Header Fade Scroll Function Restored
-        window.addEventListener('scroll', function() {
-            const navbar = document.getElementById('navbar');
-            const brandTitle = document.getElementById('nav-brand-title');
-            if (window.scrollY > 40) {
-                navbar.classList.add('bg-[#172554]', 'shadow-lg', 'py-3');
-                navbar.classList.remove('bg-transparent', 'py-5');
-                if (brandTitle) brandTitle.classList.remove('text-white');
-            } else {
-                navbar.classList.remove('bg-[#172554]', 'shadow-lg', 'py-3');
-                navbar.classList.add('bg-transparent', 'py-5');
-                if (brandTitle) brandTitle.classList.add('text-white');
-            }
-        });
-
         function renderVideoPlayerIntoBox(videoUrl, containerBoxId) {
             const container = document.getElementById(containerBoxId);
             if (!container || !videoUrl) return;
@@ -341,6 +325,7 @@
             document.getElementById('modal-meta').innerText = article.date;
             document.getElementById('modal-dynamic-category-heading').innerText = article.category;
             
+            // Parse and format footnote markers
             let formattedBody = article.bodyHtml.replace(/\^(\d+)/g, '<sup><a href="#ref-$1" class="text-blue-600 font-bold hover:underline">[$1]</a></sup>');
             
             let finalHtmlContent = formattedBody;
@@ -350,18 +335,20 @@
                         <h4>References &amp; Footnotes</h4>
                         <ol>`;
                 article.references.forEach((refLine, idx) => {
-                    finalHtmlContent += `<li id="ref-${idx+1}">${refLine}</li>`;
+                    finalHtmlContent += `<li id="ref-$` + `{(idx+1)}">${refLine}</li>`;
                 });
                 finalHtmlContent += `</ol></div>`;
             }
 
             document.getElementById('modal-body-text').innerHTML = finalHtmlContent;
 
+            // Populate Author Cards at the bottom with right alignment
             const gridContainer = document.getElementById('modal-author-profiles-grid');
             gridContainer.innerHTML = '';
 
             let names = article.authorNames ? article.authorNames.split(',').map(s => s.trim()).filter(Boolean) : [];
             let photos = article.authorPhotos || [];
+
             const count = Math.max(names.length, photos.length);
 
             let authorHtml = `<span class="text-[10px] font-extrabold uppercase tracking-widest text-[#172554] font-['Raleway'] block w-full text-right mb-1">Written &amp; Published By</span>`;
@@ -369,7 +356,7 @@
             if (count > 0) {
                 for (let i = 0; i < count; i++) {
                     const name = names[i] || 'Tawo E. Tawo, SAN & Co.';
-                    const photo = (photos[i] && photos[i].startsWith('data:image')) ? photos[i] : (photos[i] || '/WhatsApp Image 2026-10-08 at 13.10.32.jpeg');
+                    const photo = photos[i] || '/WhatsApp Image 2026-10-08 at 13.10.32.jpeg';
 
                     authorHtml += `
                         <div class="flex flex-col items-end text-right w-full space-y-1.5">
@@ -548,8 +535,7 @@
                     if (authorPhotos.length > 0) {
                         avatarBadgeHtml = '<div class="absolute bottom-4 right-4 flex items-center -space-x-3 z-10">';
                         authorPhotos.slice(0, 3).forEach((av) => {
-                            const photoSrc = (av && av.startsWith('data:image')) ? av : (av || '/WhatsApp Image 2026-10-08 at 13.10.32.jpeg');
-                            avatarBadgeHtml += `<div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl border-2 border-white shadow-lg overflow-hidden bg-white shrink-0"><img src="${photoSrc}" class="w-full h-full object-cover" alt="Author Photo"></div>`;
+                            avatarBadgeHtml += `<div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl border-2 border-white shadow-lg overflow-hidden bg-white shrink-0"><img src="${av}" class="w-full h-full object-cover" alt="Author Photo"></div>`;
                         });
                         avatarBadgeHtml += '</div>';
                     }
