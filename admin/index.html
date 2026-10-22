@@ -610,7 +610,7 @@ ${fullBody}`;
                     const row = document.createElement('div');
                     row.className = 'py-3.5 flex items-center justify-between gap-4';
                     row.innerHTML = `<div class="min-w-0"><h4 class="text-xs font-bold text-[#0F172A] truncate">${file.name}</h4></div><button onclick="deleteArticle('${file.name}')" class="px-3 py-1.5 rounded-lg bg-red-50 text-red-600 text-xs font-bold cursor-pointer"><i class="fa-solid fa-trash-can"></i> Delete</button>`;
-                    container.appendChild(row);
+                    container.appendChild(row);  
                 });
             } catch (err) { container.innerHTML = '<p class="text-xs text-red-500 py-4 text-center">Failed to load files.</p>'; }
         }
