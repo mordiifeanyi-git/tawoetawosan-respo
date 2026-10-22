@@ -5,13 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us & Case Results | TAWO E. TAWO, SAN & CO.</title>
 
-    <!-- Standard SEO Meta Tags -->
     <meta name="title" content="Tawo E. Tawo, SAN & Co. | Legal Practitioners & Arbitrators">  
     <meta name="description" content="Tawo E. Tawo, SAN & Co. is a premier firm of Legal Practitioners, consultants, Notary Public and Arbitrators incorporated on April 13, 1989.">
     <meta name="robots" content="index, follow">
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Tawo E. Tawo, SAN & Co. | Legal Practitioners & Arbitrators">
-    <meta property="og:description" content="Premier Nigerian law firm providing optimum professionalism, international best practices, and proven trial victories.">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -26,7 +22,6 @@
         body { font-family: 'Roboto', 'Raleway', Arial, Helvetica, sans-serif; background-color: var(--bg-offwhite); color: var(--text-slate); line-height: 1.7; overflow-x: hidden; }
         h1, h2, h3, h4, h5, h6 { font-family: 'Raleway', 'Roboto', Arial, Helvetica, sans-serif; color: #0F172A; }
 
-        /* Hide Scrollbars cleanly */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
@@ -193,17 +188,17 @@
         </div>
     </section>
 
-    <!-- CLEAN HORIZONTAL SNAP CAROUSEL: Case Results Section -->
+    <!-- SMOOTH AUTO-SCROLL CAROUSEL WITH SIDE PEEK -->
     <section class="py-16 px-6 md:px-12 max-w-7xl mx-auto space-y-8 border-t border-gray-200 overflow-hidden">
         <div class="text-center max-w-3xl mx-auto space-y-2">
             <h2 class="text-2xl sm:text-3xl font-extrabold text-[#0F172A] font-['Raleway']">Real Results. Real Victories.</h2>
         </div>
 
-        <!-- Horizontal Snap Container with exact fixed card widths to prevent overlap -->
-        <div class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-6 py-6 px-4 md:px-12">
+        <!-- Case Results Carousel Track -->
+        <div id="cases-track" class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-6 py-6 px-[15vw] sm:px-[30vw] scroll-smooth">
             
             <!-- Card 1 -->
-            <div class="bg-[#172554] text-white rounded-2xl p-8 shadow-xl flex flex-col justify-between border border-blue-900/30 min-w-[320px] max-w-[320px] snap-center shrink-0">
+            <div class="bg-[#172554] text-white rounded-2xl p-8 shadow-xl flex flex-col justify-between border border-blue-900/30 min-w-[300px] max-w-[300px] snap-center shrink-0">
                 <div>
                     <div class="text-blue-300 text-xs font-bold tracking-widest uppercase mb-2">Intellectual Property</div>
                     <div class="text-2xl sm:text-3xl font-extrabold text-white mb-4 font-['Raleway']">₦45 Million</div>
@@ -213,7 +208,7 @@
             </div>
 
             <!-- Card 2 -->
-            <div class="bg-[#172554] text-white rounded-2xl p-8 shadow-xl flex flex-col justify-between border border-blue-900/30 min-w-[320px] max-w-[320px] snap-center shrink-0">
+            <div class="bg-[#172554] text-white rounded-2xl p-8 shadow-xl flex flex-col justify-between border border-blue-900/30 min-w-[300px] max-w-[300px] snap-center shrink-0">
                 <div>
                     <div class="text-blue-300 text-xs font-bold tracking-widest uppercase mb-2">White-Collar Defense</div>
                     <div class="text-2xl sm:text-3xl font-extrabold text-white mb-4 font-['Raleway']">Full Acquittal</div>
@@ -223,7 +218,7 @@
             </div>
 
             <!-- Card 3 -->
-            <div class="bg-[#172554] text-white rounded-2xl p-8 shadow-xl flex flex-col justify-between border border-blue-900/30 min-w-[320px] max-w-[320px] snap-center shrink-0">
+            <div class="bg-[#172554] text-white rounded-2xl p-8 shadow-xl flex flex-col justify-between border border-blue-900/30 min-w-[300px] max-w-[300px] snap-center shrink-0">
                 <div>
                     <div class="text-blue-300 text-xs font-bold tracking-widest uppercase mb-2">Corporate Mergers</div>
                     <div class="text-2xl sm:text-3xl font-extrabold text-white mb-4 font-['Raleway']">₦120 Million</div>
@@ -233,7 +228,7 @@
             </div>
 
             <!-- Card 4 -->
-            <div class="bg-[#172554] text-white rounded-2xl p-8 shadow-xl flex flex-col justify-between border border-blue-900/30 min-w-[320px] max-w-[320px] snap-center shrink-0">
+            <div class="bg-[#172554] text-white rounded-2xl p-8 shadow-xl flex flex-col justify-between border border-blue-900/30 min-w-[300px] max-w-[300px] snap-center shrink-0">
                 <div>
                     <div class="text-blue-300 text-xs font-bold tracking-widest uppercase mb-2">Supreme Court Precedent</div>
                     <div class="text-2xl sm:text-3xl font-extrabold text-white mb-4 font-['Raleway']">Landmark Ruling</div>
@@ -243,7 +238,7 @@
             </div>
 
             <!-- Card 5 -->
-            <div class="bg-[#172554] text-white rounded-2xl p-8 shadow-xl flex flex-col justify-between border border-blue-900/30 min-w-[320px] max-w-[320px] snap-center shrink-0">
+            <div class="bg-[#172554] text-white rounded-2xl p-8 shadow-xl flex flex-col justify-between border border-blue-900/30 min-w-[300px] max-w-[300px] snap-center shrink-0">
                 <div>
                     <div class="text-blue-300 text-xs font-bold tracking-widest uppercase mb-2">Arbitration &amp; Maritime</div>
                     <div class="text-2xl sm:text-3xl font-extrabold text-white mb-4 font-['Raleway']">$15 Million</div>
@@ -254,13 +249,13 @@
 
         </div>
 
-        <!-- TESTIMONIALS SNAP CAROUSEL -->
-        <div class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-6 py-6 px-4 md:px-12 max-w-4xl mx-auto">
+        <!-- Testimonials Carousel Track -->
+        <div id="testimonials-track" class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-6 py-6 px-[10vw] sm:px-[25vw] max-w-5xl mx-auto scroll-smooth">
             
             <!-- Testimonial 1 -->
-            <div class="bg-white border border-blue-200/60 rounded-3xl p-8 sm:p-10 shadow-md min-w-[320px] sm:min-w-[550px] max-w-[550px] snap-center shrink-0 flex flex-col justify-between space-y-6">
+            <div class="bg-white border border-blue-200/60 rounded-3xl p-8 sm:p-10 shadow-md min-w-[300px] sm:min-w-[500px] max-w-[500px] snap-center shrink-0 flex flex-col justify-between space-y-6">
                 <p class="text-sm sm:text-base italic text-[#0F172A] font-['Raleway'] leading-relaxed">
-                    "Tawo E. Tawo, SAN & Co. is distinguished not only by its competence in litigation but also by its considerable expertise in Alternative Dispute Resolution (ADR). The firm has consistently demonstrated commendable legal acumen, strategic insight, and proficiency in resolving complex disputes through appropriate dispute resolution mechanisms. Its professional legal services and effective dispute resolution interventions have been invaluable to the Nigerian Law Reform Commission on several occasions."
+                    "Tawo E. Tawo, SAN & Co. is distinguished not only by its competence in litigation but also by its considerable expertise in Alternative Dispute Resolution (ADR). The firm has consistently demonstrated commendable legal acumen, strategic insight, and proficiency in resolving complex disputes through appropriate dispute resolution mechanisms."
                 </p>
                 <div>
                     <h4 class="font-bold text-[#0F172A] font-['Raleway'] text-sm">Joy Omena Akpojiyovwi Esq.</h4>
@@ -269,9 +264,9 @@
             </div>
 
             <!-- Testimonial 2 -->
-            <div class="bg-white border border-blue-200/60 rounded-3xl p-8 sm:p-10 shadow-md min-w-[320px] sm:min-w-[550px] max-w-[550px] snap-center shrink-0 flex flex-col justify-between space-y-6">
+            <div class="bg-white border border-blue-200/60 rounded-3xl p-8 sm:p-10 shadow-md min-w-[300px] sm:min-w-[500px] max-w-[500px] snap-center shrink-0 flex flex-col justify-between space-y-6">
                 <p class="text-sm sm:text-base italic text-[#0F172A] font-['Raleway'] leading-relaxed">
-                    "The depth of corporate advisory and prompt responsiveness provided by Tawo E. Tawo, SAN & Co. during our restructuring phase was exemplary. Their rigorous intellect and meticulous attention to regulatory compliance safeguarded our enterprise against potential liabilities. They remain our trusted counsel for high-stakes matters."
+                    "The depth of corporate advisory and prompt responsiveness provided by Tawo E. Tawo, SAN & Co. during our restructuring phase was exemplary. Their rigorous intellect and meticulous attention to regulatory compliance safeguarded our enterprise against potential liabilities."
                 </p>
                 <div>
                     <h4 class="font-bold text-[#0F172A] font-['Raleway'] text-sm">Managing Director</h4>
@@ -326,11 +321,56 @@
         </div>
     </footer>
 
-    <!-- Interactive Script for Mobile Menu -->
+    <!-- Lag-Free Auto-Scroll + CSS Snap Side-Peek Engine -->
     <script>
         function toggleMobileMenu() { 
             document.getElementById('mobile-menu').classList.toggle('hidden'); 
         }
+
+        function initAutoScroll(trackId, intervalMs) {
+            const track = document.getElementById(trackId);
+            if (!track) return;
+
+            let timer = null;
+            let userInteracting = false;
+
+            function autoScrollStep() {
+                if (userInteracting) return;
+
+                const cardWidth = track.querySelector('div').offsetWidth + 24; // card + gap
+                const maxScroll = track.scrollWidth - track.clientWidth;
+
+                if (track.scrollLeft >= maxScroll - 10) {
+                    track.scrollTo({ left: 0, behavior: 'smooth' });
+                } else {
+                    track.scrollBy({ left: cardWidth, behavior: 'smooth' });
+                }
+            }
+
+            function start() {
+                stop();
+                timer = setInterval(autoScrollStep, intervalMs);
+            }
+
+            function stop() {
+                if (timer) clearInterval(timer);
+            }
+
+            // Pause auto-scroll instantly when user touches or trackpad-scrolls
+            track.addEventListener('pointerdown', () => { userInteracting = true; });
+            track.addEventListener('wheel', () => { 
+                userInteracting = true;
+                clearTimeout(window._resumeTimeout);
+                window._resumeTimeout = setTimeout(() => { userInteracting = false; }, 4000);
+            }, { passive: true });
+
+            start();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initAutoScroll('cases-track', 4500);
+            initAutoScroll('testimonials-track', 6500);
+        });
 
         // Navbar Scroll Handler
         window.addEventListener('scroll', function() {
