@@ -266,10 +266,11 @@
                     <div id="modal-meta" class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Date</div>
                 </div>
 
+                <!-- FEATURED COVER IMAGE BANNER -->
+                <div id="modal-media-wrapper" class="space-y-3 pt-1"></div>
+
                 <!-- WRITE-UP BODY -->
                 <div id="modal-body-text" class="space-y-2.5 text-gray-600 leading-relaxed font-sans pt-1"></div>
-
-                <div id="modal-media-wrapper" class="space-y-3 pt-2"></div>
 
                 <div id="modal-video-container" class="space-y-2 border-t border-gray-100 pt-3 hidden">
                     <span class="text-[11px] font-bold text-[#0F172A] uppercase tracking-wider block font-['Raleway']"><i class="fa-solid fa-circle-play text-[#172554] mr-1"></i> Video Recording</span>
@@ -335,7 +336,7 @@
                         <h4>References &amp; Footnotes</h4>
                         <ol>`;
                 article.references.forEach((refLine, idx) => {
-                    finalHtmlContent += `<li id="ref-$` + `{(idx+1)}">${refLine}</li>`;
+                    finalHtmlContent += `<li id="ref-${idx+1}">${refLine}</li>`;
                 });
                 finalHtmlContent += `</ol></div>`;
             }
@@ -490,7 +491,7 @@
                                 else if (key === 'date') date = val;
                                 else if (key === 'type') postType = val.toLowerCase().trim();
                                 else if (key === 'video') videoUrl = val;
-                                else if (key === 'image') imageUrl = val;
+                                else if (key === 'image') imageUrl = val; // Captures featured image key
                                 else if (key === 'gallery') galleryStr = val;
                                 else if (key === 'author') authorNameStr = val;
                                 else if (key === 'author_photo') authorPhotoStr = val;

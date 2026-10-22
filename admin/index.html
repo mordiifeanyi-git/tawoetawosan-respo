@@ -148,6 +148,17 @@
                                 <input type="date" id="input-date" oninput="updateLivePreview()" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#172554] text-xs font-semibold text-slate-800 bg-slate-50/50" />
                             </div>
 
+                            <!-- FEATURED / COVER IMAGE UPLOAD FIELD -->
+                            <div class="space-y-1.5 pt-2 border-t border-gray-100">
+                                <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider font-['Raleway']">
+                                    <i class="fa-solid fa-image text-[#172554] mr-1"></i> Featured / Cover Image
+                                </label>
+                                <div class="space-y-2">
+                                    <input type="file" accept="image/*" onchange="handleFeaturedImageUpload(event)" class="w-full px-3 py-2 rounded-xl border border-gray-200 text-xs text-slate-600 bg-slate-50/50 file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-[10px] file:font-bold file:bg-[#172554] file:text-white cursor-pointer" />
+                                    <input type="text" id="input-image" placeholder="Or paste image URL / path..." oninput="updateLivePreview()" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-xs text-slate-800 bg-slate-50/50 focus:outline-none" />
+                                </div>
+                            </div>
+
                             <!-- AUTHOR REPEATER SECTION -->
                             <div class="space-y-3 pt-3 border-t border-gray-200">
                                 <div class="flex items-center justify-between">
@@ -315,6 +326,33 @@
                 btnCms.className = "px-3 sm:px-4 py-2 rounded-lg bg-[#172554] text-white shadow transition-all flex items-center cursor-pointer";
                 btnWb.className = "px-3 sm:px-4 py-2 rounded-lg text-blue-200 hover:text-white hover:bg-white/10 transition-all flex items-center cursor-pointer";
             }
+        }
+
+        async function handleFeaturedImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = async function(e) {
+                const base64Content = e.target.result.split(',')[1];
+                const cleanFilename = `${Date.now()}-${file.name.toLowerCase().replace(/[^a-z0-9.]+/g, '-')}`;
+                const uploadPath = `media/${cleanFilename}`;
+
+                try {
+                    const res = await fetch('/api/upload-media', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ path: uploadPath, content: base64Content, message: `Upload featured image` })
+                    });
+                    const data = await res.json();
+                    if (res.ok) {
+                        document.getElementById('input-image').value = data.path;
+                        updateLivePreview();
+                        alert('✅ Featured image uploaded successfully!');
+                    }
+                } catch (err) { console.error(err); }
+            };
+            reader.readAsDataURL(file);
         }
 
         async function handleLocalVideoUpload(event) {
@@ -492,6 +530,7 @@
             const title = document.getElementById('input-title').value || 'Type title...';
             const category = document.getElementById('input-category').value || 'Legal Article';
             const dateVal = document.getElementById('input-date').value;
+            const imageUrl = document.getElementById('input-image').value.trim();
             let body = document.getElementById('input-body').value || 'Type summary or body...';
             const references = document.getElementById('input-references').value.trim();
             const { pairs, namesStr } = collectAuthorData();
@@ -500,6 +539,11 @@
             const renderArea = document.getElementById('live-preview-render-area');
 
             body = body.replace(/\^(\d+)/g, '<sup><a href="#ref-$1" class="text-blue-600 font-bold hover:underline">[$1]</a></sup>');
+
+            let imageHtml = '';
+            if (imageUrl) {
+                imageHtml = `<div class="w-full h-48 rounded-xl overflow-hidden border border-gray-200 bg-slate-100 mb-3"><img src="${imageUrl}" class="w-full h-full object-cover"></div>`;
+            }
 
             let authorsHtml = '';
             if (pairs.length > 0 && pairs.some(p => p.name || p.photo)) {
@@ -537,6 +581,7 @@
                         <span>${formattedDate}</span>
                     </div>
                     <h3 class="text-lg font-extrabold text-[#0F172A] font-['Raleway'] leading-snug">${title}</h3>
+                    ${imageHtml}
                     <div class="text-xs text-gray-600 leading-relaxed space-y-2">${body.replace(/\n/g, '<br>')}</div>
                     ${refsHtml}
                     ${authorsHtml}
@@ -548,6 +593,7 @@
             const category = (document.getElementById('input-category').value.trim() || 'Legal Article').replace(/"/g, '\\"');
             const date = document.getElementById('input-date').value || new Date().toISOString().split('T')[0];
             const postType = document.querySelector('input[name="post-type"]:checked').value;
+            const imageUrl = (document.getElementById('input-image').value.trim()).replace(/"/g, '\\"');
             const gallery = (document.getElementById('input-gallery').value.trim()).replace(/"/g, '\\"');
             const videoUrl = (document.getElementById('input-video-url').value.trim()).replace(/"/g, '\\"');
             const body = document.getElementById('input-body').value || '';
@@ -566,6 +612,7 @@ date: "${date}"
 type: "${postType}"
 author: "${namesStr}"
 author_photo: "${photosStr}"
+image: "${imageUrl}"
 gallery: "${gallery}"
 video: "${videoUrl}"
 ---
