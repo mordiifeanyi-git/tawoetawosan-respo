@@ -118,7 +118,7 @@
                                 <div class="space-y-2">
                                     <label class="flex items-center space-x-2.5 text-xs font-semibold text-slate-800 cursor-pointer">
                                         <input type="radio" name="post-type" value="article" checked class="w-4 h-4 text-[#172554] focus:ring-[#172554]" onchange="updateFormVisibility()">
-                                        <span>Written Article (<code class="text-blue-600">article.html</code>)</span>
+                                        <span>Written Article (<code class="text-blue-600">articles.html</code>)</span>
                                     </label>
                                     <label class="flex items-center space-x-2.5 text-xs font-semibold text-slate-800 cursor-pointer">
                                         <input type="radio" name="post-type" value="media" class="w-4 h-4 text-[#172554] focus:ring-[#172554]" onchange="updateFormVisibility()">
@@ -135,6 +135,12 @@
                             <div>
                                 <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1 font-['Raleway']">Article Title</label>
                                 <input type="text" id="input-title" placeholder="Type title..." oninput="updateLivePreview()" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#172554] text-xs font-semibold text-slate-800 bg-slate-50/50" />
+                            </div>
+
+                            <!-- Practice Area / Type of Law -->
+                            <div>
+                                <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1 font-['Raleway']">Practice Area / Type of Law</label>
+                                <input type="text" id="input-category" placeholder="e.g. Labour and Employment Law" oninput="updateLivePreview()" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#172554] text-xs font-semibold text-slate-800 bg-slate-50/50" />
                             </div>
 
                             <div>
@@ -484,18 +490,15 @@
 
         function updateLivePreview() {
             const title = document.getElementById('input-title').value || 'Type title...';
+            const category = document.getElementById('input-category').value || 'Legal Article';
             const dateVal = document.getElementById('input-date').value;
             let body = document.getElementById('input-body').value || 'Type summary or body...';
             const references = document.getElementById('input-references').value.trim();
-            const postType = document.querySelector('input[name="post-type"]:checked').value;
-            const galleryStr = document.getElementById('input-gallery').value || '';
-            const videoUrl = document.getElementById('input-video-url').value || '';
             const { pairs, namesStr } = collectAuthorData();
 
             let formattedDate = dateVal ? new Date(dateVal).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase() : 'DATE';
             const renderArea = document.getElementById('live-preview-render-area');
 
-            // Parse ^1 into superscript link tags for preview
             body = body.replace(/\^(\d+)/g, '<sup><a href="#ref-$1" class="text-blue-600 font-bold hover:underline">[$1]</a></sup>');
 
             let authorsHtml = '';
@@ -530,7 +533,7 @@
             renderArea.innerHTML = `
                 <article class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm space-y-4">
                     <div class="flex items-center justify-between text-xs text-gray-500 font-medium">
-                        <span class="px-3 py-1 rounded-full bg-blue-50 text-[#172554] font-semibold">Legal Article</span>
+                        <span class="px-3 py-1 rounded-full bg-blue-50 text-[#172554] font-semibold">${category}</span>
                         <span>${formattedDate}</span>
                     </div>
                     <h3 class="text-lg font-extrabold text-[#0F172A] font-['Raleway'] leading-snug">${title}</h3>
@@ -542,6 +545,7 @@
 
         function generateMarkdownString() {
             const title = (document.getElementById('input-title').value.trim() || 'Untitled Publication').replace(/"/g, '\\"');
+            const category = (document.getElementById('input-category').value.trim() || 'Legal Article').replace(/"/g, '\\"');
             const date = document.getElementById('input-date').value || new Date().toISOString().split('T')[0];
             const postType = document.querySelector('input[name="post-type"]:checked').value;
             const gallery = (document.getElementById('input-gallery').value.trim()).replace(/"/g, '\\"');
@@ -557,6 +561,7 @@
 
             return `---
 title: "${title}"
+category: "${category}"
 date: "${date}"
 type: "${postType}"
 author: "${namesStr}"
@@ -586,7 +591,7 @@ ${fullBody}`;
                     body: JSON.stringify({ title, body })
                 });
                 if (res.ok) {
-                    alert('🎉 Article published successfully with references!');
+                    alert('🎉 Article published successfully with category and references!');
                     loadAdminArticlesList();
                 } else { alert('Error publishing.'); }
             } catch (err) { alert('Failed to connect.'); }

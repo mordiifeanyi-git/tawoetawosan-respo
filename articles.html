@@ -322,7 +322,7 @@
             if (!article) return;
 
             document.getElementById('modal-title').innerText = article.title;
-            document.getElementById('modal-meta').innerText = `PUBLISHED • ${article.date}`;
+            document.getElementById('modal-meta').innerText = `${article.category.toUpperCase()} • ${article.date}`;
             
             // Populate SPACIOUS UN-CRAMPED Author Cards Inside Modal
             const gridContainer = document.getElementById('modal-author-profiles-grid');
@@ -460,6 +460,7 @@
                     const content = await rawResponse.text();
 
                     let title = 'Untitled Publication';
+                    let category = 'Legal Article';
                     let date = '';
                     let postType = 'article'; 
                     let videoUrl = '';
@@ -478,6 +479,7 @@
                                 const val = line.substring(colonIndex + 1).trim().replace(/^["']|["']$/g, '');
 
                                 if (key === 'title') title = val;
+                                else if (key === 'category') category = val;
                                 else if (key === 'date') date = val;
                                 else if (key === 'type') postType = val.toLowerCase().trim();
                                 else if (key === 'video') videoUrl = val;
@@ -509,6 +511,7 @@
                     const articleObj = {
                         id: i,
                         title: title,
+                        category: category,
                         date: formattedDate,
                         imageUrl: imageUrl,
                         gallery: galleryPhotos,
@@ -542,7 +545,7 @@
                         galleryCard.innerHTML = `
                             <div class="space-y-4">
                                 <div class="flex items-center justify-between text-[10px] text-gray-500 font-semibold uppercase tracking-wider">
-                                    <span class="px-3 py-1 rounded-full bg-blue-50 text-[#172554] font-semibold">Photo Gallery</span>
+                                    <span class="px-3 py-1 rounded-full bg-blue-50 text-[#172554] font-semibold">${category}</span>
                                     <span>${formattedDate}</span>
                                 </div>
                                 <h3 class="text-lg font-bold text-[#0F172A] font-['Raleway']">${title}</h3>
@@ -578,7 +581,7 @@
                             </div>
                             <div class="p-6 space-y-2">
                                 <div class="flex items-center justify-between text-[10px] text-gray-500 font-semibold uppercase tracking-wider">
-                                    <span class="px-3 py-1 rounded-full bg-blue-50 text-[#172554] font-semibold">Media Highlight</span>
+                                    <span class="px-3 py-1 rounded-full bg-blue-50 text-[#172554] font-semibold">${category}</span>
                                     <span>${formattedDate}</span>
                                 </div>
                                 <h3 class="text-base font-bold text-[#0F172A] font-['Raleway']">${title}</h3>
@@ -599,7 +602,7 @@
                         articleCard.innerHTML = `
                             <div class="p-6 sm:p-8 space-y-4">
                                 <div class="flex items-center justify-between text-xs text-gray-500 font-medium">
-                                    <span class="px-3 py-1 rounded-full bg-blue-50 text-[#172554] font-semibold">Legal Article</span>
+                                    <span class="px-3 py-1 rounded-full bg-blue-50 text-[#172554] font-semibold">${category}</span>
                                     <span>${formattedDate}</span>
                                 </div>
                                 <h3 class="text-lg font-extrabold text-[#0F172A] font-['Raleway'] hover:text-[#172554] transition-colors leading-snug">${title}</h3>
