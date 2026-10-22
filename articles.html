@@ -147,7 +147,7 @@
 
     </main>
 
- <!-- Sleek & Compact Micro-Footer with Integrated General Contacts -->
+<!-- Sleek & Compact Micro-Footer with Boxed General Contacts & Full Legal Modals -->
 <footer class="bg-[#172554] text-gray-300 text-xs border-t border-blue-900 py-8 px-6 md:px-12 mt-auto">
     <div class="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between items-center gap-6">
         
@@ -159,7 +159,7 @@
             <span class="font-bold text-white text-xs font-['Raleway'] tracking-wide">TAWO E. TAWO, SAN & CO.</span>
         </div>
 
-        <!-- General Contacts Summary Hub -->
+        <!-- General Contacts Summary Hub (Original Boxed Style) -->
         <div class="bg-blue-950/60 border border-blue-900/80 rounded-xl px-5 py-2.5 text-center text-xs space-y-1 shadow-inner">
             <p class="font-bold text-blue-200 uppercase tracking-wider text-[10px] font-['Raleway']">General Enquiries &amp; Communications</p>
             <div class="flex flex-wrap justify-center items-center gap-x-4 gap-y-0.5 text-gray-200">
@@ -167,7 +167,7 @@
                 <span class="hidden sm:inline text-blue-400">|</span>
                 <span>Email: <strong class="text-white">tawoetawosanandco@gmail.com</strong></span>
                 <span class="hidden sm:inline text-blue-400">|</span>
-                <span> <strong class="text-white">tawoetawo@gmail.com</strong></span>
+                <span><strong class="text-white">tawoetawo@gmail.com</strong></span>
             </div>
         </div>
 
@@ -186,11 +186,95 @@
 
     </div>
     
-    <!-- Copyright Row -->
-    <div class="max-w-7xl mx-auto mt-4 pt-3 border-t border-blue-900/60 text-center text-[10px] text-blue-200">
-        &copy; 2026 Tawo E. Tawo SAN & Co. All Rights Reserved.
+    <!-- Copyright & Interactive Legal Links Row (Includes Cookies) -->
+    <div class="max-w-7xl mx-auto mt-4 pt-3 border-t border-blue-900/60 text-center text-[10px] text-blue-200 flex flex-col sm:flex-row items-center justify-between gap-2">
+        <span>&copy; 2026 Tawo E. Tawo SAN & Co. All Rights Reserved.</span>
+        <div class="flex flex-wrap justify-center items-center gap-x-2 text-[10px] text-gray-300">
+            <button onclick="openLegalModal('privacy')" class="hover:text-white transition-colors cursor-pointer bg-transparent border-none text-gray-300 text-[10px]">Privacy Policy</button>
+            <span>&bull;</span>
+            <button onclick="openLegalModal('terms')" class="hover:text-white transition-colors cursor-pointer bg-transparent border-none text-gray-300 text-[10px]">Terms of Use</button>
+            <span>&bull;</span>
+            <button onclick="openLegalModal('cookies')" class="hover:text-white transition-colors cursor-pointer bg-transparent border-none text-gray-300 text-[10px]">Cookies Policy</button>
+            <span>&bull;</span>
+            <button onclick="openLegalModal('disclaimer')" class="hover:text-white transition-colors cursor-pointer bg-transparent border-none text-gray-300 text-[10px]">Disclaimer</button>
+        </div>
     </div>
 </footer>
+
+<!-- Legal Modal Overlay System -->
+<div id="legal-modal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white text-slate-800 rounded-2xl max-w-2xl w-full max-h-[85vh] overflow-y-auto p-6 sm:p-8 shadow-2xl relative space-y-4">
+        <button onclick="closeLegalModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 text-lg font-bold w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center transition-colors">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <div id="modal-content" class="space-y-4 pt-2">
+            <!-- Content injected dynamically via script -->
+        </div>
+        <div class="pt-4 border-t border-gray-100 text-right">
+            <button onclick="closeLegalModal()" class="px-5 py-2 rounded-lg bg-[#172554] text-white text-xs font-bold hover:bg-blue-900 transition-colors">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Script Logic -->
+<script>
+    const legalTexts = {
+        privacy: {
+            title: "Privacy Policy",
+            content: `At Tawo E. Tawo, SAN & Co., we are committed to safeguarding the privacy and confidentiality of personal data entrusted to us by our clients, website visitors, and stakeholders. This policy outlines our practices in compliance with the Nigeria Data Protection Act (NDPA) and applicable regulations.<br><br>
+            <strong>1. Information Collection:</strong> We collect personal information (such as names, corporate emails, phone numbers, and transactional details) when voluntarily provided through consultation forms, direct communications, or professional engagements.<br><br>
+            <strong>2. Use of Information:</strong> Data collected is utilized strictly for the provision of legal services, corporate advisory, conflict checks, billing, regulatory compliance, and communication regarding legal updates.<br><br>
+            <strong>3. Data Security & Protection:</strong> We implement stringent administrative, technical, and physical security measures to protect personal data against unauthorized access, disclosure, alteration, or destruction.<br><br>
+            <strong>4. Third-Party Sharing:</strong> We do not trade, sell, or rent personal data. Information is only shared with authorized regulatory bodies, courts, or expert co-counsel where strictly required for the execution of our professional duties.`
+        },
+        terms: {
+            title: "Terms of Use",
+            content: `Welcome to the official website of Tawo E. Tawo, SAN & Co. By accessing or using this website, you agree to comply with and be bound by the following terms and conditions:<br><br>
+            <strong>1. No Legal Advice:</strong> The materials, articles, and insights published on this website are for general informational purposes only and do not constitute formal legal advice or opinion.<br><br>
+            <strong>2. Attorney-Client Relationship:</strong> Viewing this website, submitting an inquiry via our contact form, or emailing our partners does not establish an attorney-client relationship. A formal relationship is created only after an express retainer agreement has been executed by the firm.<br><br>
+            <strong>3. Intellectual Property:</strong> All content, logos, branding, graphics, and publications on this site are the intellectual property of Tawo E. Tawo, SAN & Co. Unauthorized reproduction, distribution, or commercial exploitation is strictly prohibited.`
+        },
+        cookies: {
+            title: "Cookies Policy",
+            content: `This website uses cookies and similar tracking technologies to enhance user experience, analyze site traffic, and understand how visitors interact with our platform.<br><br>
+            <strong>1. What Are Cookies:</strong> Cookies are small data files stored on your browser or device when you visit a website. They help the site remember your preferences and improve performance.<br><br>
+            <strong>2. How We Use Them:</strong> We utilize essential cookies required for core site functionality (such as navigation and responsive layouts) as well as analytical cookies to monitor aggregate traffic patterns.<br><br>
+            <strong>3. Managing Cookies:</strong> You can choose to accept or decline cookies through your web browser settings. Disabling certain cookies may impact the full functionality of specific interactive features on the site.`
+        },
+        disclaimer: {
+            title: "Legal Disclaimer",
+            content: `The information contained on this website is provided by Tawo E. Tawo, SAN & Co. for general informational guidance only.<br><br>
+            <strong>1. Limitation of Liability:</strong> The firm expressly disclaims all liability in respect to actions taken or not taken based on any or all of the contents of this website. Users should seek specialized professional legal counsel for specific legal issues.<br><br>
+            <strong>2. Jurisdictional Scope:</strong> Tawo E. Tawo, SAN & Co. is regulated to practice law within the Federal Republic of Nigeria, maintaining offices across Abuja, Lagos, Calabar, and Yenagoa, alongside international correspondence.<br><br>
+            <strong>3. External Links:</strong> Links to third-party websites or resources are provided for convenience only and do not constitute an endorsement or verification of their content.`
+        }
+    };
+
+    function openLegalModal(type) {
+        const modal = document.getElementById('legal-modal');
+        const contentDiv = document.getElementById('modal-content');
+        const data = legalTexts[type];
+        
+        contentDiv.innerHTML = `
+            <h3 class="text-xl font-extrabold text-[#0F172A] font-['Raleway']">${data.title}</h3>
+            <div class="text-xs sm:text-sm text-gray-600 leading-relaxed space-y-3">${data.content}</div>
+        `;
+        modal.classList.remove('hidden');
+    }
+
+    function closeLegalModal() {
+        document.getElementById('legal-modal').classList.add('hidden');
+    }
+
+    // Close modal when clicking outside content box
+    window.onclick = function(event) {
+        const modal = document.getElementById('legal-modal');
+        if (event.target === modal) {
+            closeLegalModal();
+        }
+    }
+</script>
+
 
 
     <!-- Clean Non-overlapping Modal Structure -->
