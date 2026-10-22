@@ -25,3 +25,9 @@ None of this leaves an employer without recourse. Discipline remains available t
 A word on scope is also necessary. The Act's definition of "worker" excludes certain categories of person, including those exercising administrative, executive, technical or professional functions. Whether the protections discussed above apply will therefore depend on the worker's actual role, and that question should be considered carefully in any particular case.
 
 This article is for general information and does not constitute legal advice.
+
+### References & Footnotes
+	•	Labour Act (Cap. L1, Laws of the Federation of Nigeria 2004)
+	•	Eze v Udeh (2017) LPELR-42716 (CA); Adebowale v. Orchid Hotels Ltd (Unreported NICN/LA/63/2020, Sept 5, 2022)
+	•	section 5(7), Labour Act (Cap. L1, Laws of the Federation of Nigeria 2004)
+	•	section 17(1), Ibid
