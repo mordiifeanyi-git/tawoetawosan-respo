@@ -56,7 +56,9 @@
             font-size: 11px;
             color: #475569;
             padding-left: 1.2rem;
-            space-y: 0.3rem;
+        }
+        .article-footnote-list li {
+            margin-bottom: 0.3rem;
         }
     </style>
     <script>
@@ -244,7 +246,7 @@
     window.onclick = function(event) { if (event.target === document.getElementById('legal-modal')) closeLegalModal(); }
 </script>
 
-    <!-- Clean Non-overlapping Modal Structure -->
+    <!-- Clean Non-overlapping Modal Structure with Prominent Author Showcase -->
     <div id="blog-details-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md hidden p-4 sm:p-6 overflow-y-auto">
         <div class="bg-white rounded-3xl shadow-2xl border border-gray-100 max-w-3xl w-full my-auto overflow-hidden relative transform transition-all scale-95 opacity-0 duration-300 max-h-[90vh] flex flex-col" id="modal-container-box">
             
@@ -259,6 +261,17 @@
             </div>
 
             <div class="p-6 overflow-y-auto space-y-6 flex-1 text-gray-700 text-xs sm:text-sm leading-relaxed">
+                
+                <!-- PROMINENT HIGH-VISIBILITY AUTHOR SHOWCASE BOX -->
+                <div id="modal-author-header" class="bg-gradient-to-br from-blue-50/80 to-slate-50 border border-blue-200/80 rounded-2xl p-5 shadow-sm space-y-3">
+                    <div class="flex items-center space-x-2 border-l-4 border-[#172554] pl-2.5">
+                        <span class="text-[11px] font-extrabold uppercase tracking-widest text-[#172554] font-['Raleway']">Written &amp; Published By</span>
+                    </div>
+                    <div id="modal-author-profiles-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <!-- Populated dynamically with large cards -->
+                    </div>
+                </div>
+
                 <div id="modal-media-wrapper" class="space-y-4"></div>
 
                 <div id="modal-video-container" class="space-y-2 border-t border-gray-100 pt-4 hidden">
@@ -311,6 +324,45 @@
             document.getElementById('modal-title').innerText = article.title;
             document.getElementById('modal-meta').innerText = `PUBLISHED • ${article.date}`;
             
+            // Populate Large High-Visibility Author Cards Inside Modal
+            const gridContainer = document.getElementById('modal-author-profiles-grid');
+            gridContainer.innerHTML = '';
+
+            let names = article.authorNames ? article.authorNames.split(',').map(s => s.trim()).filter(Boolean) : [];
+            let photos = article.authorPhotos || [];
+
+            const count = Math.max(names.length, photos.length);
+
+            if (count > 0) {
+                for (let i = 0; i < count; i++) {
+                    const name = names[i] || 'Tawo E. Tawo, SAN & Co.';
+                    const photo = photos[i] || '/WhatsApp Image 2026-10-08 at 13.10.32.jpeg';
+
+                    gridContainer.innerHTML += `
+                        <div class="bg-white border border-blue-200/80 rounded-xl p-3.5 sm:p-4 shadow-sm flex items-center space-x-4">
+                            <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-xl border-2 border-white shadow-md overflow-hidden bg-slate-900 shrink-0">
+                                <img src="${photo}" class="w-full h-full object-cover" alt="${name}" onerror="this.onerror=null; this.src='https://placehold.co/150x150/172554/FFFFFF?text=SAN';">
+                            </div>
+                            <div class="space-y-0.5 min-w-0">
+                                <span class="text-[9px] uppercase tracking-widest text-blue-600 font-extrabold block">Legal Counsel</span>
+                                <h4 class="text-xs sm:text-sm font-extrabold text-[#0F172A] font-['Raleway'] leading-snug truncate">${name}</h4>
+                                <span class="text-[10px] text-gray-500 block truncate">Tawo E. Tawo, SAN &amp; Co.</span>
+                            </div>
+                        </div>`;
+                }
+            } else {
+                gridContainer.innerHTML = `
+                    <div class="bg-white border border-blue-200/80 rounded-xl p-3.5 shadow-sm flex items-center space-x-3.5">
+                        <div class="w-16 h-16 rounded-xl border-2 border-white shadow-md overflow-hidden bg-white shrink-0">
+                            <img src="/WhatsApp Image 2026-10-08 at 13.10.32.jpeg" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='https://placehold.co/150x150/172554/FFFFFF?text=SAN';">
+                        </div>
+                        <div>
+                            <span class="text-[9px] uppercase tracking-widest text-blue-600 font-extrabold block">Legal Counsel</span>
+                            <h4 class="text-xs sm:text-sm font-extrabold text-[#0F172A] font-['Raleway']">Tawo E. Tawo, SAN &amp; Co.</h4>
+                        </div>
+                    </div>`;
+            }
+
             // Parse and format footnote markers (^1 -> superscript link)
             let formattedBody = article.bodyHtml.replace(/\^(\d+)/g, '<sup><a href="#ref-$1" class="text-blue-600 font-bold hover:underline">[$1]</a></sup>');
             
@@ -377,7 +429,7 @@
         function toggleMobileMenu() { document.getElementById('mobile-menu').classList.toggle('hidden'); }
     </script>
 
-    <!-- Dynamic Content Loader with Reference Extraction -->
+    <!-- Dynamic Content Loader with Author & Reference Extraction -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
         marked.setOptions({ html: true, gfm: true });
@@ -414,6 +466,7 @@
                     let videoUrl = '';
                     let imageUrl = '';
                     let galleryStr = '';
+                    let authorNameStr = '';
                     let authorPhotoStr = '';
 
                     const frontmatterBlock = content.match(/^---([\s\S]*?)---/);
@@ -431,6 +484,7 @@
                                 else if (key === 'video') videoUrl = val;
                                 else if (key === 'image') imageUrl = val;
                                 else if (key === 'gallery') galleryStr = val;
+                                else if (key === 'author') authorNameStr = val;
                                 else if (key === 'author_photo') authorPhotoStr = val;
                             }
                         });
@@ -460,6 +514,7 @@
                         imageUrl: imageUrl,
                         gallery: galleryPhotos,
                         videoUrl: videoUrl,
+                        authorNames: authorNameStr,
                         authorPhotos: authorPhotos,
                         bodyHtml: bodyHtml,
                         references: referenceList
