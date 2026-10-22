@@ -108,15 +108,15 @@
 
     <main class="py-16 px-6 md:px-12 max-w-7xl mx-auto space-y-16 flex-1 w-full">
 
-        <!-- SECTION 1: Legal Insights & Practice Guides (Always visible) -->
-        <div class="space-y-6">
+        <!-- SECTION 1: Legal Insights & Practice Guides -->
+        <div id="articles-section-wrapper" class="space-y-6">
             <h2 class="text-2xl font-extrabold text-[#0F172A] font-['Raleway'] border-b border-gray-200 pb-3">Legal Insights &amp; Practice Guides</h2>
             <div id="dynamic-articles-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- Dynamically populated -->
             </div>
         </div>
 
-        <!-- SECTION 2: Media Highlights (Smart Conditional Visibility) -->
+        <!-- SECTION 2: Media Highlights -->
         <div id="media-section-wrapper" class="space-y-6 hidden">
             <h2 class="text-2xl font-extrabold text-[#0F172A] font-['Raleway'] border-b border-gray-200 pb-3">Media Highlights</h2>
             <div class="space-y-4">
@@ -130,7 +130,7 @@
             </div>
         </div>
 
-        <!-- SECTION 3: Photo Gallery (Smart Conditional Visibility) -->
+        <!-- SECTION 3: Photo Gallery -->
         <div id="gallery-section-wrapper" class="space-y-6 pt-4 hidden">
             <h2 class="text-2xl font-extrabold text-[#0F172A] font-['Raleway'] border-b border-gray-200 pb-3">Photo Gallery</h2>
             <div class="space-y-4">
@@ -437,19 +437,19 @@
                     };
                     dynamicArticlesMap.push(articleObj);
 
-                    // Multi-Author Overlapping Avatar Badges
+                    // Multi-Author Overlapping Avatar Badges (Displays up to 3 authors side-by-side with overflow count)
                     let avatarBadgeHtml = '';
                     if (authorPhotos.length > 0) {
                         avatarBadgeHtml = '<div class="absolute bottom-4 right-4 flex items-center -space-x-3 z-10">';
                         authorPhotos.slice(0, 3).forEach((av) => {
                             avatarBadgeHtml += `
-                                <div class="w-14 h-14 rounded-2xl border-2 border-white shadow-lg overflow-hidden bg-white shrink-0">
+                                <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl border-2 border-white shadow-lg overflow-hidden bg-white shrink-0">
                                     <img src="${av}" class="w-full h-full object-cover" alt="Author Photo">
                                 </div>`;
                         });
                         if (authorPhotos.length > 3) {
                             avatarBadgeHtml += `
-                                <div class="w-14 h-14 rounded-2xl border-2 border-white shadow-lg bg-[#172554] text-white flex items-center justify-center text-xs font-bold shrink-0">
+                                <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl border-2 border-white shadow-lg bg-[#172554] text-white flex items-center justify-center text-xs font-bold shrink-0">
                                     +${authorPhotos.length - 3}
                                 </div>`;
                         }
@@ -552,7 +552,7 @@
                         mediaGrid.prepend(mediaCard);
 
                     } else {
-                        // Section 1: Written Articles
+                        // Section 1: Written Articles (Includes Multi-Author Avatar Badges)
                         const articleCard = document.createElement('article');
                         articleCard.className = 'bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between relative hover:-translate-y-1';
 
