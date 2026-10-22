@@ -23,6 +23,31 @@
             -webkit-backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
+        
+        /* Styling for References / Footnotes */
+        .article-footnote-list {
+            border-top: 2px solid #e2e8f0;
+            margin-top: 2.5rem;
+            padding-top: 1.5rem;
+        }
+        .article-footnote-list h4 {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #0F172A;
+            margin-bottom: 0.75rem;
+            font-family: 'Raleway', sans-serif;
+            font-weight: 800;
+        }
+        .article-footnote-list ol {
+            font-size: 12px;
+            color: #475569;
+            padding-left: 1.5rem;
+        }
+        .article-footnote-list li {
+            margin-bottom: 0.5rem;
+            line-height: 1.6;
+        }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700;800&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -58,7 +83,7 @@
 
         <div id="article-media-container" class="rounded-2xl overflow-hidden border border-gray-200 bg-slate-950 shadow-md hidden aspect-video flex items-center justify-center"></div>
 
-        <!-- SINGLE GLASS CARD FOR TEXT & BALANCED AUTHOR FOOTER -->
+        <!-- SINGLE GLASS CARD FOR TEXT & PROMINENT AUTHOR FOOTER -->
         <div class="glass-card-light rounded-3xl shadow-xl border border-gray-200/80 overflow-hidden flex flex-col">
             
             <!-- Article Body Text -->
@@ -66,16 +91,18 @@
                 <p class="text-gray-400 text-center py-12">Retrieving publication details from repository...</p>
             </div>
 
-            <!-- Balanced Author Footer Bar (Optimized Size & Name Under Image) -->
-            <div id="article-author-section" class="border-t border-gray-200/70 bg-slate-50/80 px-6 sm:px-10 py-6 flex flex-col sm:flex-row items-center justify-between gap-4 hidden">
-                <div class="space-y-0.5 text-center sm:text-left">
-                    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest block font-['Raleway']">WRITTEN &amp; PUBLISHED BY</span>
+            <!-- PROMINENT, LARGE AUTHOR SHOWCASE FOOTER -->
+            <div id="article-author-section" class="border-t-2 border-blue-100 bg-gradient-to-br from-blue-50/70 to-slate-50/90 px-8 sm:px-12 py-8 flex flex-col items-center sm:items-start space-y-6 hidden">
+                
+                <div class="flex items-center space-x-2 border-l-4 border-[#172554] pl-3">
+                    <span class="text-xs font-extrabold text-[#172554] uppercase tracking-widest font-['Raleway']">Written &amp; Published By</span>
                 </div>
 
-                <!-- Balanced Author Profiles (Larger than tiny badges, but clean and non-intrusive) -->
-                <div id="author-profiles-container" class="flex flex-wrap items-center justify-center gap-5">
-                    <!-- Dynamically populated -->
+                <!-- High-Visibility Large Author Cards Container -->
+                <div id="author-profiles-container" class="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full">
+                    <!-- Dynamically populated with large prominent cards -->
                 </div>
+
             </div>
         </div>
 
@@ -145,13 +172,36 @@
 
                 let cleanMarkdown = content.replace(/^---[\s\S]*?---/, '').trim();
 
+                // Extract and format references / footnotes if present
+                let referenceList = [];
+                const refSplit = cleanMarkdown.split(/### References & Footnotes/i);
+                if (refSplit.length > 1) {
+                    cleanMarkdown = refSplit[0].trim();
+                    referenceList = refSplit[1].trim().split('\n').map(l => l.replace(/^\d+\.\s*/, '').trim()).filter(Boolean);
+                }
+
                 document.getElementById('article-title').innerText = title;
                 document.title = `${title} | TAWO E. TAWO, SAN & CO.`;
                 document.getElementById('article-date').innerText = date ? new Date(date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }).toUpperCase() : 'RECENT PUBLICATION';
                 
-                document.getElementById('article-body').innerHTML = marked.parse(cleanMarkdown);
+                // Parse markdown and convert footnote markers (^1 -> superscript link)
+                let parsedHtml = marked.parse(cleanMarkdown);
+                parsedHtml = parsedHtml.replace(/\^(\d+)/g, '<sup><a href="#ref-$1" class="text-blue-600 font-bold hover:underline">[$1]</a></sup>');
 
-                // Build Balanced Author Footer Profiles
+                if (referenceList.length > 0) {
+                    parsedHtml += `
+                        <div class="article-footnote-list">
+                            <h4>References &amp; Footnotes</h4>
+                            <ol>`;
+                    referenceList.forEach((refLine, idx) => {
+                        parsedHtml += `<li id="ref-${idx+1}">${refLine}</li>`;
+                    });
+                    parsedHtml += `</ol></div>`;
+                }
+
+                document.getElementById('article-body').innerHTML = parsedHtml;
+
+                // Build Prominent, Large Author Profiles Showcase
                 let names = authorStr ? authorStr.split(',').map(s => s.trim()).filter(Boolean) : [];
                 let photos = authorPhotoStr ? authorPhotoStr.split(',').map(s => s.trim()).filter(Boolean) : [];
 
@@ -165,14 +215,18 @@
                     const count = Math.max(names.length, photos.length);
                     for (let i = 0; i < count; i++) {
                         const name = names[i] || 'Tawo E. Tawo, SAN & Co.';
-                        const photo = photos[i] || 'https://placehold.co/120x120/172554/FFFFFF?text=SAN';
+                        const photo = photos[i] || 'https://placehold.co/200x200/172554/FFFFFF?text=SAN';
 
                         authorProfilesContainer.innerHTML += `
-                            <div class="flex flex-col items-center space-y-1.5 text-center">
-                                <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl border-2 border-white shadow-md overflow-hidden bg-slate-900 shrink-0">
-                                    <img src="${photo}" class="w-full h-full object-cover" alt="${name}">
+                            <div class="bg-white/90 border border-blue-200/70 rounded-2xl p-4 sm:p-5 shadow-sm flex items-center space-x-4">
+                                <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl border-2 border-white shadow-md overflow-hidden bg-slate-900 shrink-0">
+                                    <img src="${photo}" class="w-full h-full object-cover" alt="${name}" onerror="this.onerror=null; this.src='https://placehold.co/200x200/172554/FFFFFF?text=SAN';">
                                 </div>
-                                <span class="text-xs font-bold text-[#0F172A] font-['Raleway'] max-w-[130px] leading-snug block truncate">${name}</span>
+                                <div class="space-y-1 min-w-0">
+                                    <span class="text-[9px] uppercase tracking-widest text-blue-600 font-extrabold block">Legal Counsel</span>
+                                    <h4 class="text-sm sm:text-base font-extrabold text-[#0F172A] font-['Raleway'] leading-snug truncate">${name}</h4>
+                                    <span class="text-[10px] text-gray-500 block truncate">Tawo E. Tawo, SAN &amp; Co.</span>
+                                </div>
                             </div>`;
                     }
                 }
