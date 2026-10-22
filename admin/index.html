@@ -148,7 +148,7 @@
                                 <input type="date" id="input-date" oninput="updateLivePreview()" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#172554] text-xs font-semibold text-slate-800 bg-slate-50/50" />
                             </div>
 
-                            <!-- FEATURED / COVER IMAGE UPLOAD FIELD (RESTORED ORIGINAL WORKING VERSION) -->
+                            <!-- FEATURED / COVER IMAGE UPLOAD FIELD -->
                             <div class="space-y-1.5 pt-2 border-t border-gray-100">
                                 <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider font-['Raleway']">
                                     <i class="fa-solid fa-image text-[#172554] mr-1"></i> Featured / Cover Image
@@ -328,7 +328,6 @@
             }
         }
 
-        // RESTORED ORIGINAL WORKING LOCAL FILE READER FOR FEATURED IMAGE
         function handleFeaturedImageUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
