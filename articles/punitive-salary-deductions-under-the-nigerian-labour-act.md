@@ -1,14 +1,13 @@
 ---
 title: "Punitive Salary Deductions under the Nigerian Labour Act"
+category: "Labour and Employment Law"
 date: "2026-10-22"
 type: "article"
 author: "Great Izibebonze Johnson"
-author_photo: "/media/1792679419495-great.jpeg"
+author_photo: "/media/1792683473830-great.jpeg"
 gallery: ""
 video: ""
 ---
-
- Labour and Employment Law
 
 It is a familiar scene in many Nigerian workplaces. A worker arrives late, misses a shift or falls foul of a workplace rule, and the next payslip is lighter than it ought to be. Employers often regard such a reduction as a natural and proportionate sanction. The Labour Act (Cap. L1, Laws of the Federation of Nigeria 2004) takes a different view. It treats a worker's wages as a protected entitlement, and it does not place the payslip among the instruments of discipline available to an employer.
 
