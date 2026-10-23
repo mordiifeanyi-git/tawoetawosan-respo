@@ -631,7 +631,7 @@
             let videoEl = document.getElementById('input-video-url');
             let videoUrl = videoEl ? (videoEl.getAttribute('data-server-path') || videoEl.value.trim()) : '';
             if (videoUrl.startsWith('blob:')) videoUrl = '';
-
+  
             const body = document.getElementById('input-body').value || '';
             const references = document.getElementById('input-references').value || '';
 
