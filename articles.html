@@ -304,7 +304,6 @@
         document.getElementById('legal-modal').classList.add('hidden');
     }
 
-    // Close modal when clicking outside content box
     window.onclick = function(event) {
         const modal = document.getElementById('legal-modal');
         if (event.target === modal) {
@@ -357,7 +356,6 @@
     <div id="blog-details-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md hidden p-4 sm:p-6 overflow-y-auto">
         <div class="bg-white rounded-3xl shadow-2xl border border-gray-100 max-w-3xl w-full my-auto overflow-hidden relative transform transition-all scale-95 opacity-0 duration-300 max-h-[90vh] flex flex-col" id="modal-container-box">
             
-            <!-- TOP HEADER: ONLY TOPIC TITLE -->
             <div class="bg-[#172554] text-white px-6 py-4 flex items-center justify-between shrink-0">
                 <h3 id="modal-title" class="text-lg sm:text-xl font-extrabold text-white font-['Raleway'] leading-tight pr-6">Event Title</h3>
                 <button onclick="closeBlogModal()" class="w-7 h-7 rounded-full bg-white/10 hover:bg-white/25 text-white flex items-center justify-center transition-colors shrink-0 cursor-pointer">
@@ -366,14 +364,11 @@
             </div>
 
             <div class="p-6 sm:p-8 overflow-y-auto space-y-4 flex-1 text-gray-700 text-xs sm:text-sm leading-relaxed">
-                
-                <!-- ABOVE WRITE-UP: TYPE OF LAW & DATE -->
                 <div class="space-y-1 pb-1">
                     <div id="modal-dynamic-category-heading" class="text-[11px] font-extrabold text-[#172554] uppercase tracking-wider font-['Raleway']">Legal Category</div>
                     <div id="modal-meta" class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Date</div>
                 </div>
 
-                <!-- WRITE-UP BODY -->
                 <div id="modal-body-text" class="space-y-2.5 text-gray-600 leading-relaxed font-sans pt-1"></div>
 
                 <div id="modal-media-wrapper" class="space-y-3 pt-2"></div>
@@ -384,13 +379,9 @@
                     </div>
                 </div>
 
-                <!-- AUTHOR SECTION AT BOTTOM, RIGHT ALIGNED -->
                 <div class="flex justify-end border-t border-gray-100 pt-4 mt-4 w-full">
-                    <div id="modal-author-profiles-grid" class="flex flex-col items-end gap-4 w-full max-w-xs">
-                        <!-- Populated dynamically -->
-                    </div>
+                    <div id="modal-author-profiles-grid" class="flex flex-col items-end gap-4 w-full max-w-xs"></div>
                 </div>
-
             </div>
 
             <div class="px-6 py-3 bg-slate-50 border-t border-gray-100 text-right shrink-0">
@@ -456,7 +447,6 @@
 
             const count = Math.max(names.length, photos.length);
             
-            // Only written articles show "Written & Published By", media and galleries show "Published By"
             let labelTitle = (article.postType === 'article') ? 'Written &amp; Published By' : 'Published By';
             let authorHtml = `<span class="text-[10px] font-extrabold uppercase tracking-widest text-[#172554] font-['Raleway'] block w-full text-right mb-1">${labelTitle}</span>`;
 
@@ -494,8 +484,8 @@
             const mediaWrapper = document.getElementById('modal-media-wrapper');
             mediaWrapper.innerHTML = '';
 
-            /* MODAL IMAGES: FULL WIDTH WITH HEAD/FACE FOCUSED TOP ANCHOR */
-            if (article.gallery && article.gallery.length > 0) {
+            /* MODAL IMAGES: FULL WIDTH WITH HEAD/FACE FOCUSED TOP ANCHOR (Only for gallery posts) */
+            if (article.gallery && article.gallery.length > 0 && article.postType === 'gallery') {
                 let gridHtml = '<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">';
                 article.gallery.forEach(img => {
                     gridHtml += `<div class="h-64 sm:h-72 rounded-2xl overflow-hidden border border-gray-200 shadow-sm bg-slate-100 flex items-center justify-center cursor-pointer relative group" onclick="openImageLightbox('${img}')">
@@ -505,7 +495,7 @@
                 });
                 gridHtml += '</div>';
                 mediaWrapper.innerHTML = gridHtml;
-            } else if (article.imageUrl) {
+            } else if (article.imageUrl && article.postType === 'gallery') {
                 mediaWrapper.innerHTML = `<div class="w-full h-64 sm:h-80 rounded-2xl overflow-hidden border border-gray-200 shadow-sm bg-slate-100 flex items-center justify-center cursor-pointer relative group" onclick="openImageLightbox('${article.imageUrl}')">
                     <img src="${article.imageUrl}" class="w-full h-full object-cover object-top" />
                     <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-xs font-bold gap-1"><i class="fa-solid fa-expand"></i> Click to View Full Image</div>
@@ -513,7 +503,7 @@
             }
 
             const videoContainer = document.getElementById('modal-video-container');
-            if (article.videoUrl) {
+            if (article.videoUrl && (article.postType === 'media' || article.postType === 'video')) {
                 videoContainer.classList.remove('hidden');
                 renderVideoPlayerIntoBox(article.videoUrl, 'modal-video-player-box');
             } else {
@@ -547,7 +537,7 @@
         function toggleMobileMenu() { document.getElementById('mobile-menu').classList.toggle('hidden'); }
     </script>
 
-    <!-- Dynamic Content Loader -->
+    <!-- Dynamic Content Loader with Strict Section Separation -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
         marked.setOptions({ html: true, gfm: true });
@@ -655,6 +645,7 @@
                         avatarBadgeHtml += '</div>';
                     }
 
+                    // STRICT SEPARATION: Gallery -> galleryGrid, Media/Video -> mediaGrid, Article -> articlesGrid
                     if (postType === 'gallery') {
                         if (gallerySection && gallerySection.classList.contains('hidden')) {
                             gallerySection.classList.remove('hidden');
@@ -665,7 +656,6 @@
                         galleryCard.className = 'bg-white border border-gray-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between group cursor-pointer relative hover:-translate-y-1';
                         galleryCard.onclick = () => openDynamicArticleModal(i);
 
-                        /* GALLERY CARD PREVIEW: FILLS FULL WIDTH WITH TOP/MIDDLE ANCHOR */
                         let galleryThumbHtml = '';
                         if (galleryPhotos.length > 0) {
                             galleryThumbHtml = `<div class="h-48 rounded-xl overflow-hidden border border-gray-100 mb-3 bg-slate-100"><img src="${galleryPhotos[0]}" class="w-full h-full object-cover object-top"></div>`;
@@ -682,7 +672,7 @@
                                 <p class="text-xs text-gray-600 leading-relaxed">${snippet}</p>
                             </div>
                             <div class="pt-5 mt-4 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-[#172554]">
-                                <span>View All Photos &amp; Summary</span> &rarr;
+                                <span>View Photos</span> &rarr;
                             </div>
                             ${avatarBadgeHtml}
                         `;
@@ -722,7 +712,7 @@
                                 <p class="text-xs text-gray-600 leading-relaxed line-clamp-2">${snippet}</p>
                             </div>
                             <div class="px-6 pb-5 pt-2 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-[#172554]">
-                                <span>Play Video &amp; Proceedings</span> &rarr;
+                                <span>Play Video</span> &rarr;
                             </div>
                             ${avatarBadgeHtml}
                         `;
