@@ -97,22 +97,22 @@
             
             <nav class="hidden lg:flex items-center space-x-4">
                 <a href="index.html" class="nav-link text-sm text-gray-200 hover:text-white transition-colors font-medium">Home</a>
-                <a href="about.html" class="nav-link text-sm text-blue-200 font-bold transition-colors">About Us</a>
+                <a href="about.html" class="nav-link text-sm text-gray-200 hover:text-white transition-colors font-medium">About Us</a>
                 <a href="team.html" class="nav-link text-sm text-gray-200 hover:text-white transition-colors font-medium">Our Team</a>
-                <a href="articles.html" class="nav-link text-sm text-gray-200 hover:text-white transition-colors font-medium">Insights &amp; Articles</a>
+                <a href="articles.html" class="nav-link text-sm text-blue-200 font-bold transition-colors">Insights &amp; Articles</a>
                 <a href="contact.html" class="nav-link text-sm text-gray-200 hover:text-white transition-colors font-medium">Contact</a>
             </nav>
 
-            <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="lg:hidden text-white focus:outline-none p-2">
+            <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="lg:hidden text-white focus:outline-none p-2 cursor-pointer">
                 <i class="fa-solid fa-bars text-xl"></i>
             </button>
         </div>
         
         <div id="mobile-menu" class="hidden lg:hidden absolute top-full left-0 right-0 bg-[#172554] border-b border-blue-900 px-6 py-6 space-y-3 shadow-xl">
             <a href="index.html" class="block text-gray-200 hover:text-white font-medium">Home</a>
-            <a href="about.html" class="block text-blue-200 font-bold">About Us</a>
+            <a href="about.html" class="block text-gray-200 hover:text-white font-medium">About Us</a>
             <a href="team.html" class="block text-gray-200 hover:text-white font-medium">Our Team</a>
-            <a href="articles.html" class="block text-gray-200 hover:text-white font-medium">Insights & Articles</a>
+            <a href="articles.html" class="block text-blue-200 font-bold">Insights & Articles</a>
             <a href="contact.html" class="block text-gray-200 hover:text-white font-medium">Contact</a>
         </div>
     </header>
@@ -290,6 +290,46 @@
             closeLegalModal();
         }
     }
+</script>
+
+
+<script>
+    function toggleMobileMenu() { document.getElementById('mobile-menu').classList.toggle('hidden'); }
+
+    window.addEventListener('scroll', function() {
+        const navbar = document.getElementById('navbar');
+        const brandTitle = document.getElementById('nav-brand-title');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+
+        if (window.scrollY > 30) {
+            navbar.classList.remove('bg-transparent', 'py-3');
+            navbar.classList.add('bg-white/95', 'backdrop-blur-md', 'border-b', 'border-gray-200/80', 'py-2', 'shadow-sm');
+            brandTitle.classList.remove('text-white');
+            brandTitle.classList.add('text-[#0F172A]');
+            mobileBtn.classList.remove('text-white');
+            mobileBtn.classList.add('text-[#0F172A]');
+            navLinks.forEach(link => {
+                if (!link.classList.contains('text-blue-300')) {
+                    link.classList.remove('text-gray-200', 'hover:text-white');
+                    link.classList.add('text-gray-700', 'hover:text-[#172554]');
+                }
+            });
+        } else {
+            navbar.classList.remove('bg-white/95', 'backdrop-blur-md', 'border-b', 'border-gray-200/80', 'py-2', 'shadow-sm');
+            navbar.classList.add('bg-transparent', 'py-3');
+            brandTitle.classList.remove('text-[#0F172A]');
+            brandTitle.classList.add('text-white');
+            mobileBtn.classList.remove('text-[#0F172A]');
+            mobileBtn.classList.add('text-white');
+            navLinks.forEach(link => {
+                if (!link.classList.contains('text-blue-300')) {
+                    link.classList.remove('text-gray-700', 'hover:text-[#172554]');
+                    link.classList.add('text-gray-200', 'hover:text-white');
+                }
+            });
+        }
+    });
 </script>
 
     <!-- Clean Modal Structure -->
