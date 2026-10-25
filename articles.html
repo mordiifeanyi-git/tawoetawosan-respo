@@ -27,17 +27,6 @@
         body { font-family: 'Roboto', 'Raleway', Arial, Helvetica, sans-serif; background-color: var(--bg-offwhite); color: var(--text-slate); line-height: 1.6; }
         h1, h2, h3, h4, h5, h6 { font-family: 'Raleway', 'Roboto', Arial, Helvetica, sans-serif; color: #0F172A; }
 
-        /* Section Fade & Slide Reveal Animation */
-        @keyframes sectionReveal {
-            0% { opacity: 0; transform: translateY(24px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-
-        .animate-section-reveal {
-            animation: sectionReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        /* Styling for footnotes / references in dynamic modal */
         .article-footnote-list {
             border-top: 1px solid #e2e8f0;
             margin-top: 1rem;
@@ -135,7 +124,7 @@
             </div>
         </div>
 
-        <!-- SECTION 2: Media Highlights -->
+        <!-- SECTION 2: Media Highlights (Hidden by default until a video post exists) -->
         <div id="media-section-wrapper" class="space-y-6 hidden">
             <h2 class="text-2xl font-extrabold text-[#0F172A] font-['Raleway'] border-b border-gray-200 pb-3">Media Highlights</h2>
             <div class="space-y-4">
@@ -149,7 +138,7 @@
             </div>
         </div>
 
-        <!-- SECTION 3: Photo Gallery -->
+        <!-- SECTION 3: Photo Gallery (Hidden by default until a gallery post exists) -->
         <div id="gallery-section-wrapper" class="space-y-6 pt-4 hidden">
             <h2 class="text-2xl font-extrabold text-[#0F172A] font-['Raleway'] border-b border-gray-200 pb-3">Photo Gallery</h2>
             <div class="space-y-4">
@@ -164,6 +153,7 @@
         </div>
 
     </main>
+
 <!-- Sleek & Compact Micro-Footer with Boxed General Contacts & Full Legal Modals -->
 <footer class="bg-[#172554] text-gray-300 text-xs border-t border-blue-900 py-8 px-6 md:px-12 mt-auto">
     <div class="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between items-center gap-6">
@@ -484,7 +474,7 @@
             const mediaWrapper = document.getElementById('modal-media-wrapper');
             mediaWrapper.innerHTML = '';
 
-            /* MODAL IMAGES: FULL WIDTH WITH HEAD/FACE FOCUSED TOP ANCHOR (Only for gallery posts) */
+            /* MODAL IMAGES: ONLY RENDERED FOR GALLERY POSTS */
             if (article.gallery && article.gallery.length > 0 && article.postType === 'gallery') {
                 let gridHtml = '<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">';
                 article.gallery.forEach(img => {
@@ -546,7 +536,7 @@
             const articlesGrid = document.getElementById('dynamic-articles-grid');
             const mediaGrid = document.getElementById('dynamic-media-grid');
             const galleryGrid = document.getElementById('dynamic-gallery-grid');
-            
+
             const mediaSection = document.getElementById('media-section-wrapper');
             const gallerySection = document.getElementById('gallery-section-wrapper');
 
@@ -645,12 +635,9 @@
                         avatarBadgeHtml += '</div>';
                     }
 
-                    // STRICT SEPARATION: Gallery -> galleryGrid, Media/Video -> mediaGrid, Article -> articlesGrid
+                    // STRICT CHANNELING: Reveal headers ONLY when an active item exists for that section
                     if (postType === 'gallery') {
-                        if (gallerySection && gallerySection.classList.contains('hidden')) {
-                            gallerySection.classList.remove('hidden');
-                            gallerySection.classList.add('animate-section-reveal');
-                        }
+                        if (gallerySection) gallerySection.classList.remove('hidden');
 
                         const galleryCard = document.createElement('div');
                         galleryCard.className = 'bg-white border border-gray-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between group cursor-pointer relative hover:-translate-y-1';
@@ -679,10 +666,7 @@
                         galleryGrid.prepend(galleryCard);
 
                     } else if (postType === 'media' || postType === 'video') {
-                        if (mediaSection && mediaSection.classList.contains('hidden')) {
-                            mediaSection.classList.remove('hidden');
-                            mediaSection.classList.add('animate-section-reveal');
-                        }
+                        if (mediaSection) mediaSection.classList.remove('hidden');
 
                         const mediaCard = document.createElement('div');
                         mediaCard.className = 'bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between cursor-pointer relative hover:-translate-y-1';
