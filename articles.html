@@ -124,21 +124,7 @@
             </div>
         </div>
 
-        <!-- SECTION 2: Media Highlights (Hidden by default until a video post exists) -->
-        <div id="media-section-wrapper" class="space-y-6 hidden">
-            <h2 class="text-2xl font-extrabold text-[#0F172A] font-['Raleway'] border-b border-gray-200 pb-3">Media Highlights</h2>
-            <div class="space-y-4">
-                <div class="flex items-center space-x-2 text-xs font-bold text-[#172554] tracking-wider uppercase font-['Raleway']">
-                    <i class="fa-solid fa-circle-play text-blue-600"></i>
-                    <span> Video Recordings</span>
-                </div>
-                <div id="dynamic-media-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <!-- Dynamically populated -->
-                </div>
-            </div>
-        </div>
-
-        <!-- SECTION 3: Photo Gallery (Hidden by default until a gallery post exists) -->
+        <!-- SECTION 2: Photo Gallery -->
         <div id="gallery-section-wrapper" class="space-y-6 pt-4 hidden">
             <h2 class="text-2xl font-extrabold text-[#0F172A] font-['Raleway'] border-b border-gray-200 pb-3">Photo Gallery</h2>
             <div class="space-y-4">
@@ -147,6 +133,20 @@
                     <span>Photos &amp; Event Summaries</span>
                 </div>
                 <div id="dynamic-gallery-grid" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Dynamically populated -->
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 3: Media Highlights -->
+        <div id="media-section-wrapper" class="space-y-6 hidden">
+            <h2 class="text-2xl font-extrabold text-[#0F172A] font-['Raleway'] border-b border-gray-200 pb-3">Media Highlights</h2>
+            <div class="space-y-4">
+                <div class="flex items-center space-x-2 text-xs font-bold text-[#172554] tracking-wider uppercase font-['Raleway']">
+                    <i class="fa-solid fa-circle-play text-blue-600"></i>
+                    <span> Video Recordings</span>
+                </div>
+                <div id="dynamic-media-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <!-- Dynamically populated -->
                 </div>
             </div>
@@ -398,7 +398,7 @@
                     <iframe class="w-full h-full aspect-video" src="https://www.youtube.com/embed/${videoId}?rel=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
             } else {
                 container.innerHTML = `
-                    <video controls class="w-full h-full object-cover">
+                    <video controls autoplay class="w-full h-full object-cover">
                         <source src="${videoUrl}" type="video/mp4">
                         Your browser does not support video playback.
                     </video>`;
@@ -466,7 +466,7 @@
                             <h4 class="text-xs sm:text-sm font-extrabold text-[#0F172A] font-['Raleway']">Tawo E. Tawo, SAN &amp; Co.</h4>
                             <p class="text-[10px] text-gray-500 font-semibold leading-relaxed">Legal Practitioners, Notary Public &amp; Arbitrators</p>
                         </div>
-                    </div>`;
+                    `;
             }
 
             gridContainer.innerHTML = authorHtml;
@@ -672,21 +672,41 @@
                         mediaCard.className = 'bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between cursor-pointer relative hover:-translate-y-1';
                         mediaCard.onclick = () => openDynamicArticleModal(i);
 
-                        let ytThumbUrl = '';
+                        // UNIVERSAL THUMBNAIL/PREVIEW PARSER FOR YOUTUBE OR DIRECT MP4/FILES
+                        let mediaPreviewHtml = '';
                         const ytMatch = videoUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/))([\w-]{11})/);
+
                         if (ytMatch && ytMatch[1]) {
-                            ytThumbUrl = `https://i.ytimg.com/vi/${ytMatch[1]}/hqdefault.jpg`;
-                        } else if (videoUrl && !videoUrl.startsWith('data:video')) {
-                            ytThumbUrl = 'https://placehold.co/600x400/0F172A/FFFFFF?text=Video+Recording';
+                            const ytThumbUrl = `https://i.ytimg.com/vi/${ytMatch[1]}/hqdefault.jpg`;
+                            mediaPreviewHtml = `
+                                <div class="h-52 bg-slate-950 overflow-hidden relative group flex items-center justify-center">
+                                    <img src="${ytThumbUrl}" class="w-full h-full object-cover">
+                                    <div class="absolute inset-0 bg-slate-950/30 flex items-center justify-center">
+                                        <div class="w-12 h-12 rounded-full bg-blue-600/90 text-white flex items-center justify-center shadow-lg"><i class="fa-solid fa-play text-lg ml-0.5"></i></div>
+                                    </div>
+                                </div>`;
+                        } else if (imageUrl) {
+                            mediaPreviewHtml = `
+                                <div class="h-52 bg-slate-950 overflow-hidden relative group flex items-center justify-center">
+                                    <img src="${imageUrl}" class="w-full h-full object-cover">
+                                    <div class="absolute inset-0 bg-slate-950/30 flex items-center justify-center">
+                                        <div class="w-12 h-12 rounded-full bg-blue-600/90 text-white flex items-center justify-center shadow-lg"><i class="fa-solid fa-play text-lg ml-0.5"></i></div>
+                                    </div>
+                                </div>`;
+                        } else {
+                            mediaPreviewHtml = `
+                                <div class="h-52 bg-slate-950 overflow-hidden relative flex items-center justify-center">
+                                    <video class="w-full h-full object-cover pointer-events-none" muted preload="metadata">
+                                        <source src="${videoUrl}" type="video/mp4">
+                                    </video>
+                                    <div class="absolute inset-0 bg-slate-950/30 flex items-center justify-center">
+                                        <div class="w-12 h-12 rounded-full bg-blue-600/90 text-white flex items-center justify-center shadow-lg"><i class="fa-solid fa-play text-lg ml-0.5"></i></div>
+                                    </div>
+                                </div>`;
                         }
 
                         mediaCard.innerHTML = `
-                            <div class="h-52 bg-slate-950 overflow-hidden relative group flex items-center justify-center">
-                                <img src="${ytThumbUrl || 'https://placehold.co/600x400/0F172A/FFFFFF?text=Video'}" class="w-full h-full object-cover">
-                                <div class="absolute inset-0 bg-slate-950/30 flex items-center justify-center">
-                                    <div class="w-12 h-12 rounded-full bg-blue-600/90 text-white flex items-center justify-center shadow-lg"><i class="fa-solid fa-play text-lg ml-0.5"></i></div>
-                                </div>
-                            </div>
+                            ${mediaPreviewHtml}
                             <div class="p-6 space-y-2">
                                 <div class="flex items-center justify-between text-[10px] text-gray-500 font-semibold uppercase tracking-wider">
                                     <span class="px-3 py-1 rounded-full bg-blue-50 text-[#172554] font-semibold">${category}</span>
