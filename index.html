@@ -397,6 +397,26 @@
         </div>
     </footer>
 
+    <!-- DYNAMIC "LATEST UPDATE" FLOATING NOTIFICATION WIDGET -->
+    <div id="latest-update-widget" class="fixed bottom-6 right-6 z-40 hidden transform translate-y-4 opacity-0 transition-all duration-500 max-w-xs sm:max-w-sm">
+        <a href="articles.html" class="block bg-[#0F172A]/95 hover:bg-[#172554] border border-blue-500/40 text-white rounded-2xl p-4 shadow-2xl backdrop-blur-md group relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-24 h-24 bg-blue-600/10 rounded-full blur-xl pointer-events-none"></div>
+            <div class="flex items-start space-x-3">
+                <div class="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center shrink-0 shadow-lg group-hover:scale-105 transition-transform">
+                    <i class="fa-solid fa-bell text-xs animate-bounce"></i>
+                </div>
+                <div class="flex-1 min-w-0 space-y-0.5">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[9px] font-extrabold uppercase tracking-widest text-blue-400 font-['Raleway']">Latest Update</span>
+                        <button onclick="event.preventDefault(); document.getElementById('latest-update-widget').remove();" class="text-gray-400 hover:text-white text-xs px-1 cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                    <p id="floating-widget-title" class="text-xs font-bold text-white line-clamp-1 group-hover:text-blue-200 transition-colors font-['Raleway']">Checking for recent publication...</p>
+                    <span class="text-[10px] text-blue-300 font-semibold underline block pt-0.5">Click to read article &rarr;</span>
+                </div>
+            </div>
+        </a>
+    </div>
+
     <!-- Legal Modal Overlay System -->
     <div id="legal-modal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="bg-white text-slate-800 rounded-2xl max-w-2xl w-full max-h-[85vh] overflow-y-auto p-6 sm:p-8 shadow-2xl relative space-y-4">
@@ -552,7 +572,54 @@
         document.addEventListener("DOMContentLoaded", () => {
             initJankFreeLoop('cases-track', 4500);
             initJankFreeLoop('testimonials-track', 6500);
+            fetchLatestPublicationWidget();
         });
+
+        async function fetchLatestPublicationWidget() {
+            const repoOwner = 'mordiifeanyi-git';
+            const repoName = 'tawoetawosan-respo';
+            const widget = document.getElementById('latest-update-widget');
+            const titleEl = document.getElementById('floating-widget-title');
+
+            if (!widget || !titleEl) return;
+
+            try {
+                const response = await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/articles?t=${Date.now()}`);
+                if (!response.ok) return;
+
+                const files = await response.json();
+                const mdFiles = files.filter(f => f.name.endsWith('.md'));
+                if (mdFiles.length === 0) return;
+
+                // Fetch the last file (most recent)
+                const latestFile = mdFiles[mdFiles.length - 1];
+                const rawResponse = await fetch(`${latestFile.download_url}?t=${Date.now()}`);
+                const content = await rawResponse.text();
+
+                let title = 'New Legal Insight Published';
+                const frontmatterBlock = content.match(/^---([\s\S]*?)---/);
+                if (frontmatterBlock && frontmatterBlock[1]) {
+                    const lines = frontmatterBlock[1].split('\n');
+                    lines.forEach(line => {
+                        const colonIndex = line.indexOf(':');
+                        if (colonIndex !== -1) {
+                            const key = line.substring(0, colonIndex).trim().toLowerCase();
+                            const val = line.substring(colonIndex + 1).trim().replace(/^["']|["']$/g, '');
+                            if (key === 'title' && val) title = val;
+                        }
+                    });
+                }
+
+                titleEl.innerText = title;
+                widget.classList.remove('hidden');
+                setTimeout(() => {
+                    widget.classList.remove('translate-y-4', 'opacity-0');
+                    widget.classList.add('translate-y-0', 'opacity-100');
+                }, 100);
+            } catch (error) {
+                console.error('Error fetching latest widget update:', error);
+            }
+        }
 
         function initJankFreeLoop(trackId, intervalMs = 4500) {
             const track = document.getElementById(trackId);
