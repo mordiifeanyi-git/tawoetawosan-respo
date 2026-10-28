@@ -42,15 +42,15 @@
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* Hardware Accelerated Smooth Card Transformations */
+        /* Continuous Flow Card Transformations */
         .coverflow-card {
-            transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-            transform: scale(0.9);
-            opacity: 0.6;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            transform: scale(0.92);
+            opacity: 0.7;
             will-change: transform, opacity;
         }
         .coverflow-card.active-focus {
-            transform: scale(1.03);
+            transform: scale(1.02);
             opacity: 1;
             z-index: 10;
         }
@@ -113,7 +113,6 @@
     <section class="relative pt-32 pb-8 lg:pt-36 lg:pb-10 px-6 md:px-12 text-white overflow-hidden min-h-[640px] flex flex-col justify-end group bg-[#0F172A]">
         
         <div class="absolute inset-0 z-0 pointer-events-none">
-            <!-- Lighter, more transparent gradient overlay to make backgrounds pop brilliantly -->
             <div class="absolute inset-0 bg-gradient-to-r from-[#0F172A]/85 via-[#0F172A]/50 to-transparent z-10"></div>
             
             <div class="hero-bg-img active absolute inset-0 bg-cover bg-[position:center_top] lg:bg-[position:80%_20%] bg-no-repeat" style="background-image: url('/tawo3.jpeg');"></div>
@@ -207,7 +206,7 @@
         </div>
     </section>
 
-    <!-- REAL RESULTS SECTION WITH AUTO-MOVING CAROUSEL (3.5s INTERVAL) -->
+    <!-- REAL RESULTS SECTION WITH CONTINUOUS FLUID FLOW (2.5s Speed) -->
     <section class="py-16 px-6 md:px-12 max-w-7xl mx-auto space-y-8 border-t border-gray-200 overflow-hidden">
         <div class="text-center max-w-3xl mx-auto space-y-2">
             <h2 class="text-2xl sm:text-3xl font-extrabold text-[#0F172A] font-['Raleway']">Real Results. Real Victories.</h2>
@@ -538,10 +537,10 @@
         }
     </script>
 
-    <!-- Smooth Auto-Moving Loop Engine (3.5s speed) -->
+    <!-- Continuous Fluid Flow Engine (2.5s speed / Smooth Infinite Marquee) -->
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            initJankFreeLoop('cases-track', 3500);
+            initContinuousFlow('cases-track');
             fetchLatestPublicationWidget();
         });
 
@@ -590,19 +589,20 @@
             }
         }
 
-        function initJankFreeLoop(trackId, intervalMs = 3500) {
+        function initContinuousFlow(trackId) {
             const track = document.getElementById(trackId);
             if (!track) return;
 
-            // Duplicate cards for seamless looping
+            // Duplicate cards to ensure infinite seamless flow
             const originalCards = Array.from(track.children);
             originalCards.forEach(card => {
                 const clone = card.cloneNode(true);
                 track.appendChild(clone);
             });
 
-            let timer = null;
-            let isHovered = false;
+            let isPaused = false;
+            let scrollPos = 0;
+            const speed = 0.8; // Smooth continuous velocity
 
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
@@ -619,33 +619,24 @@
 
             track.querySelectorAll('.coverflow-card').forEach(card => observer.observe(card));
 
-            function autoAdvance() {
-                if (isHovered) return;
-                const cardWidth = originalCards[0].offsetWidth + 24; // Card width + gap
-                const singleSetWidth = track.scrollWidth / 2;
-
-                if (track.scrollLeft >= singleSetWidth - 10) {
-                    track.style.scrollBehavior = 'auto';
-                    track.scrollLeft = 0;
-                    track.style.scrollBehavior = 'smooth';
-                } else {
-                    track.scrollBy({ left: cardWidth, behavior: 'smooth' });
+            function step() {
+                if (!isPaused) {
+                    scrollPos += speed;
+                    const singleSetWidth = track.scrollWidth / 2;
+                    if (scrollPos >= singleSetWidth) {
+                        scrollPos = 0;
+                    }
+                    track.scrollLeft = scrollPos;
                 }
+                requestAnimationFrame(step);
             }
 
-            function startTimer() {
-                stopTimer();
-                timer = setInterval(autoAdvance, intervalMs);
-            }
+            track.addEventListener('mouseenter', () => { isPaused = true; });
+            track.addEventListener('mouseleave', () => { isPaused = false; });
+            track.addEventListener('touchstart', () => { isPaused = true; }, { passive: true });
+            track.addEventListener('touchend', () => { isPaused = false; }, { passive: true });
 
-            function stopTimer() {
-                if (timer) clearInterval(timer);
-            }
-
-            track.addEventListener('mouseenter', () => { isHovered = true; stopTimer(); });
-            track.addEventListener('mouseleave', () => { isHovered = false; startTimer(); });
-
-            startTimer();
+            requestAnimationFrame(step);
         }
     </script>
 </body>
