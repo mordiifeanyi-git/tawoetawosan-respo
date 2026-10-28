@@ -34,8 +34,8 @@
         .carousel-slide { display: none; opacity: 0; transition: opacity 0.6s ease-in-out; }
         .carousel-slide.active { display: block; opacity: 1; }
 
-        /* Background Image Transitions */
-        .hero-bg-img { display: none; opacity: 0; transition: opacity 1s ease-in-out; }
+        /* Background Image Transitions - Made Brighter */
+        .hero-bg-img { display: none; opacity: 0; transition: opacity 1s ease-in-out; filter: brightness(1.15) contrast(1.05); }
         .hero-bg-img.active { display: block; opacity: 1; }
 
         /* Hide Scrollbars */
@@ -44,13 +44,13 @@
 
         /* Hardware Accelerated Smooth Card Transformations */
         .coverflow-card {
-            transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-            transform: scale(0.88);
-            opacity: 0.5;
+            transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+            transform: scale(0.9);
+            opacity: 0.6;
             will-change: transform, opacity;
         }
         .coverflow-card.active-focus {
-            transform: scale(1.02);
+            transform: scale(1.03);
             opacity: 1;
             z-index: 10;
         }
@@ -109,11 +109,12 @@
         </div>
     </header>
 
-    <!-- Expanded 4-Slide Hero Section -->
+    <!-- Expanded 4-Slide Hero Section with Brighter Overlays -->
     <section class="relative pt-32 pb-8 lg:pt-36 lg:pb-10 px-6 md:px-12 text-white overflow-hidden min-h-[640px] flex flex-col justify-end group bg-[#0F172A]">
         
         <div class="absolute inset-0 z-0 pointer-events-none">
-            <div class="absolute inset-0 bg-gradient-to-r from-[#0F172A]/95 via-[#0F172A]/80 to-transparent z-10"></div>
+            <!-- Lighter, more transparent gradient overlay to make backgrounds pop brilliantly -->
+            <div class="absolute inset-0 bg-gradient-to-r from-[#0F172A]/85 via-[#0F172A]/50 to-transparent z-10"></div>
             
             <div class="hero-bg-img active absolute inset-0 bg-cover bg-[position:center_top] lg:bg-[position:80%_20%] bg-no-repeat" style="background-image: url('/tawo3.jpeg');"></div>
             <div class="hero-bg-img absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url('https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&q=80&w=1600');"></div>
@@ -135,7 +136,7 @@
                     <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white leading-tight tracking-tight font-['Raleway']">
                         Optimum Professionalism &amp; International Standards.
                     </h1>
-                    <p class="text-xs sm:text-sm text-gray-200 font-normal leading-relaxed">
+                    <p class="text-xs sm:text-sm text-gray-100 font-normal leading-relaxed drop-shadow">
                         Tawo E. Tawo, SAN & Co. is a premier firm of Legal Practitioners, consultants, Notary Public and Arbitrators incorporated under the Laws of the Federal Republic of Nigeria.
                     </p>
                 </div>
@@ -144,7 +145,7 @@
                     <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold leading-tight tracking-tight text-white font-['Raleway']">
                         Illuminating the Gateway of Legal Practice.
                     </h1>
-                    <p class="text-xs sm:text-sm text-gray-200 font-normal leading-relaxed">
+                    <p class="text-xs sm:text-sm text-gray-100 font-normal leading-relaxed drop-shadow">
                         To serve as a multidimensional solution hub catering to the intricate professional needs of diverse clients with utmost professionalism, ethical standards, and prompt service delivery.
                     </p>
                     <div class="flex flex-wrap gap-2 pt-1">
@@ -158,7 +159,7 @@
                     <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold leading-tight tracking-tight text-white font-['Raleway']">
                         Empowering Minds Through Rigorous In-House Discussions.
                     </h1>
-                    <p class="text-xs sm:text-sm text-gray-200 font-normal leading-relaxed">
+                    <p class="text-xs sm:text-sm text-gray-100 font-normal leading-relaxed drop-shadow">
                         Team spirit is given a pride of place. Through regular in-house conferences, case reviews, and seminars, our attorneys stay completely updated with extant legislation and case law.
                     </p>
                     <div class="flex flex-wrap gap-2 pt-1">
@@ -170,9 +171,9 @@
 
                 <div class="carousel-slide space-y-3 max-w-2xl">
                     <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold leading-tight tracking-tight text-white font-['Raleway']">
-                        Primitive salary deductions under the Nigerian Labour Act.
+                        Punitive salary deductions under the Nigerian Labour Act.
                     </h1>
-                    <p class="text-xs sm:text-sm text-gray-200 font-normal leading-relaxed">
+                    <p class="text-xs sm:text-sm text-gray-100 font-normal leading-relaxed drop-shadow">
                         Explore our legal breakdown examining the statutory restrictions on wage deductions and disciplinary salary cuts under Nigerian labor jurisprudence.
                     </p>
                     <div class="flex flex-wrap gap-2 pt-1">
@@ -184,21 +185,21 @@
 
             </div>
 
-            <div class="mt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-4 border-t border-white/10">
+            <div class="mt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-4 border-t border-white/20">
                 <div class="flex items-center space-x-2">
                     <button onclick="currentSlide(0)" class="carousel-dot w-8 h-2 rounded-full bg-blue-400 transition-all cursor-pointer" aria-label="Slide 1"></button>
-                    <button onclick="currentSlide(1)" class="carousel-dot w-2 h-2 rounded-full bg-white/30 hover:bg-white/60 transition-all cursor-pointer" aria-label="Slide 2"></button>
-                    <button onclick="currentSlide(2)" class="carousel-dot w-2 h-2 rounded-full bg-white/30 hover:bg-white/60 transition-all cursor-pointer" aria-label="Slide 3"></button>
-                    <button onclick="currentSlide(3)" class="carousel-dot w-2 h-2 rounded-full bg-white/30 hover:bg-white/60 transition-all cursor-pointer" aria-label="Slide 4"></button>
+                    <button onclick="currentSlide(1)" class="carousel-dot w-2 h-2 rounded-full bg-white/40 hover:bg-white/80 transition-all cursor-pointer" aria-label="Slide 2"></button>
+                    <button onclick="currentSlide(2)" class="carousel-dot w-2 h-2 rounded-full bg-white/40 hover:bg-white/80 transition-all cursor-pointer" aria-label="Slide 3"></button>
+                    <button onclick="currentSlide(3)" class="carousel-dot w-2 h-2 rounded-full bg-white/40 hover:bg-white/80 transition-all cursor-pointer" aria-label="Slide 4"></button>
                 </div>
 
-                <div onclick="nextSlide()" class="bg-[#0F172A]/95 hover:bg-[#0F172A] border border-white/25 rounded-xl p-3.5 flex items-center space-x-3.5 backdrop-blur-md cursor-pointer transition-all shadow-2xl group max-w-sm w-full sm:w-auto">
-                    <div class="w-12 h-12 rounded-lg overflow-hidden bg-slate-800 shrink-0 border border-white/15 shadow-inner">
+                <div onclick="nextSlide()" class="bg-[#0F172A]/90 hover:bg-[#0F172A] border border-white/35 rounded-xl p-3.5 flex items-center space-x-3.5 backdrop-blur-md cursor-pointer transition-all shadow-2xl group max-w-sm w-full sm:w-auto">
+                    <div class="w-12 h-12 rounded-lg overflow-hidden bg-slate-800 shrink-0 border border-white/20 shadow-inner">
                         <img id="next-story-img" src="https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&q=80&w=200" alt="Next Story Preview" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
                     </div>
                     <div class="flex-1 min-w-0">
                         <span class="text-[8px] uppercase tracking-widest text-blue-300 font-extrabold block">Up Next</span>
-                        <span id="next-story-title" class="text-xs font-bold text-white line-clamp-1 group-hover:text-blue-300 transition-colors font-['Raleway']">Illuminating the Gateway of Legal Practice</span>
+                        <span id="next-story-title" class="text-xs font-bold text-white line-clamp-1 group-hover:text-blue-200 transition-colors font-['Raleway']">Illuminating the Gateway of Legal Practice</span>
                     </div>
                 </div>
             </div>
@@ -206,17 +207,17 @@
         </div>
     </section>
 
-    <!-- REAL RESULTS SECTION WITH 100% UNIQUE NIGERIAN CASE HIGHLIGHTS & VIBRANT IMAGES -->
+    <!-- REAL RESULTS SECTION WITH AUTO-MOVING CAROUSEL (3.5s INTERVAL) -->
     <section class="py-16 px-6 md:px-12 max-w-7xl mx-auto space-y-8 border-t border-gray-200 overflow-hidden">
         <div class="text-center max-w-3xl mx-auto space-y-2">
             <h2 class="text-2xl sm:text-3xl font-extrabold text-[#0F172A] font-['Raleway']">Real Results. Real Victories.</h2>
         </div>
 
         <!-- Case Results Track -->
-        <div id="cases-track" class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-6 py-8">
+        <div id="cases-track" class="flex overflow-x-hidden no-scrollbar gap-6 py-8">
             
             <!-- Card 1: Intellectual Property -->
-            <div class="coverflow-card relative rounded-2xl p-8 shadow-xl flex flex-col justify-between border border-white/30 w-[280px] sm:w-[320px] snap-center shrink-0 overflow-hidden text-white">
+            <div class="coverflow-card relative rounded-2xl p-8 shadow-xl flex flex-col justify-between border border-white/30 w-[280px] sm:w-[320px] shrink-0 overflow-hidden text-white">
                 <div class="absolute inset-0 bg-cover bg-center z-0 scale-105" style="background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=800');"></div>
                 <div class="absolute inset-0 bg-gradient-to-t from-[#0F172A]/90 via-[#0F172A]/50 to-[#0F172A]/30 z-10"></div>
                 <div class="relative z-20">
@@ -228,7 +229,7 @@
             </div>
 
             <!-- Card 2: White-Collar Defense -->
-            <div class="coverflow-card relative rounded-2xl p-8 shadow-xl flex flex-col justify-between border border-white/30 w-[280px] sm:w-[320px] snap-center shrink-0 overflow-hidden text-white">
+            <div class="coverflow-card relative rounded-2xl p-8 shadow-xl flex flex-col justify-between border border-white/30 w-[280px] sm:w-[320px] shrink-0 overflow-hidden text-white">
                 <div class="absolute inset-0 bg-cover bg-center z-0 scale-105" style="background-image: url('https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&q=80&w=800');"></div>
                 <div class="absolute inset-0 bg-gradient-to-t from-[#0F172A]/90 via-[#0F172A]/50 to-[#0F172A]/30 z-10"></div>
                 <div class="relative z-20">
@@ -240,7 +241,7 @@
             </div>
 
             <!-- Card 3: Corporate Mergers -->
-            <div class="coverflow-card relative rounded-2xl p-8 shadow-xl flex flex-col justify-between border border-white/30 w-[280px] sm:w-[320px] snap-center shrink-0 overflow-hidden text-white">
+            <div class="coverflow-card relative rounded-2xl p-8 shadow-xl flex flex-col justify-between border border-white/30 w-[280px] sm:w-[320px] shrink-0 overflow-hidden text-white">
                 <div class="absolute inset-0 bg-cover bg-center z-0 scale-105" style="background-image: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=800');"></div>
                 <div class="absolute inset-0 bg-gradient-to-t from-[#0F172A]/90 via-[#0F172A]/50 to-[#0F172A]/30 z-10"></div>
                 <div class="relative z-20">
@@ -252,7 +253,7 @@
             </div>
 
             <!-- Card 4: Supreme Court Precedent -->
-            <div class="coverflow-card relative rounded-2xl p-8 shadow-xl flex flex-col justify-between border border-white/30 w-[280px] sm:w-[320px] snap-center shrink-0 overflow-hidden text-white">
+            <div class="coverflow-card relative rounded-2xl p-8 shadow-xl flex flex-col justify-between border border-white/30 w-[280px] sm:w-[320px] shrink-0 overflow-hidden text-white">
                 <div class="absolute inset-0 bg-cover bg-center z-0 scale-105" style="background-image: url('https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&q=80&w=800');"></div>
                 <div class="absolute inset-0 bg-gradient-to-t from-[#0F172A]/90 via-[#0F172A]/50 to-[#0F172A]/30 z-10"></div>
                 <div class="relative z-20">
@@ -264,7 +265,7 @@
             </div>
 
             <!-- Card 5: Arbitration & Maritime -->
-            <div class="coverflow-card relative rounded-2xl p-8 shadow-xl flex flex-col justify-between border border-white/30 w-[280px] sm:w-[320px] snap-center shrink-0 overflow-hidden text-white">
+            <div class="coverflow-card relative rounded-2xl p-8 shadow-xl flex flex-col justify-between border border-white/30 w-[280px] sm:w-[320px] shrink-0 overflow-hidden text-white">
                 <div class="absolute inset-0 bg-cover bg-center z-0 scale-105" style="background-image: url('https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80&w=800');"></div>
                 <div class="absolute inset-0 bg-gradient-to-t from-[#0F172A]/90 via-[#0F172A]/50 to-[#0F172A]/30 z-10"></div>
                 <div class="relative z-20">
@@ -500,7 +501,7 @@
                 img: "/conference.jpeg"
             },
             {
-                title: "Primitive salary deductions under the Nigerian Labour Act.",
+                title: "Punitive salary deductions under the Nigerian Labour Act.",
                 img: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&q=80&w=200"
             }
         ];
@@ -510,14 +511,14 @@
             bgImages.forEach((img) => { img.classList.remove('active'); });
             dots.forEach(dot => {
                 dot.classList.remove('w-8', 'bg-blue-400');
-                dot.classList.add('w-2', 'bg-white/30');
+                dot.classList.add('w-2', 'bg-white/40');
             });
 
             slideIndex = (n + slides.length) % slides.length;
             
             slides[slideIndex].classList.add('active');
             bgImages[slideIndex].classList.add('active');
-            dots[slideIndex].classList.remove('w-2', 'bg-white/30');
+            dots[slideIndex].classList.remove('w-2', 'bg-white/40');
             dots[slideIndex].classList.add('w-8', 'bg-blue-400');
 
             const nextIdx = (slideIndex + 1) % slides.length;
@@ -537,10 +538,10 @@
         }
     </script>
 
-    <!-- Loop Engine -->
+    <!-- Smooth Auto-Moving Loop Engine (3.5s speed) -->
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            initJankFreeLoop('cases-track', 4200);
+            initJankFreeLoop('cases-track', 3500);
             fetchLatestPublicationWidget();
         });
 
@@ -589,11 +590,11 @@
             }
         }
 
-        function initJankFreeLoop(trackId, intervalMs = 4200) {
+        function initJankFreeLoop(trackId, intervalMs = 3500) {
             const track = document.getElementById(trackId);
             if (!track) return;
 
-            // Duplicate cards to create seamless infinite loop
+            // Duplicate cards for seamless looping
             const originalCards = Array.from(track.children);
             originalCards.forEach(card => {
                 const clone = card.cloneNode(true);
@@ -601,7 +602,7 @@
             });
 
             let timer = null;
-            let isInteracting = false;
+            let isHovered = false;
 
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
@@ -618,18 +619,8 @@
 
             track.querySelectorAll('.coverflow-card').forEach(card => observer.observe(card));
 
-            // Seamless reset point for infinite scrolling
-            track.addEventListener('scroll', () => {
-                const singleSetWidth = track.scrollWidth / 2;
-                if (track.scrollLeft >= singleSetWidth) {
-                    track.style.scrollBehavior = 'auto';
-                    track.scrollLeft = track.scrollLeft - singleSetWidth;
-                    track.style.scrollBehavior = 'smooth';
-                }
-            }, { passive: true });
-
             function autoAdvance() {
-                if (isInteracting) return;
+                if (isHovered) return;
                 const cardWidth = originalCards[0].offsetWidth + 24; // Card width + gap
                 const singleSetWidth = track.scrollWidth / 2;
 
@@ -651,12 +642,8 @@
                 if (timer) clearInterval(timer);
             }
 
-            track.addEventListener('mouseenter', () => { isInteracting = true; stopTimer(); });
-            track.addEventListener('mouseleave', () => { isInteracting = false; startTimer(); });
-            track.addEventListener('touchstart', () => { isInteracting = true; stopTimer(); }, { passive: true });
-            track.addEventListener('touchend', () => {
-                setTimeout(() => { isInteracting = false; startTimer(); }, 2500);
-            }, { passive: true });
+            track.addEventListener('mouseenter', () => { isHovered = true; stopTimer(); });
+            track.addEventListener('mouseleave', () => { isHovered = false; startTimer(); });
 
             startTimer();
         }
