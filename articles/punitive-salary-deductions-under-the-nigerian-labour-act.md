@@ -24,11 +24,11 @@ This article is for general information and does not constitute legal advice.
 
 
 ### References & Footnotes
-  Labour Act (Cap. L1, Laws of the Federation of Nigeria 2004)
- Eze v Udeh (2017) LPELR-42716 (CA)
- section 5(7), Labour Act (Cap. L1, Laws of the Federation of Nigeria 2004)
-section 17(1), Ibid
-Labour Act (Cap. L1, Laws of the Federation of Nigeria 2004)
-Eze v Udeh (2017) LPELR-42716 (CA); Adebowale v. Orchid Hotels Ltd (Unreported NICN/LA/63/2020, Sept 5, 2022)
-section 5(7), Labour Act (Cap. L1, Laws of the Federation of Nigeria 2004)
-section 17(1), Ibid
+  ^1 Labour Act (Cap. L1, Laws of the Federation of Nigeria 2004)
+^2  Eze v Udeh (2017) LPELR-42716 (CA)
+ ^3 section 5(7), Labour Act (Cap. L1, Laws of the Federation of Nigeria 2004)
+^4 section 17(1), Ibid
+1. Labour Act (Cap. L1, Laws of the Federation of Nigeria 2004)
+2. Eze v Udeh (2017) LPELR-42716 (CA); Adebowale v. Orchid Hotels Ltd (Unreported NICN/LA/63/2020, Sept 5, 2022)
+3. section 5(7), Labour Act (Cap. L1, Laws of the Federation of Nigeria 2004)
+4. section 17(1), Ibid
