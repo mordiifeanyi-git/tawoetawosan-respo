@@ -328,13 +328,11 @@
             const photoUrlInput = parentRow.querySelector('.author-photo-input');
             const rowIndex = Array.from(document.querySelectorAll('.author-row')).indexOf(parentRow);
 
-            // Set persistent blob for UI preview
             const localBlobUrl = URL.createObjectURL(file);
             localPreviewCache.authors[rowIndex] = localBlobUrl;
             photoUrlInput.value = localBlobUrl;
             updateLivePreview();
 
-            // Background upload
             const reader = new FileReader();
             reader.onload = async function(e) {
                 const base64Content = e.target.result.split(',')[1];
@@ -351,7 +349,6 @@
                     if (res.ok) {
                         let finalPath = data.path;
                         if (!finalPath.startsWith('/') && !finalPath.startsWith('http')) finalPath = '/' + finalPath;
-                        // Store server path in data attribute so frontmatter uses it without breaking local preview
                         photoUrlInput.setAttribute('data-server-path', finalPath);
                     }
                 } catch (err) { console.error(err); }
@@ -392,7 +389,6 @@
                             if (res.ok) {
                                 let p = data.path;
                                 if (!p.startsWith('/') && !p.startsWith('http')) p = '/' + p;
-                                // Store clean server path for final markdown generation
                                 if (!galleryInput.hasAttribute('data-server-paths')) {
                                     galleryInput.setAttribute('data-server-paths', p);
                                 } else {
@@ -609,7 +605,6 @@
             const date = document.getElementById('input-date').value || new Date().toISOString().split('T')[0];
             const postType = document.querySelector('input[name="post-type"]:checked').value;
             
-            // Clean author server paths for frontmatter
             const authorRows = document.querySelectorAll('.author-row');
             let names = [], photos = [];
             authorRows.forEach((row) => {
@@ -617,7 +612,6 @@
                 const photoInput = row.querySelector('.author-photo-input');
                 let photo = photoInput.getAttribute('data-server-path') || photoInput.value.trim();
                 
-                // Exclude raw local blob links from final markdown frontmatter
                 if (photo.startsWith('blob:')) photo = '';
                 
                 if (name) names.push(name);
