@@ -176,7 +176,7 @@
                         Explore our legal breakdown examining the statutory restrictions on wage deductions and disciplinary salary cuts under Nigerian labor jurisprudence.
                     </p>
                     <div class="flex flex-wrap gap-2 pt-1">
-                        <a href="articles.html" class="px-5 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs transition-all shadow-lg flex items-center space-x-2">
+                        <a id="hero-article-link" href="articles.html" class="px-5 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs transition-all shadow-lg flex items-center space-x-2">
                             <span>Read Full Article</span> &rarr;
                         </a>
                     </div>
@@ -192,7 +192,7 @@
                     <button onclick="currentSlide(3)" class="carousel-dot w-2 h-2 rounded-full bg-white/40 hover:bg-white/80 transition-all cursor-pointer" aria-label="Slide 4"></button>
                 </div>
 
-                <div onclick="nextSlide()" class="bg-[#0F172A]/90 hover:bg-[#0F172A] border border-white/35 rounded-xl p-3.5 flex items-center space-x-3.5 backdrop-blur-md cursor-pointer transition-all shadow-2xl group max-w-sm w-full sm:w-auto">
+                <div id="up-next-widget-box" onclick="handleUpNextClick()" class="bg-[#0F172A]/90 hover:bg-[#0F172A] border border-white/35 rounded-xl p-3.5 flex items-center space-x-3.5 backdrop-blur-md cursor-pointer transition-all shadow-2xl group max-w-sm w-full sm:w-auto">
                     <div class="w-12 h-12 rounded-lg overflow-hidden bg-slate-800 shrink-0 border border-white/20 shadow-inner">
                         <img id="next-story-img" src="https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&q=80&w=200" alt="Next Story Preview" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
                     </div>
@@ -369,7 +369,7 @@
 
     <!-- DYNAMIC "LATEST UPDATE" FLOATING NOTIFICATION WIDGET -->
     <div id="latest-update-widget" class="fixed bottom-6 right-6 z-40 hidden transform translate-y-4 opacity-0 transition-all duration-500 max-w-xs sm:max-w-sm">
-        <a href="articles.html" class="block bg-[#0F172A]/95 hover:bg-[#172554] border border-blue-500/40 text-white rounded-2xl p-4 shadow-2xl backdrop-blur-md group relative overflow-hidden">
+        <a id="floating-widget-link" href="articles.html" class="block bg-[#0F172A]/95 hover:bg-[#172554] border border-blue-500/40 text-white rounded-2xl p-4 shadow-2xl backdrop-blur-md group relative overflow-hidden">
             <div class="absolute top-0 right-0 w-24 h-24 bg-blue-600/10 rounded-full blur-xl pointer-events-none"></div>
             <div class="flex items-start space-x-3">
                 <div class="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center shrink-0 shadow-lg group-hover:scale-105 transition-transform">
@@ -477,7 +477,7 @@
         });
     </script>
 
-    <!-- Synchronized Hero & Next Story Engine -->
+    <!-- Synchronized Hero & Next Story Engine with Direct Article Linking -->
     <script>
         let slideIndex = 0;
         const slides = document.querySelectorAll('.carousel-slide');
@@ -485,23 +485,28 @@
         const dots = document.querySelectorAll('.carousel-dot');
         const nextStoryTitle = document.getElementById('next-story-title');
         const nextStoryImg = document.getElementById('next-story-img');
+        let latestArticleFilename = '';
         
         const storyData = [
             {
                 title: "Optimum Professionalism & International Standards.",
-                img: "/tawo3.jpeg"
+                img: "/tawo3.jpeg",
+                link: "about.html"
             },
             {
                 title: "Illuminating the Gateway of Legal Practice.",
-                img: "https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&q=80&w=200"
+                img: "https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&q=80&w=200",
+                link: "about.html"
             },
             {
                 title: "Empowering Minds Through Rigorous In-House Discussions.",
-                img: "/conference.jpeg"
+                img: "/conference.jpeg",
+                link: "team.html"
             },
             {
                 title: "Punitive salary deductions under the Nigerian Labour Act.",
-                img: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&q=80&w=200"
+                img: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&q=80&w=200",
+                link: "articles.html"
             }
         ];
 
@@ -523,11 +528,25 @@
             const nextIdx = (slideIndex + 1) % slides.length;
             nextStoryTitle.innerText = storyData[nextIdx].title;
             nextStoryImg.src = storyData[nextIdx].img;
+
+            // Update button link on slide 4 dynamically if article is fetched
+            if (slideIndex === 3 && latestArticleFilename) {
+                document.getElementById('hero-article-link').href = `articles.html?article=${latestArticleFilename}`;
+            }
         }
 
         function nextSlide() { showSlide(slideIndex + 1); resetTimer(); }
         function prevSlide() { showSlide(slideIndex - 1); resetTimer(); }
         function currentSlide(n) { showSlide(n); resetTimer(); }
+
+        function handleUpNextClick() {
+            const nextIdx = (slideIndex + 1) % slides.length;
+            if (nextIdx === 3 && latestArticleFilename) {
+                window.location.href = `articles.html?article=${latestArticleFilename}`;
+            } else {
+                window.location.href = storyData[nextIdx].link;
+            }
+        }
 
         let slideInterval = setInterval(() => { showSlide(slideIndex + 1); }, 6000);
 
@@ -537,7 +556,7 @@
         }
     </script>
 
-    <!-- Continuous Fluid Flow Engine (2.5s speed / Smooth Infinite Marquee) -->
+    <!-- Continuous Fluid Flow Engine & Article Deep-Linking Fetcher -->
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             initContinuousFlow('cases-track');
@@ -549,6 +568,7 @@
             const repoName = 'tawoetawosan-respo';
             const widget = document.getElementById('latest-update-widget');
             const titleEl = document.getElementById('floating-widget-title');
+            const widgetLink = document.getElementById('floating-widget-link');
 
             if (!widget || !titleEl) return;
 
@@ -561,6 +581,15 @@
                 if (mdFiles.length === 0) return;
 
                 const latestFile = mdFiles[mdFiles.length - 1];
+                latestArticleFilename = latestFile.name;
+
+                // Update deep-links to directly open the specific article modal/view in articles.html
+                const articleTargetUrl = `articles.html?article=${latestArticleFilename}`;
+                if (widgetLink) widgetLink.href = articleTargetUrl;
+                const heroLink = document.getElementById('hero-article-link');
+                if (heroLink) heroLink.href = articleTargetUrl;
+                storyData[3].link = articleTargetUrl;
+
                 const rawResponse = await fetch(`${latestFile.download_url}?t=${Date.now()}`);
                 const content = await rawResponse.text();
 
