@@ -648,7 +648,7 @@
 
             track.querySelectorAll('.coverflow-card').forEach(card => observer.observe(card));
 
-            function step() {
+            function step() { 
                 if (!isPaused) {
                     scrollPos += speed;
                     const singleSetWidth = track.scrollWidth / 2;
