@@ -342,15 +342,23 @@
     });
 </script>
 
-    <!-- Clean Modal Structure -->
+    <!-- Clean Modal Structure with Full-Screen Expand Toggle Button -->
     <div id="blog-details-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md hidden p-4 sm:p-6 overflow-y-auto">
         <div class="bg-white rounded-3xl shadow-2xl border border-gray-100 max-w-3xl w-full my-auto overflow-hidden relative transform transition-all scale-95 opacity-0 duration-300 max-h-[90vh] flex flex-col" id="modal-container-box">
             
             <div class="bg-[#172554] text-white px-6 py-4 flex items-center justify-between shrink-0">
-                <h3 id="modal-title" class="text-lg sm:text-xl font-extrabold text-white font-['Raleway'] leading-tight pr-6">Event Title</h3>
-                <button onclick="closeBlogModal()" class="w-7 h-7 rounded-full bg-white/10 hover:bg-white/25 text-white flex items-center justify-center transition-colors shrink-0 cursor-pointer">
-                    <i class="fa-solid fa-xmark text-sm"></i>
-                </button>
+                <h3 id="modal-title" class="text-lg sm:text-xl font-extrabold text-white font-['Raleway'] leading-tight pr-4">Event Title</h3>
+                
+                <div class="flex items-center space-x-2 shrink-0">
+                    <!-- Expand / Fullscreen Toggle Button -->
+                    <button onclick="toggleModalFullscreen()" id="modal-expand-btn" class="w-7 h-7 rounded-full bg-white/10 hover:bg-white/25 text-white flex items-center justify-center transition-colors cursor-pointer" title="Toggle Fullscreen Reading">
+                        <i id="modal-expand-icon" class="fa-solid fa-expand text-xs"></i>
+                    </button>
+                    <!-- Close Button -->
+                    <button onclick="closeBlogModal()" class="w-7 h-7 rounded-full bg-white/10 hover:bg-white/25 text-white flex items-center justify-center transition-colors cursor-pointer">
+                        <i class="fa-solid fa-xmark text-sm"></i>
+                    </button>
+                </div>
             </div>
 
             <div class="p-6 sm:p-8 overflow-y-auto space-y-4 flex-1 text-gray-700 text-xs sm:text-sm leading-relaxed">
@@ -385,6 +393,25 @@
     <!-- UI Interaction & Footnote Parser Scripts -->
     <script>
         let dynamicArticlesMap = [];
+        let isModalFullscreen = false;
+
+        function toggleModalFullscreen() {
+            const box = document.getElementById('modal-container-box');
+            const icon = document.getElementById('modal-expand-icon');
+            isModalFullscreen = !isModalFullscreen;
+
+            if (isModalFullscreen) {
+                box.classList.remove('max-w-3xl', 'max-h-[90vh]', 'rounded-3xl');
+                box.classList.add('max-w-full', 'w-full', 'h-full', 'max-h-full', 'rounded-none', 'm-0');
+                icon.classList.remove('fa-expand');
+                icon.classList.add('fa-compress');
+            } else {
+                box.classList.remove('max-w-full', 'w-full', 'h-full', 'max-h-full', 'rounded-none', 'm-0');
+                box.classList.add('max-w-3xl', 'max-h-[90vh]', 'rounded-3xl');
+                icon.classList.remove('fa-compress');
+                icon.classList.add('fa-expand');
+            }
+        }
 
         function renderVideoPlayerIntoBox(videoUrl, containerBoxId) {
             const container = document.getElementById(containerBoxId);
@@ -437,7 +464,8 @@
 
             const count = Math.max(names.length, photos.length);
             
-            let labelTitle = (article.postType === 'article') ? 'Written &amp; Published By' : 'Published By';
+            // Updated label: "Contribution(s)" for multiple or single admin contributions
+            let labelTitle = (count > 1) ? 'Contributions' : 'Contribution';
             let authorHtml = `<span class="text-[10px] font-extrabold uppercase tracking-widest text-[#172554] font-['Raleway'] block w-full text-right mb-1">${labelTitle}</span>`;
 
             if (count > 0) {
@@ -527,7 +555,7 @@
         function toggleMobileMenu() { document.getElementById('mobile-menu').classList.toggle('hidden'); }
     </script>
 
-    <!-- Dynamic Content Loader with Strict Section Separation -->
+    <!-- Dynamic Content Loader with Strict Section Separation & Direct URL Parameter Deep-Linking -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
         marked.setOptions({ html: true, gfm: true });
@@ -672,7 +700,6 @@
                         mediaCard.className = 'bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between cursor-pointer relative hover:-translate-y-1';
                         mediaCard.onclick = () => openDynamicArticleModal(i);
 
-                        // UNIVERSAL THUMBNAIL/PREVIEW PARSER FOR YOUTUBE OR DIRECT MP4/FILES
                         let mediaPreviewHtml = '';
                         const ytMatch = videoUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/))([\w-]{11})/);
 
@@ -746,6 +773,19 @@
                         articlesGrid.prepend(articleCard);
                     }
                 }
+
+                // CHECK FOR URL PARAMETER DEEP LINKING (e.g., articles.html?article=0)
+                const urlParams = new URLSearchParams(window.location.search);
+                const articleParam = urlParams.get('article');
+                if (articleParam !== null) {
+                    const targetIndex = parseInt(articleParam, 10);
+                    if (!isNaN(targetIndex) && dynamicArticlesMap[targetIndex]) {
+                        setTimeout(() => {
+                            openDynamicArticleModal(targetIndex);
+                        }, 250);
+                    }
+                }
+
             } catch (error) {
                 console.error('Error loading dynamic content:', error);
             }
