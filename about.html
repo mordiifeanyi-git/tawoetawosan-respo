@@ -31,11 +31,11 @@
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* Hardware Accelerated Smooth Card Transformations */
+        /* Continuous Flow Card Transformations */
         .coverflow-card {
-            transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-            transform: scale(0.88);
-            opacity: 0.5;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            transform: scale(0.92);
+            opacity: 0.7;
             will-change: transform, opacity;
         }
         .coverflow-card.active-focus {
@@ -133,43 +133,52 @@
         </div>
     </section>
 
-    <!-- Mission & Vision Section -->
+    <!-- Mission & Vision Section with Actual Images -->
     <section class="py-16 px-6 md:px-12 max-w-7xl mx-auto">
         <div class="text-center max-w-3xl mx-auto space-y-4 mb-12">
             <h2 class="text-2xl sm:text-3xl font-extrabold text-[#0F172A] font-['Raleway']">Mission &amp; Vision</h2>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div class="bg-white p-8 rounded-2xl border border-gray-200 shadow-sm space-y-4">
-                <div class="w-12 h-12 rounded-xl bg-[#172554] text-white flex items-center justify-center font-bold text-xl mb-4">
-                    <i class="fa-solid fa-bullseye"></i>
+            <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col justify-between group">
+                <div class="h-48 overflow-hidden relative">
+                    <div class="absolute inset-0 bg-[#172554]/20 z-10"></div>
+                    <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&q=80&w=800" alt="Our Mission" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute bottom-3 left-4 z-25 bg-[#172554] text-white px-3 py-1 rounded-lg text-xs font-bold shadow">Our Mission</div>
                 </div>
-                <h3 class="text-xl font-extrabold text-[#0F172A] font-['Raleway']">Our Mission</h3>
-                <p class="text-sm text-gray-600 leading-relaxed">
-                    To be a Pinnacle that illuminates the doorway of Legal Practice with utmost professionalism, ethical standards prompt service delivery and diligence for contemporary Legal solutions with a legacy.
-                </p>
+                <div class="p-8 space-y-3">
+                    <h3 class="text-xl font-extrabold text-[#0F172A] font-['Raleway']">Pinnacle of Legal Excellence</h3>
+                    <p class="text-sm text-gray-600 leading-relaxed">
+                        To be a Pinnacle that illuminates the doorway of Legal Practice with utmost professionalism, ethical standards prompt service delivery and diligence for contemporary Legal solutions with a legacy.
+                    </p>
+                </div>
             </div>
-            <div class="bg-white p-8 rounded-2xl border border-gray-200 shadow-sm space-y-4">
-                <div class="w-12 h-12 rounded-xl bg-[#172554] text-white flex items-center justify-center font-bold text-xl mb-4">
-                    <i class="fa-solid fa-eye"></i>
+
+            <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col justify-between group">
+                <div class="h-48 overflow-hidden relative">
+                    <div class="absolute inset-0 bg-[#172554]/20 z-10"></div>
+                    <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&q=80&w=800" alt="Our Vision" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute bottom-3 left-4 z-25 bg-[#172554] text-white px-3 py-1 rounded-lg text-xs font-bold shadow">Our Vision</div>
                 </div>
-                <h3 class="text-xl font-extrabold text-[#0F172A] font-['Raleway']">Our Vision</h3>
-                <p class="text-sm text-gray-600 leading-relaxed">
-                    To provide and serve as a solution hub to the various intricate and professional needs of the various class of persons or groups that we meet in the cause of our professional services and discharge of our responsibilities. We understand the needs differ, therefore we strive to be multidimensional in our service delivery.
-                </p>
+                <div class="p-8 space-y-3">
+                    <h3 class="text-xl font-extrabold text-[#0F172A] font-['Raleway']">Multidimensional Solution Hub</h3>
+                    <p class="text-sm text-gray-600 leading-relaxed">
+                        To provide and serve as a solution hub to the various intricate and professional needs of the various class of persons or groups that we meet in the cause of our professional services and discharge of our responsibilities. We understand the needs differ, therefore we strive to be multidimensional in our service delivery.
+                    </p>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- BUTTERY-SMOOTH INFINITE LOOP CAROUSELS -->
+    <!-- CONTINUOUS FLUID FLOW CAROUSELS (Real Results & Testimonials) -->
     <section class="py-16 px-6 md:px-12 max-w-7xl mx-auto space-y-8 border-t border-gray-200 overflow-hidden">
         <div class="text-center max-w-3xl mx-auto space-y-2">
             <h2 class="text-2xl sm:text-3xl font-extrabold text-[#0F172A] font-['Raleway']">Real Results. Real Victories.</h2>
         </div>
 
         <!-- Case Results Track -->
-        <div id="cases-track" class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-6 py-8">
+        <div id="cases-track" class="flex overflow-x-hidden no-scrollbar gap-6 py-8">
             
-            <div class="coverflow-card bg-[#172554] text-white rounded-2xl p-8 shadow-xl flex flex-col justify-between border border-blue-900/30 w-[280px] sm:w-[320px] snap-center shrink-0">
+            <div class="coverflow-card bg-[#172554] text-white rounded-2xl p-8 shadow-xl flex flex-col justify-between border border-blue-900/30 w-[280px] sm:w-[320px] shrink-0">
                 <div>
                     <div class="text-blue-300 text-xs font-bold tracking-widest uppercase mb-2">Intellectual Property</div>
                     <div class="text-2xl sm:text-3xl font-extrabold text-white mb-4 font-['Raleway']">₦45 Million</div>
@@ -178,7 +187,7 @@
                 <div class="pt-6 mt-6 border-t border-white/10 text-xs text-gray-200"><i class="fa-solid fa-circle-check text-blue-300 mr-1"></i> Multi-Year Federal Trial Win</div>
             </div>
 
-            <div class="coverflow-card bg-[#172554] text-white rounded-2xl p-8 shadow-xl flex flex-col justify-between border border-blue-900/30 w-[280px] sm:w-[320px] snap-center shrink-0">
+            <div class="coverflow-card bg-[#172554] text-white rounded-2xl p-8 shadow-xl flex flex-col justify-between border border-blue-900/30 w-[280px] sm:w-[320px] shrink-0">
                 <div>
                     <div class="text-blue-300 text-xs font-bold tracking-widest uppercase mb-2">White-Collar Defense</div>
                     <div class="text-2xl sm:text-3xl font-extrabold text-white mb-4 font-['Raleway']">Full Acquittal</div>
@@ -187,7 +196,7 @@
                 <div class="pt-6 mt-6 border-t border-white/10 text-xs text-gray-200"><i class="fa-solid fa-circle-check text-blue-300 mr-1"></i> Dismissal of All Charges</div>
             </div>
 
-            <div class="coverflow-card bg-[#172554] text-white rounded-2xl p-8 shadow-xl flex flex-col justify-between border border-blue-900/30 w-[280px] sm:w-[320px] snap-center shrink-0">
+            <div class="coverflow-card bg-[#172554] text-white rounded-2xl p-8 shadow-xl flex flex-col justify-between border border-blue-900/30 w-[280px] sm:w-[320px] shrink-0">
                 <div>
                     <div class="text-blue-300 text-xs font-bold tracking-widest uppercase mb-2">Corporate Mergers</div>
                     <div class="text-2xl sm:text-3xl font-extrabold text-white mb-4 font-['Raleway']">₦120 Million</div>
@@ -196,7 +205,7 @@
                 <div class="pt-6 mt-6 border-t border-white/10 text-xs text-gray-200"><i class="fa-solid fa-circle-check text-blue-300 mr-1"></i> Zero Regulatory Friction</div>
             </div>
 
-            <div class="coverflow-card bg-[#172554] text-white rounded-2xl p-8 shadow-xl flex flex-col justify-between border border-blue-900/30 w-[280px] sm:w-[320px] snap-center shrink-0">
+            <div class="coverflow-card bg-[#172554] text-white rounded-2xl p-8 shadow-xl flex flex-col justify-between border border-blue-900/30 w-[280px] sm:w-[320px] shrink-0">
                 <div>
                     <div class="text-blue-300 text-xs font-bold tracking-widest uppercase mb-2">Supreme Court Precedent</div>
                     <div class="text-2xl sm:text-3xl font-extrabold text-white mb-4 font-['Raleway']">Landmark Ruling</div>
@@ -205,7 +214,7 @@
                 <div class="pt-6 mt-6 border-t border-white/10 text-xs text-gray-200"><i class="fa-solid fa-circle-check text-blue-300 mr-1"></i> Unanimous Apex Court Victory</div>
             </div>
 
-            <div class="coverflow-card bg-[#172554] text-white rounded-2xl p-8 shadow-xl flex flex-col justify-between border border-blue-900/30 w-[280px] sm:w-[320px] snap-center shrink-0">
+            <div class="coverflow-card bg-[#172554] text-white rounded-2xl p-8 shadow-xl flex flex-col justify-between border border-blue-900/30 w-[280px] sm:w-[320px] shrink-0">
                 <div>
                     <div class="text-blue-300 text-xs font-bold tracking-widest uppercase mb-2">Arbitration &amp; Maritime</div>
                     <div class="text-2xl sm:text-3xl font-extrabold text-white mb-4 font-['Raleway']">$15 Million</div>
@@ -216,10 +225,10 @@
 
         </div>
 
-        <!-- Testimonials Track (Expanded to 4 Testimonials) -->
-        <div id="testimonials-track" class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-6 py-6 max-w-5xl mx-auto">
+        <!-- Testimonials Track -->
+        <div id="testimonials-track" class="flex overflow-x-hidden no-scrollbar gap-6 py-6 max-w-5xl mx-auto">
             
-            <div class="coverflow-card bg-white border border-blue-200/60 rounded-3xl p-8 sm:p-10 shadow-md w-[80vw] sm:w-[500px] snap-center shrink-0 flex flex-col justify-between space-y-6">
+            <div class="coverflow-card bg-white border border-blue-200/60 rounded-3xl p-8 sm:p-10 shadow-md w-[80vw] sm:w-[500px] shrink-0 flex flex-col justify-between space-y-6">
                 <p class="text-sm sm:text-base italic text-[#0F172A] font-['Raleway'] leading-relaxed">
                     "Tawo E. Tawo, SAN & Co. is distinguished not only by its competence in litigation but also by its considerable expertise in Alternative Dispute Resolution (ADR). The firm has consistently demonstrated commendable legal acumen, strategic insight, and proficiency in resolving complex disputes through appropriate dispute resolution mechanisms."
                 </p>
@@ -229,7 +238,7 @@
                 </div>
             </div>
 
-            <div class="coverflow-card bg-white border border-blue-200/60 rounded-3xl p-8 sm:p-10 shadow-md w-[80vw] sm:w-[500px] snap-center shrink-0 flex flex-col justify-between space-y-6">
+            <div class="coverflow-card bg-white border border-blue-200/60 rounded-3xl p-8 sm:p-10 shadow-md w-[80vw] sm:w-[500px] shrink-0 flex flex-col justify-between space-y-6">
                 <p class="text-sm sm:text-base italic text-[#0F172A] font-['Raleway'] leading-relaxed">
                     "The depth of corporate advisory and prompt responsiveness provided by Tawo E. Tawo, SAN & Co. during our restructuring phase was exemplary. Their rigorous intellect and meticulous attention to regulatory compliance safeguarded our enterprise against potential liabilities."
                 </p>
@@ -239,7 +248,7 @@
                 </div>
             </div>
 
-            <div class="coverflow-card bg-white border border-blue-200/60 rounded-3xl p-8 sm:p-10 shadow-md w-[80vw] sm:w-[500px] snap-center shrink-0 flex flex-col justify-between space-y-6">
+            <div class="coverflow-card bg-white border border-blue-200/60 rounded-3xl p-8 sm:p-10 shadow-md w-[80vw] sm:w-[500px] shrink-0 flex flex-col justify-between space-y-6">
                 <p class="text-sm sm:text-base italic text-[#0F172A] font-['Raleway'] leading-relaxed">
                     "Their profound understanding of commercial litigation and dispute resolution in Nigeria is unmatched. They handled our multi-party corporate defense with utmost professionalism, securing a favorable judgment without undue delays."
                 </p>
@@ -249,7 +258,7 @@
                 </div>
             </div>
 
-            <div class="coverflow-card bg-white border border-blue-200/60 rounded-3xl p-8 sm:p-10 shadow-md w-[80vw] sm:w-[500px] snap-center shrink-0 flex flex-col justify-between space-y-6">
+            <div class="coverflow-card bg-white border border-blue-200/60 rounded-3xl p-8 sm:p-10 shadow-md w-[80vw] sm:w-[500px] shrink-0 flex flex-col justify-between space-y-6">
                 <p class="text-sm sm:text-base italic text-[#0F172A] font-['Raleway'] leading-relaxed">
                     "An exceptional team of legal minds. Their advisory on our cross-border real estate acquisitions and regulatory filings was seamless, transparent, and executed well within our tight corporate timelines."
                 </p>
@@ -262,11 +271,12 @@
         </div>
     </section>
 
-    <!-- Firm Culture & Teamwork Section -->
-    <section class="bg-slate-100 border-t border-gray-200 py-16 px-6 md:px-12">
-        <div class="max-w-4xl mx-auto text-center space-y-6">
-            <h2 class="text-2xl sm:text-3xl font-extrabold text-[#0F172A] font-['Raleway']">Excellence Through Continuous Engagement</h2>
-            <p class="text-sm text-gray-600 leading-relaxed">
+    <!-- Firm Culture & Teamwork Section with Stunning Background Image -->
+    <section class="relative py-24 px-6 md:px-12 text-white overflow-hidden bg-cover bg-center" style="background-image: url('/conference.jpeg');">
+        <div class="absolute inset-0 bg-[#0F172A]/90 z-0"></div>
+        <div class="max-w-4xl mx-auto text-center space-y-6 relative z-10">
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-white font-['Raleway']">Excellence Through Continuous Engagement</h2>
+            <p class="text-sm sm:text-base text-gray-200 leading-relaxed font-normal">
                 Team spirit and teamwork is given a pride of place in the firm. We also engage in discussions, in-house conferences, case reviews, panel sessions and paper presentations by members of the firm to keep all updated abreast with extant legislations, case law and other necessary developments.
             </p>
         </div>
@@ -331,11 +341,10 @@
         </div>
     </section>
 
-    <!-- Sleek & Compact Micro-Footer with Boxed General Contacts & Full Legal Modals -->
+    <!-- Footer -->
     <footer class="bg-[#172554] text-gray-300 text-xs border-t border-blue-900 py-8 px-6 md:px-12 mt-auto">
         <div class="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between items-center gap-6">
             
-            <!-- Logo & Brand -->
             <div class="flex items-center space-x-2.5 shrink-0">
                 <div class="w-7 h-7 rounded-full overflow-hidden border border-white bg-white flex items-center justify-center p-0.5">
                     <img src="/WhatsApp Image 2026-10-08 at 13.10.32.jpeg" alt="Logo" class="w-full h-full object-cover rounded-full" onerror="this.onerror=null; this.src='https://placehold.co/100x100/172554/FFFFFF?text=TT';">
@@ -343,7 +352,6 @@
                 <span class="font-bold text-white text-xs font-['Raleway'] tracking-wide">TAWO E. TAWO, SAN & CO.</span>
             </div>
 
-            <!-- General Contacts Summary Hub (Original Boxed Style) -->
             <div class="bg-blue-950/60 border border-blue-900/80 rounded-xl px-5 py-2.5 text-center text-xs space-y-1 shadow-inner">
                 <p class="font-bold text-blue-200 uppercase tracking-wider text-[10px] font-['Raleway']">General Enquiries &amp; Communications</p>
                 <div class="flex flex-wrap justify-center items-center gap-x-4 gap-y-0.5 text-gray-200">
@@ -355,7 +363,6 @@
                 </div>
             </div>
 
-            <!-- Social Icons -->
             <div class="flex items-center space-x-2 shrink-0">
                 <a href="https://www.linkedin.com/company/tawo-e-tawo-san-co" target="_blank" rel="noopener noreferrer" class="w-7 h-7 rounded-full bg-blue-950 flex items-center justify-center text-white hover:bg-white hover:text-[#172554] transition-all" aria-label="LinkedIn">
                     <svg class="w-3 h-3 fill-current" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
@@ -370,7 +377,6 @@
 
         </div>
         
-        <!-- Copyright & Interactive Legal Links Row (Includes Cookies) -->
         <div class="max-w-7xl mx-auto mt-4 pt-3 border-t border-blue-900/60 text-center text-[10px] text-blue-200 flex flex-col sm:flex-row items-center justify-between gap-2">
             <span>&copy; 2026 Tawo E. Tawo SAN & Co. All Rights Reserved.</span>
             <div class="flex flex-wrap justify-center items-center gap-x-2 text-[10px] text-gray-300">
@@ -391,46 +397,30 @@
             <button onclick="closeLegalModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 text-lg font-bold w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center transition-colors">
                 <i class="fa-solid fa-xmark"></i>
             </button>
-            <div id="modal-content" class="space-y-4 pt-2">
-                <!-- Content injected dynamically via script -->
-            </div>
+            <div id="modal-content" class="space-y-4 pt-2"></div>
             <div class="pt-4 border-t border-gray-100 text-right">
                 <button onclick="closeLegalModal()" class="px-5 py-2 rounded-lg bg-[#172554] text-white text-xs font-bold hover:bg-blue-900 transition-colors">Close</button>
             </div>
         </div>
     </div>
 
-    <!-- Modal Script Logic -->
     <script>
         const legalTexts = {
             privacy: {
                 title: "Privacy Policy",
-                content: `At Tawo E. Tawo, SAN & Co., we are committed to safeguarding the privacy and confidentiality of personal data entrusted to us by our clients, website visitors, and stakeholders. This policy outlines our practices in compliance with the Nigeria Data Protection Act (NDPA) and applicable regulations.<br><br>
-                <strong>1. Information Collection:</strong> We collect personal information (such as names, corporate emails, phone numbers, and transactional details) when voluntarily provided through consultation forms, direct communications, or professional engagements.<br><br>
-                <strong>2. Use of Information:</strong> Data collected is utilized strictly for the provision of legal services, corporate advisory, conflict checks, billing, regulatory compliance, and communication regarding legal updates.<br><br>
-                <strong>3. Data Security & Protection:</strong> We implement stringent administrative, technical, and physical security measures to protect personal data against unauthorized access, disclosure, alteration, or destruction.<br><br>
-                <strong>4. Third-Party Sharing:</strong> We do not trade, sell, or rent personal data. Information is only shared with authorized regulatory bodies, courts, or expert co-counsel where strictly required for the execution of our professional duties.`
+                content: `At Tawo E. Tawo, SAN & Co., we are committed to safeguarding the privacy and confidentiality of personal data entrusted to us by our clients, website visitors, and stakeholders. This policy outlines our practices in compliance with the Nigeria Data Protection Act (NDPA) and applicable regulations.<br><br><strong>1. Information Collection:</strong> We collect personal information (such as names, corporate emails, phone numbers, and transactional details) when voluntarily provided through consultation forms, direct communications, or professional engagements.<br><br><strong>2. Use of Information:</strong> Data collected is utilized strictly for the provision of legal services, corporate advisory, conflict checks, billing, regulatory compliance, and communication regarding legal updates.<br><br><strong>3. Data Security & Protection:</strong> We implement stringent administrative, technical, and physical security measures to protect personal data against unauthorized access, disclosure, alteration, or destruction.<br><br><strong>4. Third-Party Sharing:</strong> We do not trade, sell, or rent personal data. Information is only shared with authorized regulatory bodies, courts, or expert co-counsel where strictly required for the execution of our professional duties.`
             },
             terms: {
                 title: "Terms of Use",
-                content: `Welcome to the official website of Tawo E. Tawo, SAN & Co. By accessing or using this website, you agree to comply with and be bound by the following terms and conditions:<br><br>
-                <strong>1. No Legal Advice:</strong> The materials, articles, and insights published on this website are for general informational purposes only and do not constitute formal legal advice or opinion.<br><br>
-                <strong>2. Attorney-Client Relationship:</strong> Viewing this website, submitting an inquiry via our contact form, or emailing our partners does not establish an attorney-client relationship. A formal relationship is created only after an express retainer agreement has been executed by the firm.<br><br>
-                <strong>3. Intellectual Property:</strong> All content, logos, branding, graphics, and publications on this site are the intellectual property of Tawo E. Tawo, SAN & Co. Unauthorized reproduction, distribution, or commercial exploitation is strictly prohibited.`
+                content: `Welcome to the official website of Tawo E. Tawo, SAN & Co. By accessing or using this website, you agree to comply with and be bound by the following terms and conditions:<br><br><strong>1. No Legal Advice:</strong> The materials, articles, and insights published on this website are for general informational purposes only and do not constitute formal legal advice or opinion.<br><br><strong>2. Attorney-Client Relationship:</strong> Viewing this website, submitting an inquiry via our contact form, or emailing our partners does not establish an attorney-client relationship. A formal relationship is created only after an express retainer agreement has been executed by the firm.<br><br><strong>3. Intellectual Property:</strong> All content, logos, branding, graphics, and publications on this site are the intellectual property of Tawo E. Tawo, SAN & Co. Unauthorized reproduction, distribution, or commercial exploitation is strictly prohibited.`
             },
             cookies: {
                 title: "Cookies Policy",
-                content: `This website uses cookies and similar tracking technologies to enhance user experience, analyze site traffic, and understand how visitors interact with our platform.<br><br>
-                <strong>1. What Are Cookies:</strong> Cookies are small data files stored on your browser or device when you visit a website. They help the site remember your preferences and improve performance.<br><br>
-                <strong>2. How We Use Them:</strong> We utilize essential cookies required for core site functionality (such as navigation and responsive layouts) as well as analytical cookies to monitor aggregate traffic patterns.<br><br>
-                <strong>3. Managing Cookies:</strong> You can choose to accept or decline cookies through your web browser settings. Disabling certain cookies may impact the full functionality of specific interactive features on the site.`
+                content: `This website uses cookies and similar tracking technologies to enhance user experience, analyze site traffic, and understand how visitors interact with our platform.<br><br><strong>1. What Are Cookies:</strong> Cookies are small data files stored on your browser or device when you visit a website. They help the site remember your preferences and improve performance.<br><br><strong>2. How We Use Them:</strong> We utilize essential cookies required for core site functionality (such as navigation and responsive layouts) as well as analytical cookies to monitor aggregate traffic patterns.<br><br><strong>3. Managing Cookies:</strong> You can choose to accept or decline cookies through your web browser settings. Disabling certain cookies may impact the full functionality of specific interactive features on the site.`
             },
             disclaimer: {
                 title: "Legal Disclaimer",
-                content: `The information contained on this website is provided by Tawo E. Tawo, SAN & Co. for general informational guidance only.<br><br>
-                <strong>1. Limitation of Liability:</strong> The firm expressly disclaims all liability in respect to actions taken or not taken based on any or all of the contents of this website. Users should seek specialized professional legal counsel for specific legal issues.<br><br>
-                <strong>2. Jurisdictional Scope:</strong> Tawo E. Tawo, SAN & Co. is regulated to practice law within the Federal Republic of Nigeria, maintaining offices across Abuja, Lagos, Calabar, and Yenagoa, alongside international correspondence.<br><br>
-                <strong>3. External Links:</strong> Links to third-party websites or resources are provided for convenience only and do not constitute an endorsement or verification of their content.`
+                content: `The information contained on this website is provided by Tawo E. Tawo, SAN & Co. for general informational guidance only.<br><br><strong>1. Limitation of Liability:</strong> The firm expressly disclaims all liability in respect to actions taken or not taken based on any or all of the contents of this website. Users should seek specialized professional legal counsel for specific legal issues.<br><br><strong>2. Jurisdictional Scope:</strong> Tawo E. Tawo, SAN & Co. is regulated to practice law within the Federal Republic of Nigeria, maintaining offices across Abuja, Lagos, Calabar, and Yenagoa, alongside international correspondence.<br><br><strong>3. External Links:</strong> Links to third-party websites or resources are provided for convenience only and do not constitute an endorsement or verification of their content.`
             }
         };
 
@@ -438,11 +428,7 @@
             const modal = document.getElementById('legal-modal');
             const contentDiv = document.getElementById('modal-content');
             const data = legalTexts[type];
-            
-            contentDiv.innerHTML = `
-                <h3 class="text-xl font-extrabold text-[#0F172A] font-['Raleway']">${data.title}</h3>
-                <div class="text-xs sm:text-sm text-gray-600 leading-relaxed space-y-3">${data.content}</div>
-            `;
+            contentDiv.innerHTML = `<h3 class="text-xl font-extrabold text-[#0F172A] font-['Raleway']">${data.title}</h3><div class="text-xs sm:text-sm text-gray-600 leading-relaxed space-y-3">${data.content}</div>`;
             modal.classList.remove('hidden');
         }
 
@@ -450,23 +436,19 @@
             document.getElementById('legal-modal').classList.add('hidden');
         }
 
-        // Close modal when clicking outside content box
         window.onclick = function(event) {
             const modal = document.getElementById('legal-modal');
-            if (event.target === modal) {
-                closeLegalModal();
-            }
+            if (event.target === modal) { closeLegalModal(); }
         }
     </script>
 
-    <!-- Script Engines: Buttery-Smooth Loop + Scroll Animations -->
+    <!-- Script Engines: Continuous Fluid Flow + Scroll Animations -->
     <script>
         function toggleMobileMenu() { 
             document.getElementById('mobile-menu').classList.toggle('hidden'); 
         }
 
         document.addEventListener("DOMContentLoaded", () => {
-            // Scroll Fade-In Observer
             const observerOptions = { root: null, threshold: 0.15 };
             const scrollObserver = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
@@ -481,26 +463,25 @@
                 scrollObserver.observe(el);
             });
 
-            // Initialize Jitter-Free Carousels
-            initJankFreeLoop('cases-track', 4500);
-            initJankFreeLoop('testimonials-track', 6500);
+            // Initialize Continuous Fluid Flow for both tracks
+            initContinuousFlow('cases-track');
+            initContinuousFlow('testimonials-track');
         });
 
-        function initJankFreeLoop(trackId, intervalMs = 4500) {
+        function initContinuousFlow(trackId) {
             const track = document.getElementById(trackId);
             if (!track) return;
 
-            // Clone children to ensure seamless endless length
             const originalCards = Array.from(track.children);
             originalCards.forEach(card => {
                 const clone = card.cloneNode(true);
                 track.appendChild(clone);
             });
 
-            let timer = null;
-            let isInteracting = false;
+            let isPaused = false;
+            let scrollPos = 0;
+            const speed = 0.8;
 
-            // Center Focus Observer
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -516,49 +497,26 @@
 
             track.querySelectorAll('.coverflow-card').forEach(card => observer.observe(card));
 
-            // Instant, invisible loop correction during native scrolling
-            track.addEventListener('scroll', () => {
-                const singleSetWidth = track.scrollWidth / 2;
-                if (track.scrollLeft >= singleSetWidth) {
-                    track.style.scrollBehavior = 'auto'; // Disable smooth during reset to eliminate jitter
-                    track.scrollLeft -= singleSetWidth;
-                    track.style.scrollBehavior = 'smooth';
+            function step() {
+                if (!isPaused) {
+                    scrollPos += speed;
+                    const singleSetWidth = track.scrollWidth / 2;
+                    if (scrollPos >= singleSetWidth) {
+                        scrollPos = 0;
+                    }
+                    track.scrollLeft = scrollPos;
                 }
-            }, { passive: true });
-
-            function autoAdvance() {
-                if (isInteracting) return;
-                const cardWidth = originalCards[0].offsetWidth + 24;
-                const singleSetWidth = track.scrollWidth / 2;
-
-                if (track.scrollLeft >= singleSetWidth - 20) {
-                    track.style.scrollBehavior = 'auto';
-                    track.scrollLeft = 0;
-                    track.style.scrollBehavior = 'smooth';
-                }
-                track.scrollBy({ left: cardWidth, behavior: 'smooth' });
+                requestAnimationFrame(step);
             }
 
-            function startTimer() {
-                stopTimer();
-                timer = setInterval(autoAdvance, intervalMs);
-            }
+            track.addEventListener('mouseenter', () => { isPaused = true; });
+            track.addEventListener('mouseleave', () => { isPaused = false; });
+            track.addEventListener('touchstart', () => { isPaused = true; }, { passive: true });
+            track.addEventListener('touchend', () => { isPaused = false; }, { passive: true });
 
-            function stopTimer() {
-                if (timer) clearInterval(timer);
-            }
-
-            track.addEventListener('mouseenter', () => { isInteracting = true; });
-            track.addEventListener('mouseleave', () => { isInteracting = false; });
-            track.addEventListener('touchstart', () => { isInteracting = true; }, { passive: true });
-            track.addEventListener('touchend', () => {
-                setTimeout(() => { isInteracting = false; }, 3000);
-            }, { passive: true });
-
-            startTimer();
+            requestAnimationFrame(step);
         }
 
-        // Navbar Scroll Handler
         window.addEventListener('scroll', function() {
             const navbar = document.getElementById('navbar');
             const brandTitle = document.getElementById('nav-brand-title');
