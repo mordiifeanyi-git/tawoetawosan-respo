@@ -383,7 +383,7 @@
                 let cleanMarkdown = content.replace(/^---[\s\S]*?---/, '').trim();
                 let referenceList = [];
                 
-                const refSplit = cleanMarkdown.split(/###\s*(?:References\s*&\s*Footnotes|References|Footnotes|End\s*Notes|Endnotes)/i);
+                const refSplit = cleanMarkdown.split(/###\s*(?:References\s*&\s*Footnotes|References|Footnotes|End\s*Notes)/i);
                 if (refSplit.length > 1) {
                     cleanMarkdown = refSplit[0].trim();
                     referenceList = refSplit[1].trim().split('\n').map(l => l.replace(/^\d+[\.\)]\s*/, '').trim()).filter(Boolean);
@@ -391,7 +391,7 @@
 
                 let bodyHtml = marked.parse(cleanMarkdown);
 
-                // Upgraded regex to catch <sup>N</sup>, ^N, or square bracket superscripts like [N] and link them correctly
+                // Preserve original numbers explicitly, rendering them visible as clickable superscript elements
                 bodyHtml = bodyHtml.replace(/<sup>\s*\[?(\d+)\]?\s*<\/sup>/gi, '<a id="fn-src-$1" class="text-blue-600 font-bold hover:underline transition-colors cursor-pointer footnote-jump" data-target="ref-$1"><sup>[$1]</sup></a>');
                 bodyHtml = bodyHtml.replace(/\^(\d+)/g, '<a id="fn-src-$1" class="text-blue-600 font-bold hover:underline transition-colors cursor-pointer footnote-jump" data-target="ref-$1"><sup>[$1]</sup></a>');
                 bodyHtml = bodyHtml.replace(/\[(\d+)\]/g, '<a id="fn-src-$1" class="text-blue-600 font-bold hover:underline transition-colors cursor-pointer footnote-jump" data-target="ref-$1"><sup>[$1]</sup></a>');
@@ -413,7 +413,6 @@
 
                 document.getElementById('article-body-container').innerHTML = finalHtmlContent;
 
-                // Programmatically bind smooth scrolling for instant jumping
                 document.querySelectorAll('.footnote-jump, .return-jump').forEach(el => {
                     el.addEventListener('click', (e) => {
                         e.preventDefault();
