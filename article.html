@@ -99,12 +99,22 @@
             <h1 id="article-title" class="text-2xl sm:text-4xl font-extrabold text-[#0F172A] font-['Raleway'] leading-tight">Loading Article...</h1>
         </div>
 
-        <div id="article-media-box" class="space-y-4"></div>
-
         <!-- Full Rendered Body & Clickable Footnotes -->
         <article id="article-body-container" class="article-content-body bg-white border border-gray-200/80 rounded-3xl p-8 sm:p-12 shadow-sm text-sm text-gray-700 space-y-4">
             <p class="text-gray-400 italic">Retrieving publication content from repository...</p>
         </article>
+
+        <!-- RESTORED AUTHOR / CONTRIBUTION PROFILE SECTION -->
+        <div id="article-author-section" class="bg-white border border-gray-200/80 rounded-2xl p-6 sm:p-8 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-6 hidden">
+            <div>
+                <span id="author-label-title" class="text-[10px] font-extrabold uppercase tracking-widest text-[#172554] font-['Raleway'] block mb-1">Author / Contribution</span>
+                <h4 id="author-name-display" class="text-sm sm:text-base font-extrabold text-[#0F172A] font-['Raleway']">Tawo E. Tawo, SAN &amp; Co.</h4>
+                <p class="text-[11px] text-gray-500 font-medium">Legal Practitioners, Notary Public &amp; Arbitrators</p>
+            </div>
+            <div id="author-photos-container" class="flex items-center space-x-3 shrink-0">
+                <!-- Injected dynamically -->
+            </div>
+        </div>
 
         <div class="pt-6 border-t border-gray-200 flex items-center justify-between">
             <a href="articles.html" class="px-5 py-2.5 rounded-xl bg-[#172554] text-white text-xs font-bold hover:bg-blue-900 transition-all shadow">
@@ -162,9 +172,8 @@
                 let title = targetFile.name.replace('.md', '').replace(/-/g, ' ');
                 let category = 'Legal Practice';
                 let date = '';
-                let videoUrl = '';
-                let imageUrl = '';
-                let galleryStr = '';
+                let authorNameStr = '';
+                let authorPhotoStr = '';
 
                 const frontmatterBlock = content.match(/^---([\s\S]*?)---/);
                 if (frontmatterBlock && frontmatterBlock[1]) {
@@ -178,9 +187,8 @@
                             if (key === 'title') title = val;
                             else if (key === 'category' && val) category = val;
                             else if (key === 'date') date = val;
-                            else if (key === 'video') videoUrl = val;
-                            else if (key === 'image') imageUrl = val;
-                            else if (key === 'gallery') galleryStr = val;
+                            else if (key === 'author') authorNameStr = val;
+                            else if (key === 'author_photo') authorPhotoStr = val;
                         }
                     });
                 }
@@ -190,29 +198,59 @@
                 document.getElementById('article-category').innerText = category;
                 document.getElementById('article-date').innerText = date ? new Date(date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }).toUpperCase() : 'RECENT';
 
+                // POPULATE RESTORED AUTHOR SECTION
+                let names = authorNameStr ? authorNameStr.split(',').map(s => s.trim()).filter(Boolean) : [];
+                let photos = authorPhotoStr ? authorPhotoStr.split(',').map(s => s.trim()).filter(s => s && s !== 'undefined') : [];
+                
+                if (names.length > 0 || photos.length > 0) {
+                    const authorSection = document.getElementById('article-author-section');
+                    const authorNameDisplay = document.getElementById('author-name-display');
+                    const authorPhotosContainer = document.getElementById('author-photos-container');
+                    const authorLabelTitle = document.getElementById('author-label-title');
+
+                    authorNameDisplay.innerText = names.join(', ') || 'Tawo E. Tawo, SAN & Co.';
+                    authorLabelTitle.innerText = names.length > 1 ? 'Contributions / Authors' : 'Author / Contribution';
+                    
+                    authorPhotosContainer.innerHTML = '';
+                    const count = Math.max(names.length, photos.length);
+                    for (let i = 0; i < count; i++) {
+                        const pPhoto = photos[i] || '/WhatsApp Image 2026-10-08 at 13.10.32.jpeg';
+                        const pName = names[i] || 'Tawo E. Tawo, SAN & Co.';
+                        authorPhotosContainer.innerHTML += `
+                            <div class="w-14 h-14 rounded-xl border-2 border-white shadow-md overflow-hidden bg-slate-900 shrink-0">
+                                <img src="${pPhoto}" class="w-full h-full object-cover" alt="${pName}" onerror="this.onerror=null; this.src='https://placehold.co/150x150/172554/FFFFFF?text=SAN';">
+                            </div>`;
+                    }
+                    authorSection.classList.remove('hidden');
+                }
+
                 let cleanMarkdown = content.replace(/^---[\s\S]*?---/, '').trim();
                 let referenceList = [];
-                const refSplit = cleanMarkdown.split(/### References & Footnotes/i);
+                
+                const refSplit = cleanMarkdown.split(/###\s*(?:References\s*&\s*Footnotes|References|Footnotes|End\s*Notes)/i);
                 if (refSplit.length > 1) {
                     cleanMarkdown = refSplit[0].trim();
-                    referenceList = refSplit[1].trim().split('\n').map(l => l.replace(/^\d+\.\s*/, '').trim()).filter(Boolean);
+                    referenceList = refSplit[1].trim().split('\n').map(l => l.replace(/^\d+[\.\)]\s*/, '').trim()).filter(Boolean);
                 }
 
                 let bodyHtml = marked.parse(cleanMarkdown);
 
-                // Convert Word superscripts or caret markers into interactive jump links
-                bodyHtml = bodyHtml.replace(/<sup>\s*(\d+)\s*<\/sup>/gi, '<a id="fn-src-$1" href="#ref-$1" class="text-blue-600 font-bold hover:underline transition-colors cursor-pointer"><sup>[$1]</sup></a>');
+                // 1. Transform raw text or superscript markers into interactive ID source anchors
+                bodyHtml = bodyHtml.replace(/<sup>\s*\[?(\d+)\]?\s*<\/sup>/gi, '<a id="fn-src-$1" href="#ref-$1" class="text-blue-600 font-bold hover:underline transition-colors cursor-pointer"><sup>[$1]</sup></a>');
                 bodyHtml = bodyHtml.replace(/\^(\d+)/g, '<a id="fn-src-$1" href="#ref-$1" class="text-blue-600 font-bold hover:underline transition-colors cursor-pointer"><sup>[$1]</sup></a>');
 
                 let finalHtmlContent = bodyHtml;
+                
+                // 2. Build the reference section with target IDs and return links
                 if (referenceList.length > 0) {
                     finalHtmlContent += `
                         <div class="article-footnote-list">
                             <h4>References &amp; Footnotes</h4>
                             <ol>`;
                     referenceList.forEach((refLine, idx) => {
+                        let refNum = idx + 1;
                         let cleanLine = refLine.replace(/^\d+[\.\)]\s*/, '');
-                        finalHtmlContent += `<li id="ref-${idx+1}" class="leading-relaxed"><span class="font-medium text-slate-800">${cleanLine}</span> <a href="#fn-src-${idx+1}" class="text-blue-600 text-[10px] ml-1 font-bold hover:underline">↑ back to text</a></li>`;
+                        finalHtmlContent += `<li id="ref-${refNum}" class="leading-relaxed"><span class="font-medium text-slate-800">${cleanLine}</span> <a href="#fn-src-${refNum}" class="text-blue-600 text-[10px] ml-1 font-bold hover:underline">↑ back to text</a></li>`;
                     });
                     finalHtmlContent += `</ol></div>`;
                 }
