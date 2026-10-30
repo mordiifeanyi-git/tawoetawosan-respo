@@ -440,7 +440,9 @@
             document.getElementById('modal-meta').innerText = article.date;
             document.getElementById('modal-dynamic-category-heading').innerText = article.category;
             
-            let formattedBody = article.bodyHtml.replace(/\^(\d+)/g, '<sup><a href="#ref-$1" class="text-blue-600 font-bold hover:underline">[$1]</a></sup>');
+            // CONVERT WORD SUPERSCRIPTS OR CARET NOTES INTO CLICKABLE JUMP ANCHORS
+            let formattedBody = article.bodyHtml.replace(/<sup>\s*(\d+)\s*<\/sup>/gi, '<a id="fn-src-$1" href="#ref-$1" class="text-blue-600 font-bold hover:underline transition-colors cursor-pointer"><sup>[$1]</sup></a>');
+            formattedBody = formattedBody.replace(/\^(\d+)/g, '<a id="fn-src-$1" href="#ref-$1" class="text-blue-600 font-bold hover:underline transition-colors cursor-pointer"><sup>[$1]</sup></a>');
             
             let finalHtmlContent = formattedBody;
             if (article.references && article.references.length > 0) {
@@ -449,7 +451,8 @@
                         <h4>References &amp; Footnotes</h4>
                         <ol>`;
                 article.references.forEach((refLine, idx) => {
-                    finalHtmlContent += `<li id="ref-${idx+1}">${refLine}</li>`;
+                    let cleanLine = refLine.replace(/^\d+[\.\)]\s*/, '');
+                    finalHtmlContent += `<li id="ref-${idx+1}" class="leading-relaxed"><span class="font-medium text-slate-800">${cleanLine}</span> <a href="#fn-src-${idx+1}" class="text-blue-600 text-[10px] ml-1 font-bold hover:underline">↑ back to text</a></li>`;
                 });
                 finalHtmlContent += `</ol></div>`;
             }
@@ -464,7 +467,6 @@
 
             const count = Math.max(names.length, photos.length);
             
-            // Updated label: "Contribution(s)" for multiple or single admin contributions
             let labelTitle = (count > 1) ? 'Contributions' : 'Contribution';
             let authorHtml = `<span class="text-[10px] font-extrabold uppercase tracking-widest text-[#172554] font-['Raleway'] block w-full text-right mb-1">${labelTitle}</span>`;
 
@@ -502,7 +504,6 @@
             const mediaWrapper = document.getElementById('modal-media-wrapper');
             mediaWrapper.innerHTML = '';
 
-            /* MODAL IMAGES: ONLY RENDERED FOR GALLERY POSTS */
             if (article.gallery && article.gallery.length > 0 && article.postType === 'gallery') {
                 let gridHtml = '<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">';
                 article.gallery.forEach(img => {
@@ -663,7 +664,6 @@
                         avatarBadgeHtml += '</div>';
                     }
 
-                    // STRICT CHANNELING: Reveal headers ONLY when an active item exists for that section
                     if (postType === 'gallery') {
                         if (gallerySection) gallerySection.classList.remove('hidden');
 
@@ -774,7 +774,6 @@
                     }
                 }
 
-                // CHECK FOR URL PARAMETER DEEP LINKING (e.g., articles.html?article=0)
                 const urlParams = new URLSearchParams(window.location.search);
                 const articleParam = urlParams.get('article');
                 if (articleParam !== null) {
