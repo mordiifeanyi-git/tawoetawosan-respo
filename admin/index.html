@@ -385,7 +385,6 @@
                 // Detect author line starting with dash or byline
                 if (line.startsWith('-') || line.toLowerCase().startsWith('by ')) {
                     authorName = line.replace(/^-\s*|^by\s+/i, '').trim();
-                    // Auto-fill first author input if empty
                     const firstAuthorInput = document.querySelector('.author-name-input');
                     if (firstAuthorInput && !firstAuthorInput.value) {
                         firstAuthorInput.value = authorName;
@@ -413,9 +412,8 @@
             // Join body paragraphs
             document.getElementById('input-body').value = bodyLines.join('\n\n');
 
-            // Format endnotes with numbers if not already numbered
+            // Format endnotes with numbers
             let formattedReferences = endNotes.map((note, idx) => {
-                // Strip existing leading numbers like "1." or "(1)" if present
                 let cleanNote = note.replace(/^[\d\-\.\(\)]+\s*/, '');
                 return `${idx + 1}. ${cleanNote}`;
             }).join('\n');
@@ -787,7 +785,7 @@ ${fullBody}`;
                 const files = await response.json();
                 container.innerHTML = '';
                 const mdFiles = files.filter(f => f.name.endsWith('.md'));
-                mdFiles.forEach(file => {  
+                mdFiles.forEach(file => {
                     const row = document.createElement('div');
                     row.className = 'py-3.5 flex items-center justify-between gap-4';
                     row.innerHTML = `<div class="min-w-0"><h4 class="text-xs font-bold text-[#0F172A] truncate">${file.name}</h4></div><button onclick="deleteArticle('${file.name}')" class="px-3 py-1.5 rounded-lg bg-red-50 text-red-600 text-xs font-bold cursor-pointer"><i class="fa-solid fa-trash-can"></i> Delete</button>`;
