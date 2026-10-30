@@ -432,7 +432,7 @@
             }
         }
 
-        function openDynamicArticleModal(index) {
+        function openGalleryOrMediaModal(index) {
             const article = dynamicArticlesMap[index];
             if (!article) return;
 
@@ -440,31 +440,13 @@
             document.getElementById('modal-meta').innerText = article.date;
             document.getElementById('modal-dynamic-category-heading').innerText = article.category;
             
-            // CONVERT WORD SUPERSCRIPTS OR CARET NOTES INTO CLICKABLE JUMP ANCHORS
-            let formattedBody = article.bodyHtml.replace(/<sup>\s*(\d+)\s*<\/sup>/gi, '<a id="fn-src-$1" href="#ref-$1" class="text-blue-600 font-bold hover:underline transition-colors cursor-pointer"><sup>[$1]</sup></a>');
-            formattedBody = formattedBody.replace(/\^(\d+)/g, '<a id="fn-src-$1" href="#ref-$1" class="text-blue-600 font-bold hover:underline transition-colors cursor-pointer"><sup>[$1]</sup></a>');
-            
-            let finalHtmlContent = formattedBody;
-            if (article.references && article.references.length > 0) {
-                finalHtmlContent += `
-                    <div class="article-footnote-list">
-                        <h4>References &amp; Footnotes</h4>
-                        <ol>`;
-                article.references.forEach((refLine, idx) => {
-                    let cleanLine = refLine.replace(/^\d+[\.\)]\s*/, '');
-                    finalHtmlContent += `<li id="ref-${idx+1}" class="leading-relaxed"><span class="font-medium text-slate-800">${cleanLine}</span> <a href="#fn-src-${idx+1}" class="text-blue-600 text-[10px] ml-1 font-bold hover:underline">↑ back to text</a></li>`;
-                });
-                finalHtmlContent += `</ol></div>`;
-            }
-
-            document.getElementById('modal-body-text').innerHTML = finalHtmlContent;
+            document.getElementById('modal-body-text').innerHTML = article.bodyHtml;
 
             const gridContainer = document.getElementById('modal-author-profiles-grid');
             gridContainer.innerHTML = '';
 
             let names = article.authorNames ? article.authorNames.split(',').map(s => s.trim()).filter(Boolean) : [];
             let photos = article.authorPhotos || [];
-
             const count = Math.max(names.length, photos.length);
             
             let labelTitle = (count > 1) ? 'Contributions' : 'Contribution';
@@ -556,7 +538,7 @@
         function toggleMobileMenu() { document.getElementById('mobile-menu').classList.toggle('hidden'); }
     </script>
 
-    <!-- Dynamic Content Loader with Strict Section Separation & Direct URL Parameter Deep-Linking -->
+    <!-- Dynamic Content Loader with Dedicated Article Routing -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
         marked.setOptions({ html: true, gfm: true });
@@ -607,9 +589,7 @@
                                 const val = line.substring(colonIndex + 1).trim().replace(/^["']|["']$/g, '');
 
                                 if (key === 'title') title = val;
-                                else if (key === 'category') {
-                                    if (val) category = val;
-                                }
+                                else if (key === 'category' && val) category = val;
                                 else if (key === 'date') date = val;
                                 else if (key === 'type') postType = val.toLowerCase().trim();
                                 else if (key === 'video') videoUrl = val;
@@ -628,19 +608,13 @@
 
                     let cleanMarkdown = content.replace(/^---[\s\S]*?---/, '').trim();
 
-                    let referenceList = [];
-                    const refSplit = cleanMarkdown.split(/### References & Footnotes/i);
-                    if (refSplit.length > 1) {
-                        cleanMarkdown = refSplit[0].trim();
-                        referenceList = refSplit[1].trim().split('\n').map(l => l.replace(/^\d+\.\s*/, '').trim()).filter(Boolean);
-                    }
-
                     const bodyHtml = marked.parse(cleanMarkdown);
                     const snippet = cleanMarkdown.replace(/[#*`_]/g, '').substring(0, 110) + '...';
                     const formattedDate = date ? new Date(date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }).toUpperCase() : 'RECENT PUBLICATION';
 
                     const articleObj = {
                         id: i,
+                        filename: file.name,
                         title: title,
                         category: category,
                         date: formattedDate,
@@ -650,7 +624,6 @@
                         authorNames: authorNameStr,
                         authorPhotos: authorPhotos,
                         bodyHtml: bodyHtml,
-                        references: referenceList,
                         postType: postType
                     };
                     dynamicArticlesMap.push(articleObj);
@@ -669,7 +642,7 @@
 
                         const galleryCard = document.createElement('div');
                         galleryCard.className = 'bg-white border border-gray-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between group cursor-pointer relative hover:-translate-y-1';
-                        galleryCard.onclick = () => openDynamicArticleModal(i);
+                        galleryCard.onclick = () => openGalleryOrMediaModal(i);
 
                         let galleryThumbHtml = '';
                         if (galleryPhotos.length > 0) {
@@ -698,7 +671,7 @@
 
                         const mediaCard = document.createElement('div');
                         mediaCard.className = 'bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between cursor-pointer relative hover:-translate-y-1';
-                        mediaCard.onclick = () => openDynamicArticleModal(i);
+                        mediaCard.onclick = () => openGalleryOrMediaModal(i);
 
                         let mediaPreviewHtml = '';
                         const ytMatch = videoUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/))([\w-]{11})/);
@@ -750,9 +723,12 @@
                         mediaGrid.prepend(mediaCard);
 
                     } else {
+                        // STANDARD ARTICLE: Redirects to dedicated article.html?file=filename.md
                         const articleCard = document.createElement('article');
                         articleCard.className = 'bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between relative hover:-translate-y-1 cursor-pointer';
-                        articleCard.onclick = () => openDynamicArticleModal(i);
+                        articleCard.onclick = () => {
+                            window.location.href = `article.html?file=${encodeURIComponent(file.name)}`;
+                        };
 
                         articleCard.innerHTML = `
                             <div class="p-6 sm:p-8 space-y-4">
@@ -771,17 +747,6 @@
                             ${avatarBadgeHtml}
                         `;
                         articlesGrid.prepend(articleCard);
-                    }
-                }
-
-                const urlParams = new URLSearchParams(window.location.search);
-                const articleParam = urlParams.get('article');
-                if (articleParam !== null) {
-                    const targetIndex = parseInt(articleParam, 10);
-                    if (!isNaN(targetIndex) && dynamicArticlesMap[targetIndex]) {
-                        setTimeout(() => {
-                            openDynamicArticleModal(targetIndex);
-                        }, 250);
                     }
                 }
 

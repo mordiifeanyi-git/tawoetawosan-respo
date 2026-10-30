@@ -4,34 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="/faviconlogo.png">
-    <title>Legal Insight | TAWO E. TAWO, SAN & CO.</title>
+    <title id="page-title">Article & Insights | TAWO E. TAWO, SAN & CO.</title>
+
+    <meta name="robots" content="index, follow">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        :root { --primary-royal: #172554; --primary-royal-dark: #0F172A; --bg-offwhite: #F8FAFC; --text-slate: #334155; }
-        body { font-family: 'Roboto', 'Raleway', Arial, Helvetica, sans-serif; background-color: var(--bg-offwhite); color: var(--text-slate); line-height: 1.8; overflow-x: hidden; }
+        :root { 
+            --primary-royal: #172554; 
+            --primary-royal-dark: #0F172A; 
+            --bg-offwhite: #F8FAFC; 
+            --text-slate: #334155; 
+        }
+        body { font-family: 'Roboto', 'Raleway', Arial, Helvetica, sans-serif; background-color: var(--bg-offwhite); color: var(--text-slate); line-height: 1.8; }
         h1, h2, h3, h4, h5, h6 { font-family: 'Raleway', 'Roboto', Arial, Helvetica, sans-serif; color: #0F172A; }
-        
-        .glass-card-light {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(226, 232, 240, 0.8);
-        }
-        .glass-nav {
-            background: rgba(23, 37, 84, 0.95);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        /* Styling for References / Footnotes */
+
+        .article-content-body p { margin-bottom: 1.25rem; }
+        .article-content-body h2 { font-size: 1.25rem; font-weight: 800; margin-top: 2rem; margin-bottom: 0.75rem; }
+        .article-content-body h3 { font-size: 1.1rem; font-weight: 700; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+
         .article-footnote-list {
-            border-top: 2px solid #e2e8f0;
+            border-top: 1px solid #e2e8f0;
             margin-top: 2.5rem;
             padding-top: 1.5rem;
         }
         .article-footnote-list h4 {
-            font-size: 13px;
+            font-size: 12px;
             text-transform: uppercase;
             letter-spacing: 0.05em;
             color: #0F172A;
@@ -42,137 +39,158 @@
         .article-footnote-list ol {
             font-size: 12px;
             color: #475569;
-            padding-left: 1.5rem;
+            padding-left: 1.2rem;
         }
         .article-footnote-list li {
             margin-bottom: 0.5rem;
-            line-height: 1.6;
         }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700;800&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="antialiased bg-[#F8FAFC] min-h-screen flex flex-col relative">
+<body class="antialiased selection:bg-blue-500 selection:text-white min-h-screen flex flex-col">
 
-    <div class="fixed top-1/3 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-blue-100/40 rounded-full blur-[120px] pointer-events-none z-0"></div>
-
-    <header class="glass-nav sticky top-0 z-50 py-3 px-6 md:px-12 text-white shadow-md">
-        <div class="max-w-7xl mx-auto flex items-center justify-between">
-            <a href="index.html" class="flex items-center space-x-3">
-                <div class="w-9 h-9 rounded-full overflow-hidden bg-white p-0.5 border border-white/40">
-                    <img src="/WhatsApp Image 2026-10-08 at 13.10.32.jpeg" alt="Logo" class="w-full h-full object-cover rounded-full" onerror="this.src='https://placehold.co/100x100/172554/FFFFFF?text=TT';">
+    <!-- Navigation Bar -->
+    <header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white/95 backdrop-blur-md border-b border-gray-200/80 py-2 shadow-sm">
+        <div class="max-w-7xl mx-auto flex items-center justify-between px-6 md:px-12">
+            <a href="index.html" class="flex items-center space-x-3 group">
+                <div class="w-9 h-9 rounded-full overflow-hidden border-2 border-white/80 shadow-md bg-white flex items-center justify-center p-0.5">
+                    <img src="/WhatsApp Image 2026-10-08 at 13.10.32.jpeg" alt="Logo" class="w-full h-full object-cover rounded-full" onerror="this.onerror=null; this.src='https://placehold.co/100x100/172554/FFFFFF?text=TT';">
                 </div>
-                <span class="font-bold text-xs md:text-sm tracking-wide font-['Raleway']">TAWO E. TAWO, SAN & CO.</span>
+                <div>
+                    <span class="font-bold tracking-wide text-xs md:text-sm block leading-tight text-[#0F172A] font-['Raleway']">TAWO E. TAWO, SAN & CO.</span>
+                    <span class="text-[7.5px] text-blue-600 font-semibold tracking-widest uppercase block">Legal Practitioners, Notary Public & Arbitrators</span>
+                </div>
             </a>
-            <a href="articles.html" class="text-xs font-bold bg-white/10 hover:bg-white/20 border border-white/20 px-4 py-2 rounded-xl transition-all shadow-sm">
-                &larr; Back to Insights &amp; Articles
-            </a>
+            
+            <nav class="hidden lg:flex items-center space-x-4">
+                <a href="index.html" class="text-sm text-gray-700 hover:text-[#172554] font-medium">Home</a>
+                <a href="about.html" class="text-sm text-gray-700 hover:text-[#172554] font-medium">About Us</a>
+                <a href="team.html" class="text-sm text-gray-700 hover:text-[#172554] font-medium">Our Team</a>
+                <a href="articles.html" class="text-sm text-blue-700 font-bold">Insights &amp; Articles</a>
+                <a href="contact.html" class="text-sm text-gray-700 hover:text-[#172554] font-medium">Contact</a>
+            </nav>
+
+            <button onclick="toggleMobileMenu()" class="lg:hidden text-[#0F172A] focus:outline-none p-2 cursor-pointer">
+                <i class="fa-solid fa-bars text-xl"></i>
+            </button>
+        </div>
+        
+        <div id="mobile-menu" class="hidden lg:hidden absolute top-full left-0 right-0 bg-[#172554] border-b border-blue-900 px-6 py-6 space-y-3 shadow-xl">
+            <a href="index.html" class="block text-gray-200 hover:text-white font-medium">Home</a>
+            <a href="about.html" class="block text-gray-200 hover:text-white font-medium">About Us</a>
+            <a href="team.html" class="block text-gray-200 hover:text-white font-medium">Our Team</a>
+            <a href="articles.html" class="block text-blue-200 font-bold">Insights & Articles</a>
+            <a href="contact.html" class="block text-gray-200 hover:text-white font-medium">Contact</a>
         </div>
     </header>
 
-    <main class="max-w-4xl mx-auto px-6 py-12 space-y-6 flex-1 w-full relative z-10">
+    <!-- Main Reading Container -->
+    <main class="py-28 px-6 md:px-12 max-w-4xl mx-auto flex-1 w-full space-y-8">
         
-        <div class="space-y-3 border-b border-gray-200 pb-6">
-            <div>
-                <span id="article-date" class="px-3 py-1 rounded-full bg-blue-50 text-[#172554] border border-blue-100 shadow-xs text-xs font-bold uppercase tracking-wider inline-block">Loading...</span>
+        <div class="space-y-4">
+            <a href="articles.html" class="inline-flex items-center text-xs font-bold text-[#172554] hover:underline mb-2">
+                <i class="fa-solid fa-arrow-left mr-1.5"></i> Back to Insights &amp; Articles
+            </a>
+            <div class="flex items-center justify-between text-xs text-gray-500 font-medium">
+                <span id="article-category" class="px-3 py-1 rounded-full bg-blue-50 text-[#172554] font-semibold">Legal Practice</span>
+                <span id="article-date">DATE</span>
             </div>
-            <h1 id="article-title" class="text-2xl sm:text-4xl font-extrabold text-[#0F172A] font-['Raleway'] leading-tight">
-                Loading Article...
-            </h1>
+            <h1 id="article-title" class="text-2xl sm:text-4xl font-extrabold text-[#0F172A] font-['Raleway'] leading-tight">Loading Article...</h1>
         </div>
 
-        <div id="article-media-container" class="rounded-2xl overflow-hidden border border-gray-200 bg-slate-950 shadow-md hidden aspect-video flex items-center justify-center"></div>
+        <div id="article-media-box" class="space-y-4"></div>
 
-        <!-- SINGLE GLASS CARD FOR TEXT & PROMINENT AUTHOR FOOTER -->
-        <div class="glass-card-light rounded-3xl shadow-xl border border-gray-200/80 overflow-hidden flex flex-col">
-            
-            <!-- Article Body Text -->
-            <div id="article-body" class="p-8 sm:p-12 space-y-6 text-slate-700 text-sm sm:text-base leading-relaxed break-words [word-break:break-word] w-full">
-                <p class="text-gray-400 text-center py-12">Retrieving publication details from repository...</p>
-            </div>
+        <!-- Full Rendered Body & Clickable Footnotes -->
+        <article id="article-body-container" class="article-content-body bg-white border border-gray-200/80 rounded-3xl p-8 sm:p-12 shadow-sm text-sm text-gray-700 space-y-4">
+            <p class="text-gray-400 italic">Retrieving publication content from repository...</p>
+        </article>
 
-            <!-- PROMINENT, LARGE AUTHOR SHOWCASE FOOTER -->
-            <div id="article-author-section" class="border-t-2 border-blue-100 bg-gradient-to-br from-blue-50/70 to-slate-50/90 px-8 sm:px-12 py-8 flex flex-col items-center sm:items-start space-y-6 hidden">
-                
-                <div class="flex items-center space-x-2 border-l-4 border-[#172554] pl-3">
-                    <span class="text-xs font-extrabold text-[#172554] uppercase tracking-widest font-['Raleway']">Written &amp; Published By</span>
-                </div>
-
-                <!-- High-Visibility Large Author Cards Container -->
-                <div id="author-profiles-container" class="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full">
-                    <!-- Dynamically populated with large prominent cards -->
-                </div>
-
-            </div>
-        </div>
-
-        <div class="pt-4 text-center">
-            <a href="articles.html" class="inline-flex items-center space-x-2 px-6 py-3 rounded-xl bg-[#172554] text-white font-bold text-xs uppercase tracking-wider hover:bg-blue-900 transition-all shadow-md">
-                <i class="fa-solid fa-arrow-left"></i>
-                <span>Return to All Articles</span>
+        <div class="pt-6 border-t border-gray-200 flex items-center justify-between">
+            <a href="articles.html" class="px-5 py-2.5 rounded-xl bg-[#172554] text-white text-xs font-bold hover:bg-blue-900 transition-all shadow">
+                &larr; Return to All Articles
             </a>
         </div>
-
     </main>
 
-    <footer class="bg-[#172554] text-gray-300 text-xs border-t border-blue-900 py-6 px-6 text-center mt-auto relative z-10">
-        <p>&copy; 2026 Tawo E. Tawo SAN & Co. All Rights Reserved.</p>
+    <!-- Footer -->
+    <footer class="bg-[#172554] text-gray-300 text-xs border-t border-blue-900 py-8 px-6 md:px-12 mt-auto">
+        <div class="max-w-7xl mx-auto text-center space-y-2">
+            <span class="font-bold text-white text-xs font-['Raleway'] tracking-wide">TAWO E. TAWO, SAN & CO.</span>
+            <p class="text-[10px] text-blue-200">&copy; 2026 Tawo E. Tawo SAN & Co. All Rights Reserved.</p>
+        </div>
     </footer>
 
+    <!-- Markdown & Article Loader Script -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
         marked.setOptions({ html: true, gfm: true });
 
-        async function loadSingleArticle() {
+        function toggleMobileMenu() { 
+            document.getElementById('mobile-menu').classList.toggle('hidden'); 
+        }
+
+        async function loadDedicatedArticle() {
             const urlParams = new URLSearchParams(window.location.search);
-            const fileNameParam = urlParams.get('file');
+            let fileParam = urlParams.get('file');
+            let indexParam = urlParams.get('id');
 
-            if (!fileNameParam) {
-                document.getElementById('article-body').innerHTML = '<p class="text-red-500 font-bold text-center py-8">Error: No article specified in request.</p>';
-                return;
-            }
-
-            const fileName = decodeURIComponent(fileNameParam);
             const repoOwner = 'mordiifeanyi-git';
             const repoName = 'tawoetawosan-respo';
-            const fileUrl = `https://raw.githubusercontent.com/${repoOwner}/${repoName}/main/articles/${encodeURIComponent(fileName)}`;
 
             try {
-                const res = await fetch(fileUrl);
-                if (!res.ok) throw new Error('Article file not found in repository.');
+                const response = await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/articles?t=${Date.now()}`);
+                if (!response.ok) throw new Error('Failed to fetch repository files');
 
-                const content = await res.text();
+                const files = await response.json();
+                const mdFiles = files.filter(f => f.name.endsWith('.md'));
+                if (mdFiles.length === 0) return;
 
-                let title = fileName.replace('.md', '');
-                let date = '';
-                let authorStr = '';
-                let videoUrl = '';
-                let imageUrl = '';
-                let authorPhotoStr = '';
-
-                const titleMatch = content.match(/^title:\s*["']?(.*?)["']?$/m);
-                if (titleMatch && titleMatch[1]) title = titleMatch[1].trim();
-
-                const dateMatch = content.match(/^date:\s*["']?(.*?)["']?$/m);
-                if (dateMatch && dateMatch[1]) date = dateMatch[1].trim();
-
-                const authorMatch = content.match(/^author:\s*["']?(.*?)["']?$/m);
-                if (authorMatch && authorMatch[1] && authorMatch[1].trim() !== "") {
-                    authorStr = authorMatch[1].trim();
+                let targetFile = mdFiles[0];
+                if (fileParam) {
+                    const decodedParam = decodeURIComponent(fileParam).trim();
+                    const found = mdFiles.find(f => f.name.toLowerCase() === decodedParam.toLowerCase());
+                    if (found) targetFile = found;
+                } else if (indexParam !== null) {
+                    const idx = parseInt(indexParam, 10);
+                    if (!isNaN(idx) && mdFiles[idx]) targetFile = mdFiles[idx];
                 }
 
-                const videoMatch = content.match(/^video:\s*["']?(.*?)["']?$/m);
-                if (videoMatch && videoMatch[1] && videoMatch[1] !== "undefined") videoUrl = videoMatch[1].trim();
+                const rawResponse = await fetch(`${targetFile.download_url}?t=${Date.now()}`);
+                const content = await rawResponse.text();
 
-                const imageMatch = content.match(/^image:\s*["']?(.*?)["']?$/m);
-                if (imageMatch && imageMatch[1] && imageMatch[1] !== "undefined") imageUrl = imageMatch[1].trim();
+                let title = targetFile.name.replace('.md', '').replace(/-/g, ' ');
+                let category = 'Legal Practice';
+                let date = '';
+                let videoUrl = '';
+                let imageUrl = '';
+                let galleryStr = '';
 
-                const avatarMatch = content.match(/^author_photo:\s*["']?(.*?)["']?$/m);
-                if (avatarMatch && avatarMatch[1] && avatarMatch[1] !== "undefined") authorPhotoStr = avatarMatch[1].trim();
+                const frontmatterBlock = content.match(/^---([\s\S]*?)---/);
+                if (frontmatterBlock && frontmatterBlock[1]) {
+                    const lines = frontmatterBlock[1].split('\n');
+                    lines.forEach(line => {
+                        const colonIndex = line.indexOf(':');
+                        if (colonIndex !== -1) {
+                            const key = line.substring(0, colonIndex).trim().toLowerCase();
+                            const val = line.substring(colonIndex + 1).trim().replace(/^["']|["']$/g, '');
+
+                            if (key === 'title') title = val;
+                            else if (key === 'category' && val) category = val;
+                            else if (key === 'date') date = val;
+                            else if (key === 'video') videoUrl = val;
+                            else if (key === 'image') imageUrl = val;
+                            else if (key === 'gallery') galleryStr = val;
+                        }
+                    });
+                }
+
+                document.getElementById('page-title').innerText = `${title} | TAWO E. TAWO, SAN & CO.`;
+                document.getElementById('article-title').innerText = title;
+                document.getElementById('article-category').innerText = category;
+                document.getElementById('article-date').innerText = date ? new Date(date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }).toUpperCase() : 'RECENT';
 
                 let cleanMarkdown = content.replace(/^---[\s\S]*?---/, '').trim();
-
-                // Extract and format references / footnotes if present
                 let referenceList = [];
                 const refSplit = cleanMarkdown.split(/### References & Footnotes/i);
                 if (refSplit.length > 1) {
@@ -180,82 +198,34 @@
                     referenceList = refSplit[1].trim().split('\n').map(l => l.replace(/^\d+\.\s*/, '').trim()).filter(Boolean);
                 }
 
-                document.getElementById('article-title').innerText = title;
-                document.title = `${title} | TAWO E. TAWO, SAN & CO.`;
-                document.getElementById('article-date').innerText = date ? new Date(date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }).toUpperCase() : 'RECENT PUBLICATION';
-                
-                // Parse markdown and convert footnote markers (^1 -> superscript link)
-                let parsedHtml = marked.parse(cleanMarkdown);
-                parsedHtml = parsedHtml.replace(/\^(\d+)/g, '<sup><a href="#ref-$1" class="text-blue-600 font-bold hover:underline">[$1]</a></sup>');
+                let bodyHtml = marked.parse(cleanMarkdown);
 
+                // Convert Word superscripts or caret markers into interactive jump links
+                bodyHtml = bodyHtml.replace(/<sup>\s*(\d+)\s*<\/sup>/gi, '<a id="fn-src-$1" href="#ref-$1" class="text-blue-600 font-bold hover:underline transition-colors cursor-pointer"><sup>[$1]</sup></a>');
+                bodyHtml = bodyHtml.replace(/\^(\d+)/g, '<a id="fn-src-$1" href="#ref-$1" class="text-blue-600 font-bold hover:underline transition-colors cursor-pointer"><sup>[$1]</sup></a>');
+
+                let finalHtmlContent = bodyHtml;
                 if (referenceList.length > 0) {
-                    parsedHtml += `
+                    finalHtmlContent += `
                         <div class="article-footnote-list">
                             <h4>References &amp; Footnotes</h4>
                             <ol>`;
                     referenceList.forEach((refLine, idx) => {
-                        parsedHtml += `<li id="ref-${idx+1}">${refLine}</li>`;
+                        let cleanLine = refLine.replace(/^\d+[\.\)]\s*/, '');
+                        finalHtmlContent += `<li id="ref-${idx+1}" class="leading-relaxed"><span class="font-medium text-slate-800">${cleanLine}</span> <a href="#fn-src-${idx+1}" class="text-blue-600 text-[10px] ml-1 font-bold hover:underline">↑ back to text</a></li>`;
                     });
-                    parsedHtml += `</ol></div>`;
+                    finalHtmlContent += `</ol></div>`;
                 }
 
-                document.getElementById('article-body').innerHTML = parsedHtml;
-
-                // Build Prominent, Large Author Profiles Showcase
-                let names = authorStr ? authorStr.split(',').map(s => s.trim()).filter(Boolean) : [];
-                let photos = authorPhotoStr ? authorPhotoStr.split(',').map(s => s.trim()).filter(Boolean) : [];
-
-                const authorSection = document.getElementById('article-author-section');
-                const authorProfilesContainer = document.getElementById('author-profiles-container');
-                authorProfilesContainer.innerHTML = '';
-
-                if (names.length > 0 || photos.length > 0) {
-                    authorSection.classList.remove('hidden');
-
-                    const count = Math.max(names.length, photos.length);
-                    for (let i = 0; i < count; i++) {
-                        const name = names[i] || 'Tawo E. Tawo, SAN & Co.';
-                        const photo = photos[i] || 'https://placehold.co/200x200/172554/FFFFFF?text=SAN';
-
-                        authorProfilesContainer.innerHTML += `
-                            <div class="bg-white/90 border border-blue-200/70 rounded-2xl p-4 sm:p-5 shadow-sm flex items-center space-x-4">
-                                <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl border-2 border-white shadow-md overflow-hidden bg-slate-900 shrink-0">
-                                    <img src="${photo}" class="w-full h-full object-cover" alt="${name}" onerror="this.onerror=null; this.src='https://placehold.co/200x200/172554/FFFFFF?text=SAN';">
-                                </div>
-                                <div class="space-y-1 min-w-0">
-                                    <span class="text-[9px] uppercase tracking-widest text-blue-600 font-extrabold block">Legal Counsel</span>
-                                    <h4 class="text-sm sm:text-base font-extrabold text-[#0F172A] font-['Raleway'] leading-snug truncate">${name}</h4>
-                                    <span class="text-[10px] text-gray-500 block truncate">Tawo E. Tawo, SAN &amp; Co.</span>
-                                </div>
-                            </div>`;
-                    }
-                }
-
-                const mediaContainer = document.getElementById('article-media-container');
-                if (videoUrl) {
-                    mediaContainer.classList.remove('hidden');
-                    const ytMatch = videoUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/))([\w-]{11})/);
-                    if (ytMatch && ytMatch[1]) {
-                        mediaContainer.innerHTML = `
-                            <iframe class="w-full h-full aspect-video" src="https://www.youtube.com/embed/${ytMatch[1]}?rel=0" title="Video" frameborder="0" allowfullscreen></iframe>`;
-                    } else {
-                        mediaContainer.innerHTML = `
-                            <video controls class="w-full h-full object-contain">
-                                <source src="${videoUrl}" type="video/mp4">
-                            </video>`;
-                    }
-                } else if (imageUrl) {
-                    mediaContainer.classList.remove('hidden');
-                    mediaContainer.innerHTML = `<img src="${imageUrl}" class="w-full h-full object-cover">`;
-                }
+                document.getElementById('article-body-container').innerHTML = finalHtmlContent;
 
             } catch (err) {
-                console.error(err);
-                document.getElementById('article-body').innerHTML = '<p class="text-red-500 font-bold text-center py-8">Failed to load article content.</p>';
+                console.error('Error loading article:', err);
+                document.getElementById('article-body-container').innerHTML = `<p class="text-red-500">Failed to load article content.</p>`;
             }
         }
 
-        document.addEventListener('DOMContentLoaded', loadSingleArticle);
+        document.addEventListener('DOMContentLoaded', loadDedicatedArticle);
     </script>
 </body>
 </html>
