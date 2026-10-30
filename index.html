@@ -176,7 +176,7 @@
                         Explore our legal breakdown examining the statutory restrictions on wage deductions and disciplinary salary cuts under Nigerian labor jurisprudence.
                     </p>
                     <div class="flex flex-wrap gap-2 pt-1">
-                        <a id="hero-article-link" href="punitive-salary-deductions-under-the-nigerian-labour-act.md" class="px-5 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs transition-all shadow-lg flex items-center space-x-2">
+                        <a id="hero-article-link" href="articles.html" class="px-5 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs transition-all shadow-lg flex items-center space-x-2">
                             <span>Read Full Article</span> &rarr;
                         </a>
                     </div>
@@ -297,7 +297,7 @@
 
     <!-- DYNAMIC "LATEST UPDATE" FLOATING NOTIFICATION WIDGET -->
     <div id="latest-update-widget" class="fixed bottom-6 right-6 z-40 hidden transform translate-y-4 opacity-0 transition-all duration-500 max-w-xs sm:max-w-sm">
-        <a id="floating-widget-link" href="punitive-salary-deductions-under-the-nigerian-labour-act.md" class="block bg-[#0F172A]/95 hover:bg-[#172554] border border-blue-500/40 text-white rounded-2xl p-4 shadow-2xl backdrop-blur-md group relative overflow-hidden">
+        <a id="floating-widget-link" href="articles.html" class="block bg-[#0F172A]/95 hover:bg-[#172554] border border-blue-500/40 text-white rounded-2xl p-4 shadow-2xl backdrop-blur-md group relative overflow-hidden">
             <div class="absolute top-0 right-0 w-24 h-24 bg-blue-600/10 rounded-full blur-xl pointer-events-none"></div>
             <div class="flex items-start space-x-3">
                 <div class="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center shrink-0 shadow-lg group-hover:scale-105 transition-transform">
@@ -459,7 +459,7 @@
 
             // Update button link on slide 4 dynamically if article is fetched
             if (slideIndex === 3 && latestArticleFilename) {
-                document.getElementById('hero-article-link').href = `articles.html?article=${latestArticleFilename}`;
+                document.getElementById('hero-article-link').href = `article.html?file=${encodeURIComponent(latestArticleFilename)}`;
             }
         }
 
@@ -470,7 +470,7 @@
         function handleUpNextClick() {
             const nextIdx = (slideIndex + 1) % slides.length;
             if (nextIdx === 3 && latestArticleFilename) {
-                window.location.href = `articles.html?article=${latestArticleFilename}`;
+                window.location.href = `article.html?file=${encodeURIComponent(latestArticleFilename)}`;
             } else {
                 window.location.href = storyData[nextIdx].link;
             }
@@ -511,8 +511,8 @@
                 const latestFile = mdFiles[mdFiles.length - 1];
                 latestArticleFilename = latestFile.name;
 
-                // Update deep-links to directly open the specific article modal/view in articles.html
-                const articleTargetUrl = `articles.html?article=${latestArticleFilename}`;
+                // Update deep-links to directly open the specific article file in article.html
+                const articleTargetUrl = `article.html?file=${encodeURIComponent(latestArticleFilename)}`;
                 if (widgetLink) widgetLink.href = articleTargetUrl;
                 const heroLink = document.getElementById('hero-article-link');
                 if (heroLink) heroLink.href = articleTargetUrl;
