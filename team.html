@@ -27,6 +27,22 @@
         /* Typography font stack: Roboto, Raleway, Arial, Helvetica, sans-serif */
         body { font-family: 'Roboto', 'Raleway', Arial, Helvetica, sans-serif; background-color: var(--bg-offwhite); color: var(--text-slate); line-height: 1.7; overflow-x: hidden; }
         h1, h2, h3, h4, h5, h6 { font-family: 'Raleway', 'Roboto', Arial, Helvetica, sans-serif; color: #0F172A; }
+
+        /* Smooth Page & Section Entry Vibes */
+@keyframes fadeInSlideUp {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.page-entry-vibe {
+    animation: fadeInSlideUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
     </style>
     <script>
         tailwind.config = {
@@ -94,6 +110,7 @@
     </section>
 
     <main class="py-16 px-6 md:px-12 max-w-7xl mx-auto space-y-16 flex-1 w-full">
+        <main class="py-16 px-6 md:px-12 max-w-7xl mx-auto space-y-16 flex-1 w-full page-entry-vibe"></main>
 
         <!-- Principal Partner Featured Block -->
         <div class="space-y-6">
